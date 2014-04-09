@@ -1,35 +1,50 @@
 package com.example.ubikefree;
 
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.taipeitech.csie1623.UBIkeData.UBikeDataGetter;
+
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.os.CountDownTimer;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
-import android.os.Build;
 import android.view.View.OnClickListener;
-import android.os.CountDownTimer;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity {
 	//
 	private Button start, cancel;	
 	private TextView tv;	
 	private MyCoundDownTask mytask;
+	private ListView uBikeStationList;
 	private int state = 0 ; // 0:還沒計時  1:30分鐘計時狀態  2:15分鐘計時狀態 
+	private UBikeDataGetter uBikeDataGetter;
+	
+	private ArrayList<String> uBikeStationNames;
+	private HashMap<String, JSONObject> uBikeJSONDataMap;
+	
 	//
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        //create a UBikeDataGetter
+        uBikeDataGetter = new UBikeDataGetter();
+        setUBikeStationNames();
+        
         // 
         tv = (TextView)findViewById(R.id.tv);       
         start = (Button)findViewById(R.id.start);    
         cancel = (Button)findViewById(R.id.cancel);
+        uBikeStationList = (ListView)findViewById(R.id.ubike_list_view);
         start.setOnClickListener(new OnClickListener() {        	
         	@Override        	
         	public void onClick(View v) {
@@ -109,6 +124,37 @@ public class MainActivity extends ActionBarActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    
+    /**
+     * 
+     */
+    public void grabUBikeStationsJSONData() {
+    	
+    	try{
+    		uBikeJSONDataMap = uBikeDataGetter.getUBikeJsonObjectsHashMapWithKeyStationName();
+    	}
+    	catch(JSONException jsonException) {
+    		jsonException.printStackTrace();
+    	}
+    }
+    
+    /**
+     * 
+     */
+    private void setUBikeStationNames() {
+    	
+    	int numOfUBikeStations;
+    	numOfUBikeStations = uBikeDataGetter.getNumOfUBikeStations();
+    	
+    	for(int index = 0; index < numOfUBikeStations; ++index) {
+    		try {
+    			uBikeStationNames.add(uBikeDataGetter.getUBikeStationName(index));
+    		}
+    		catch(JSONException jsonException) {
+    			jsonException.printStackTrace();
+    		}
+    	}//end for loop
     }
 
     /**
