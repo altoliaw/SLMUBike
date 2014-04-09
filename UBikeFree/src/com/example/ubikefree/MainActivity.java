@@ -39,15 +39,15 @@ public class MainActivity extends ActionBarActivity {
 	private ArrayList<String> uBikeStationFreeOfTotalBikes;
 	private ArrayList< HashMap<String, String> > listDataForUBikeListView;
 	private HashMap<String, JSONObject> uBikeJSONDataMap;
-	private final String UBIKE_LISTDATA_STATION_NAME_KEY = "station_name";
-	private final String UBIKE_LISTDATA_FREE_OF_TOTAL_BIKES_KEY = "free_of_total_bikes";
+	/*private final String UBIKE_LISTDATA_STATION_NAME_KEY = "station_name";
+	private final String UBIKE_LISTDATA_FREE_OF_TOTAL_BIKES_KEY = "free_of_total_bikes";*/
 	
 	//
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+
         /*Timer Start*/
         start = (Button)findViewById(R.id.start);        
         obj_Timer=new TimerCalculate(start);
@@ -60,24 +60,33 @@ public class MainActivity extends ActionBarActivity {
           
         /*Timer end*/
         
+        uBikeStationNames = new ArrayList<String>();
+        uBikeStationFreeOfTotalBikes = new ArrayList<String>();
+        uBikeJSONDataMap = new HashMap<String, JSONObject>();
+        listDataForUBikeListView = new ArrayList< HashMap<String, String> >();
+
         
         //create a UBikeDataGetter
-        uBikeDataGetter = new UBikeDataGetter();
-        setUBikeStationNames();
+
+		uBikeDataGetter = new UBikeDataGetter();
+
+        
+        grabUBikeStationsJSONData();
+        uBikeStationNames = uBikeDataGetter.getUBikeStationNames();
         setUBikeStationFreeOfTotalBikes();
         setListDataForUBikeListView();                     
         uBikeStationList = (ListView)findViewById(R.id.ubike_list_view);
         
         //set list adapter
-        /*uBikeListAdapter = new SimpleAdapter(
+        uBikeListAdapter = new SimpleAdapter(
         							this,
         							listDataForUBikeListView,
         							android.R.layout.simple_list_item_2,
-        							new String[] {	UBIKE_LISTDATA_STATION_NAME_KEY,
-        											UBIKE_LISTDATA_FREE_OF_TOTAL_BIKES_KEY},
+        							new String[] {	"name",
+        											"bikes"},
         							new int[] {	android.R.id.text1,
         										android.R.id.text2});
-        uBikeStationList.setAdapter(uBikeListAdapter);*/
+        uBikeStationList.setAdapter(uBikeListAdapter);
         
         
               	
@@ -114,7 +123,7 @@ public class MainActivity extends ActionBarActivity {
      * 
      */
     public void grabUBikeStationsJSONData() {
-    	
+
     	try{
     		uBikeJSONDataMap = uBikeDataGetter.getUBikeJsonObjectsHashMapWithKeyStationName();
     	}
@@ -137,6 +146,8 @@ public class MainActivity extends ActionBarActivity {
     			jsonException.printStackTrace();
     		}
     	}//end for loop
+
+    	uBikeJSONDataMap = uBikeDataGetter.getUBikeJsonObjectsHashMapWithKeyStationName();
     }
     
     /**
@@ -152,8 +163,8 @@ public class MainActivity extends ActionBarActivity {
     			String numOfFreeBikes;
     			String numOfTotalBikes;
     			
-    			numOfFreeBikes = uBikeJSONDataMap.get(name).getString(UBikeDataGetter.UBIKE_STATION_CURRENT_BIKES_KEY);
-    			numOfTotalBikes = uBikeJSONDataMap.get(name).getString(UBikeDataGetter.UBIKE_STATION_TOTAL_BIKES_KEY);
+    			numOfFreeBikes = uBikeJSONDataMap.get(name).getString(UBikeDataGetter.UBIKE_STATION_CURRENT_BIKES_KEY.toString());
+    			numOfTotalBikes = uBikeJSONDataMap.get(name).getString(UBikeDataGetter.UBIKE_STATION_TOTAL_BIKES_KEY.toString());
     			
     			numberOfFreeOfTotalBikes = numOfFreeBikes + "/" + numOfTotalBikes;
     		}
@@ -171,8 +182,8 @@ public class MainActivity extends ActionBarActivity {
     	
     	for(int index = 0; index < uBikeStationNames.size(); ++index) {
     		
-    		map.put(UBIKE_LISTDATA_STATION_NAME_KEY, uBikeStationNames.get(index));
-    		map.put(UBIKE_LISTDATA_FREE_OF_TOTAL_BIKES_KEY, uBikeStationFreeOfTotalBikes.get(index));
+    		map.put("name", uBikeStationNames.get(index));
+    		map.put("bikes", uBikeStationFreeOfTotalBikes.get(index));
     		
     		listDataForUBikeListView.add(map);
     	}//end for loop
