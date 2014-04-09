@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity {
@@ -26,9 +27,14 @@ public class MainActivity extends ActionBarActivity {
 	private ListView uBikeStationList;
 	private int state = 0 ; // 0:還沒計時  1:30分鐘計時狀態  2:15分鐘計時狀態 
 	private UBikeDataGetter uBikeDataGetter;
+	private SimpleAdapter uBikeListAdapter;
 	
 	private ArrayList<String> uBikeStationNames;
+	private ArrayList<String> uBikeStationFreeOfTotalBikes;
+	private ArrayList< HashMap<String, String> > listDataForUBikeListView;
 	private HashMap<String, JSONObject> uBikeJSONDataMap;
+	private final String UBIKE_LISTDATA_STATION_NAME_KEY = "station_name";
+	private final String UBIKE_LISTDATA_FREE_OF_TOTAL_BIKES_KEY = "free_of_total_bikes";
 	
 	//
     @Override
@@ -39,12 +45,27 @@ public class MainActivity extends ActionBarActivity {
         //create a UBikeDataGetter
         uBikeDataGetter = new UBikeDataGetter();
         setUBikeStationNames();
+        setUBikeStationFreeOfTotalBikes();
+        setListDataForUBikeListView();
         
         // 
         tv = (TextView)findViewById(R.id.tv);       
         start = (Button)findViewById(R.id.start);    
         cancel = (Button)findViewById(R.id.cancel);
         uBikeStationList = (ListView)findViewById(R.id.ubike_list_view);
+        
+        //set list adapter
+        /*uBikeListAdapter = new SimpleAdapter(
+        							this,
+        							listDataForUBikeListView,
+        							android.R.layout.simple_list_item_2,
+        							new String[] {	UBIKE_LISTDATA_STATION_NAME_KEY,
+        											UBIKE_LISTDATA_FREE_OF_TOTAL_BIKES_KEY},
+        							new int[] {	android.R.id.text1,
+        										android.R.id.text2});
+        uBikeStationList.setAdapter(uBikeListAdapter);*/
+        
+        
         start.setOnClickListener(new OnClickListener() {        	
         	@Override        	
         	public void onClick(View v) {
@@ -154,6 +175,45 @@ public class MainActivity extends ActionBarActivity {
     		catch(JSONException jsonException) {
     			jsonException.printStackTrace();
     		}
+    	}//end for loop
+    }
+    
+    /**
+     * dependent on uBikeJSONDataMap and uBikeStationNames
+     */
+    private void setUBikeStationFreeOfTotalBikes() {
+    	
+    	String numberOfFreeOfTotalBikes = "";
+    	
+    	for(String name : uBikeStationNames) {
+    		
+    		try {
+    			String numOfFreeBikes;
+    			String numOfTotalBikes;
+    			
+    			numOfFreeBikes = uBikeJSONDataMap.get(name).getString(UBikeDataGetter.UBIKE_STATION_CURRENT_BIKES_KEY);
+    			numOfTotalBikes = uBikeJSONDataMap.get(name).getString(UBikeDataGetter.UBIKE_STATION_TOTAL_BIKES_KEY);
+    			
+    			numberOfFreeOfTotalBikes = numOfFreeBikes + "/" + numOfTotalBikes;
+    		}
+    		catch(JSONException jsonException) {
+    			jsonException.printStackTrace();
+    		}
+    		
+    		uBikeStationFreeOfTotalBikes.add(numberOfFreeOfTotalBikes);
+    	}//end for loop
+    }
+    
+    private void setListDataForUBikeListView() {
+    	
+    	HashMap<String, String> map = new HashMap<String, String>();
+    	
+    	for(int index = 0; index < uBikeStationNames.size(); ++index) {
+    		
+    		map.put(UBIKE_LISTDATA_STATION_NAME_KEY, uBikeStationNames.get(index));
+    		map.put(UBIKE_LISTDATA_FREE_OF_TOTAL_BIKES_KEY, uBikeStationFreeOfTotalBikes.get(index));
+    		
+    		listDataForUBikeListView.add(map);
     	}//end for loop
     }
 

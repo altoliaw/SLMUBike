@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -12,7 +11,6 @@ import java.util.HashMap;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 /**
  * @author ChengFu, Lin
@@ -21,8 +19,6 @@ import org.json.JSONTokener;
 public class UBikeDataGetter {
 	
 	private InputStream uBikeJsonDataInputStream;
-	private Reader uBikeJsonDataReader;
-	private String uBikeJsonDataString;
 	private JSONObject uBikeJsonObject;
 	private JSONArray uBikeStationJsonData;
 	private final int numOfUBikeStations;
@@ -57,14 +53,12 @@ public class UBikeDataGetter {
 	 * 
 	 */
 	public UBikeDataGetter() {
-
-		uBikeJsonDataString = "";
+		
 		setUBikeJsonDataFromURL();
-
 		try {
-			setUBikeJSONObject();
 			setUBikeStationJsonData();
-		} catch (JSONException e) {
+		}
+		catch(JSONException e) {
 			e.printStackTrace();
 		}
 		numOfUBikeStations = uBikeStationJsonData.length();
@@ -78,16 +72,16 @@ public class UBikeDataGetter {
 		try {
 			//get input stream from URL
 			uBikeJsonDataInputStream = new URL(UBIKE_STATIONS_DB_URL).openStream();
-			uBikeJsonDataReader = new BufferedReader(new InputStreamReader(uBikeJsonDataInputStream));
+			BufferedReader streamReader = new BufferedReader(new InputStreamReader(uBikeJsonDataInputStream));
+			StringBuilder responseStrBuilder = new StringBuilder();
 			
-			char buffer[] = new char[256];
-			while(uBikeJsonDataReader.ready()) {
-				uBikeJsonDataReader.read(buffer);
-				uBikeJsonDataString.concat(new String(buffer));
-			}
+			String inputStr;
+			while((inputStr = streamReader.readLine()) != null) {
+				
+				responseStrBuilder.append(inputStr);
+			}//end while loop
 			
-			uBikeJsonDataInputStream.close();
-			uBikeJsonDataReader.close();
+			uBikeJsonObject = new JSONObject(responseStrBuilder.toString());
 		}
 		catch(MalformedURLException malFormedURLException) {
 			malFormedURLException.printStackTrace();
@@ -98,15 +92,6 @@ public class UBikeDataGetter {
 		catch(Exception exception) {
 			exception.printStackTrace();
 		}//end try-catch blocks
-	}
-	
-	/**
-	 * @throws JSONException 
-	 * 
-	 */
-	private void setUBikeJSONObject() throws JSONException {
-		
-		uBikeJsonObject = new JSONObject(new JSONTokener(uBikeJsonDataString));
 	}
 	
 	/**
