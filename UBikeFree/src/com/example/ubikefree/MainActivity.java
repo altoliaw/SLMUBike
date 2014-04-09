@@ -8,7 +8,6 @@ import org.json.JSONObject;
 import org.taipeitech.csie1623.UBIkeData.UBikeDataGetter;
 
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,10 +16,9 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
 
 /*Timer import Start*/
-import com.Timer.*;
+import com.Timer.TimerCalculate;
 /*Timer import end*/
 public class MainActivity extends ActionBarActivity {
 	//Field:
@@ -124,12 +122,7 @@ public class MainActivity extends ActionBarActivity {
      */
     public void grabUBikeStationsJSONData() {
 
-    	try{
-    		uBikeJSONDataMap = uBikeDataGetter.getUBikeJsonObjectsHashMapWithKeyStationName();
-    	}
-    	catch(JSONException jsonException) {
-    		jsonException.printStackTrace();
-    	}
+    	uBikeJSONDataMap = uBikeDataGetter.getUBikeJsonObjectsHashMapWithKeyStationName();
     }
     
 
@@ -139,12 +132,7 @@ public class MainActivity extends ActionBarActivity {
     	numOfUBikeStations = uBikeDataGetter.getNumOfUBikeStations();
     	
     	for(int index = 0; index < numOfUBikeStations; ++index) {
-    		try {
-    			uBikeStationNames.add(uBikeDataGetter.getUBikeStationName(index));
-    		}
-    		catch(JSONException jsonException) {
-    			jsonException.printStackTrace();
-    		}
+    		uBikeStationNames.add(uBikeDataGetter.getUBikeStationName(index));
     	}//end for loop
 
     	uBikeJSONDataMap = uBikeDataGetter.getUBikeJsonObjectsHashMapWithKeyStationName();
