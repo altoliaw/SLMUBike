@@ -61,13 +61,32 @@ public class UBikeDataGetter {
 		catch(JSONException e) {
 			e.printStackTrace();
 		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 		numOfUBikeStations = uBikeStationJsonData.length();
+	}
+	
+	/**
+	 * @return
+	 */
+	public JSONObject getUBikeJsonObject() {
+		
+		return uBikeJsonObject;
+	}
+	
+	/**
+	 * @return
+	 */
+	public JSONArray getUBikeStationJsonData() {
+		
+		return uBikeStationJsonData;
 	}
 	
 	/**
 	 * 
 	 */
-	private void setUBikeJsonDataFromURL() {
+	public void setUBikeJsonDataFromURL() {
 		
 		try {
 			//get input stream from URL
@@ -103,6 +122,9 @@ public class UBikeDataGetter {
 		uBikeStationJsonData = uBikeJsonObject.getJSONArray(UBIKE_STATION_DATA_ARRAY_KEY);
 	}
 	
+	/**
+	 * @return
+	 */
 	public int getNumOfUBikeStations() {
 		
 		return numOfUBikeStations;
