@@ -11,20 +11,7 @@
         android:id="@+id/start"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Start" />
-
-    <Button
-        android:id="@+id/cancel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Cancel" />
-
-    <TextView
-        android:id="@+id/tv"
-        android:layout_width="256dp"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world"
-        android:textSize="60dp" />
+        android:text="開始計時" />
 
     <ListView
         android:id="@+id/ubike_list_view"

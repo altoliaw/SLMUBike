@@ -19,13 +19,19 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+/*Timer import Start*/
+import com.Timer.*;
+/*Timer import end*/
 public class MainActivity extends ActionBarActivity {
-	//
-	private Button start, cancel;	
-	private TextView tv;	
-	private MyCoundDownTask mytask;
+	//Field:
+	/*Timer Start*/
+	private Button start;
+	TimerCalculate obj_Timer;
+	private int state = 0 ; // 0:還沒計時  1:30分鐘計時狀態  2:15分鐘計時狀態
+	/*Timer end*/	
+	
 	private ListView uBikeStationList;
-	private int state = 0 ; // 0:還沒計時  1:30分鐘計時狀態  2:15分鐘計時狀態 
+	 
 	private UBikeDataGetter uBikeDataGetter;
 	private SimpleAdapter uBikeListAdapter;
 	
@@ -42,16 +48,24 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
+        /*Timer Start*/
+        start = (Button)findViewById(R.id.start);        
+        obj_Timer=new TimerCalculate(start);
+        start.setOnClickListener(new OnClickListener() {        	
+        	@Override        	
+        	public void onClick(View v) {
+        		obj_Timer.StartProcess();
+        	}        	
+        });  
+          
+        /*Timer end*/
+        
+        
         //create a UBikeDataGetter
         uBikeDataGetter = new UBikeDataGetter();
         setUBikeStationNames();
         setUBikeStationFreeOfTotalBikes();
-        setListDataForUBikeListView();
-        
-        // 
-        tv = (TextView)findViewById(R.id.tv);       
-        start = (Button)findViewById(R.id.start);    
-        cancel = (Button)findViewById(R.id.cancel);
+        setListDataForUBikeListView();                     
         uBikeStationList = (ListView)findViewById(R.id.ubike_list_view);
         
         //set list adapter
@@ -66,32 +80,8 @@ public class MainActivity extends ActionBarActivity {
         uBikeStationList.setAdapter(uBikeListAdapter);*/
         
         
-        start.setOnClickListener(new OnClickListener() {        	
-        	@Override        	
-        	public void onClick(View v) {
-        		if ( state == 0 ) {
-        	      startCountDown(1800000);   
-                  cancel.setText("開始同站借車倒數");
-                  state = 1 ;                  
-        		} // if 
-        	}        	
-        });        	
-        cancel.setOnClickListener(new OnClickListener() {        	
-        	@Override        	
-        	public void onClick(View v) {
-        		if ( state == 1 ) {
-        		  cancel.setText("取消同站借車倒數");
-        	      cancelCountDown();
-        	      state = 2 ;
-        		  startCountDown(900000);         		  
-        		} // if
-        		
-        		else if ( state == 2 ) {    		  
-        		  cancelCountDown();
-        		  state = 0 ;
-        		} // else
-        	}        	
-        });
+              	
+       
         	//
        /* if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -99,33 +89,6 @@ public class MainActivity extends ActionBarActivity {
                     .commit();
         }*/
     }
-    //
-    private void startCountDown( long initialtime ){
-    	mytask = new MyCoundDownTask(initialtime, 1000);
-    	mytask.start();
-    }
-    private void cancelCountDown(){
-    	if (mytask != null){
-    	  mytask.cancel();
-    	  tv.setText("提早結束");
-        }
-    }
-    private class MyCoundDownTask extends CountDownTimer {
-    	public MyCoundDownTask(long millisInFuture, long countDownInterval) {
-    	  super(millisInFuture, countDownInterval);
-    	}
-    	@Override
-    	public void onTick(long millisUntilFinished) {
-    		long minus = millisUntilFinished/60000 ;
-    		long seconds = (millisUntilFinished%60000) /1000 ;
-    	    tv.setText("剩下時間: " +minus + ":" + seconds );
-    	}
-    	@Override
-    	public void onFinish() {
-    	  tv.setText("時間到");
-    	  }
-    	}
-//
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -160,9 +123,7 @@ public class MainActivity extends ActionBarActivity {
     	}
     }
     
-    /**
-     * 
-     */
+
     private void setUBikeStationNames() {
     	
     	int numOfUBikeStations;
