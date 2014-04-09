@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.json.JSONArray;
@@ -21,7 +22,7 @@ public class UBikeDataGetter {
 	private InputStream uBikeJsonDataInputStream;
 	private JSONObject uBikeJsonObject;
 	private JSONArray uBikeStationJsonData;
-	private final int numOfUBikeStations;
+	private int numOfUBikeStations;
 	
 	public static final String UBIKE_STATIONS_DB_URL = "http://210.69.61.60:8080/you/gwjs_cityhall.json";
 	public static final String UBIKE_STATION_DATA_ARRAY_KEY = "retVal";
@@ -54,16 +55,18 @@ public class UBikeDataGetter {
 	 */
 	public UBikeDataGetter() {
 		
+		uBikeStationJsonData = new JSONArray();
+		uBikeJsonObject = new JSONObject();
+		
 		setUBikeJsonDataFromURL();
-		try {
-			setUBikeStationJsonData();
-		}
-		catch(JSONException e) {
-			e.printStackTrace();
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
+		setNumOfUBikeStations();
+	}
+	
+	/**
+	 * 
+	 */
+	private void setNumOfUBikeStations() {
+		
 		numOfUBikeStations = uBikeStationJsonData.length();
 	}
 	
@@ -101,6 +104,7 @@ public class UBikeDataGetter {
 			}//end while loop
 			
 			uBikeJsonObject = new JSONObject(responseStrBuilder.toString());
+			uBikeStationJsonData = uBikeJsonObject.getJSONArray(UBIKE_STATION_DATA_ARRAY_KEY);
 		}
 		catch(MalformedURLException malFormedURLException) {
 			malFormedURLException.printStackTrace();
@@ -114,15 +118,6 @@ public class UBikeDataGetter {
 	}
 	
 	/**
-	 * @throws JSONException 
-	 * 
-	 */
-	private void setUBikeStationJsonData() throws JSONException {
-		
-		uBikeStationJsonData = uBikeJsonObject.getJSONArray(UBIKE_STATION_DATA_ARRAY_KEY);
-	}
-	
-	/**
 	 * @return
 	 */
 	public int getNumOfUBikeStations() {
@@ -133,70 +128,116 @@ public class UBikeDataGetter {
 	/**
 	 * @param index
 	 * @return
-	 * @throws JSONException 
 	 */
-	public String getUBikeStationName(int index) throws JSONException {
+	public String getUBikeStationName(int index) {
 		
-		JSONObject findingStation = uBikeStationJsonData.getJSONObject(index);
-		return findingStation.getString(UBIKE_STATION_NAME_KEY);
+		String name = null;
+		JSONObject findingStation = new JSONObject();
+		try {
+			findingStation = uBikeStationJsonData.getJSONObject(index);
+			name = findingStation.getString(UBIKE_STATION_NAME_KEY);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return name; 
 	}
 	
 	/**
 	 * @param index
 	 * @return
-	 * @throws JSONException 
 	 */
-	public String getUBikeStationDataID(int index) throws JSONException {
+	public String getUBikeStationDataID(int index) {
 	
-		JSONObject findingStation = uBikeStationJsonData.getJSONObject(index);
-		return findingStation.getString(UBIKE_STATION_DATA_ID_KEY);
+		String id = null;
+		JSONObject findingStation = new JSONObject();
+		try {
+			findingStation = uBikeStationJsonData.getJSONObject(index);
+			id = findingStation.getString(UBIKE_STATION_DATA_ID_KEY);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return id;
 	}
 	
 	/**
 	 * @param index
 	 * @return
-	 * @throws JSONException 
 	 */
-	public String getUBikeStationTotalNumOfBikes(int index) throws JSONException {
+	public String getUBikeStationTotalNumOfBikes(int index) {
 		
-		JSONObject findingStation = uBikeStationJsonData.getJSONObject(index);
-		return findingStation.getString(UBIKE_STATION_TOTAL_BIKES_KEY);
+		String numOfBikes = null;
+		JSONObject findingStation = new JSONObject();
+		
+		
+		try {
+			findingStation = uBikeStationJsonData.getJSONObject(index);
+			numOfBikes = findingStation.getString(UBIKE_STATION_TOTAL_BIKES_KEY);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return numOfBikes;
 	}
 	
 	/**
 	 * @param index
 	 * @return
-	 * @throws JSONException 
 	 */
-	public String getUBikeStationCurrentNumOfBikes(int index) throws JSONException {
+	public String getUBikeStationCurrentNumOfBikes(int index) {
 		
-		JSONObject findingStation = uBikeStationJsonData.getJSONObject(index);
-		return findingStation.getString(UBIKE_STATION_CURRENT_BIKES_KEY);
+		String numOfBikes = null;
+		JSONObject findingStation = new JSONObject();
+		
+		try {
+			findingStation = uBikeStationJsonData.getJSONObject(index);
+			numOfBikes = findingStation.getString(UBIKE_STATION_CURRENT_BIKES_KEY);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return numOfBikes;
 	}
 	
 	/**
 	 * @param index
 	 * @return
-	 * @throws JSONException 
 	 */
-	public String getUBikeStationLocateArea(int index) throws JSONException {
+	public String getUBikeStationLocateArea(int index) {
 		
-		JSONObject findingStation = uBikeStationJsonData.getJSONObject(index);
-		return findingStation.getString(UBIKE_STATION_LOCATED_AREA_KEY);
+		JSONObject findingStation;
+		String locatedArea = null;
+		try {
+			findingStation = uBikeStationJsonData.getJSONObject(index);
+			locatedArea = findingStation.getString(UBIKE_STATION_LOCATED_AREA_KEY);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return locatedArea;
 	}
 	
 	/**
 	 * @param index
 	 * @return
-	 * @throws JSONException 
 	 */
-	public String getUBikeStationUpdateTimeString(int index) throws JSONException {
+	public String getUBikeStationUpdateTimeString(int index) {
 		
-		String defaultTimeString;
-		String formattedTimeString;
+		String defaultTimeString = null;
+		String formattedTimeString = null;
 		
-		JSONObject findingStation = uBikeStationJsonData.getJSONObject(index);
-		defaultTimeString = findingStation.getString(UBIKE_STATION_UPDATED_DATE_KEY);
+		JSONObject findingStation;
+		try {
+			findingStation = uBikeStationJsonData.getJSONObject(index);
+			defaultTimeString = findingStation.getString(UBIKE_STATION_UPDATED_DATE_KEY);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 		formattedTimeString = getFormattedTimeString(defaultTimeString);
 		return formattedTimeString;
@@ -256,18 +297,36 @@ public class UBikeDataGetter {
 	
 	/**
 	 * @return
-	 * @throws JSONException 
 	 */
-	public HashMap<String, JSONObject> getUBikeJsonObjectsHashMapWithKeyStationName() throws JSONException {
+	public HashMap<String, JSONObject> getUBikeJsonObjectsHashMapWithKeyStationName() {
 		
 		HashMap<String, JSONObject> result = new HashMap<String, JSONObject>();
 		
 		for(int index = 0; index < uBikeStationJsonData.length(); ++index) {
 			
-			JSONObject object = uBikeStationJsonData.getJSONObject(index);
-			result.put(object.getString(UBIKE_STATION_NAME_KEY), object);
+			try {
+				JSONObject object = uBikeStationJsonData.getJSONObject(index);
+				result.put(object.getString(UBIKE_STATION_NAME_KEY), object);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}//end for loop
 		
 		return result;
+	}
+	
+	/**
+	 * @return
+	 */
+	public ArrayList<String> getUBikeStationNames() {
+		
+		ArrayList<String> names = new ArrayList<String>();
+		
+    	for(int index = 0; index < numOfUBikeStations; ++index) {
+    		names.add(getUBikeStationName(index));
+    	}//end for loop
+    	
+    	return names;
 	}
 }
