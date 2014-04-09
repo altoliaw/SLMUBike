@@ -9,6 +9,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -92,8 +99,8 @@ public class UBikeDataGetter {
 	public void setUBikeJsonDataFromURL() {
 		
 		try {
-			//get input stream from URL
-			uBikeJsonDataInputStream = new URL(UBIKE_STATIONS_DB_URL).openStream();
+			/*//get input stream from URL
+			uBikeJsonDataInputStream = new URL("http://210.69.61.60:8080/you/gwjs_cityhall.json").openStream();
 			BufferedReader streamReader = new BufferedReader(new InputStreamReader(uBikeJsonDataInputStream));
 			StringBuilder responseStrBuilder = new StringBuilder();
 			
@@ -101,20 +108,54 @@ public class UBikeDataGetter {
 			while((inputStr = streamReader.readLine()) != null) {
 				
 				responseStrBuilder.append(inputStr);
-			}//end while loop
+			}//end while loop*/
 			
-			uBikeJsonObject = new JSONObject(responseStrBuilder.toString());
+			String uBikeFeed = readUBikeFeed();
+			uBikeJsonObject = new JSONObject(uBikeFeed);
 			uBikeStationJsonData = uBikeJsonObject.getJSONArray(UBIKE_STATION_DATA_ARRAY_KEY);
 		}
-		catch(MalformedURLException malFormedURLException) {
+		catch(JSONException jsonException) {
+			jsonException.printStackTrace();
+		}
+		/*catch(MalformedURLException malFormedURLException) {
 			malFormedURLException.printStackTrace();
 		}
 		catch(IOException ioException) {
 			ioException.printStackTrace();
-		}
-		catch(Exception exception) {
+		}*/
+		/*catch(Exception exception) {
 			exception.printStackTrace();
-		}//end try-catch blocks
+		}//end try-catch blocks*/
+	}
+	
+	public String readUBikeFeed() {
+		
+		StringBuilder builder = new StringBuilder();
+		HttpClient client = new DefaultHttpClient();
+		HttpGet httpGet = new HttpGet("http://210.69.61.60:8080/you/gwjs_cityhall.json");
+		
+		try {
+		      HttpResponse response = client.execute(httpGet);
+		      StatusLine statusLine = response.getStatusLine();
+		      int statusCode = statusLine.getStatusCode();
+		      if (statusCode == 200) {
+		        HttpEntity entity = response.getEntity();
+		        InputStream content = entity.getContent();
+		        BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+		        String line;
+		        while ((line = reader.readLine()) != null) {
+		          builder.append(line);
+		        }
+		      } else {
+		        //Log.e(ParseJSON.class.toString(), "Failed to download file");
+		      }
+	    } catch (ClientProtocolException e) {
+	      e.printStackTrace();
+	    } catch (IOException e) {
+	      e.printStackTrace();
+	    }
+		
+		return builder.toString();
 	}
 	
 	/**

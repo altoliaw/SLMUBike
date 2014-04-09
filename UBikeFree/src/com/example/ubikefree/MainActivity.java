@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import org.taipeitech.csie1623.UBIkeData.UBikeDataGetter;
 
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,6 +47,11 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        StrictMode.ThreadPolicy policy = new StrictMode.
+        ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        
+        
         /*Timer Start*/
         start = (Button)findViewById(R.id.start);        
         obj_Timer=new TimerCalculate(start);
@@ -166,10 +172,8 @@ public class MainActivity extends ActionBarActivity {
     
     private void setListDataForUBikeListView() {
     	
-    	HashMap<String, String> map = new HashMap<String, String>();
-    	
     	for(int index = 0; index < uBikeStationNames.size(); ++index) {
-    		
+    		HashMap<String, String> map = new HashMap<String, String>();
     		map.put("name", uBikeStationNames.get(index));
     		map.put("bikes", uBikeStationFreeOfTotalBikes.get(index));
     		
