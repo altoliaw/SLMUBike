@@ -4,8 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -26,7 +24,6 @@ import org.json.JSONObject;
  */
 public class UBikeDataGetter {
 	
-	private InputStream uBikeJsonDataInputStream;
 	private JSONObject uBikeJsonObject;
 	private JSONArray uBikeStationJsonData;
 	private int numOfUBikeStations;
@@ -39,6 +36,8 @@ public class UBikeDataGetter {
 	public static final String UBIKE_STATION_CURRENT_BIKES_KEY = "sbi";
 	public static final String UBIKE_STATION_LOCATED_AREA_KEY = "sarea";
 	public static final String UBIKE_STATION_UPDATED_DATE_KEY = "mday";
+	public static final String UBIKE_STATION_LATITUDE_KEY = "lat";
+	public static final String UBIKE_STATION_LONGITUDE_KEY = "lng";
 	
 	private static final byte MAX_LENGTH_OF_TIMESTRING = 14;
 	private static final byte NUM_OF_TIMESTRING_PARTS = 6;
@@ -99,16 +98,6 @@ public class UBikeDataGetter {
 	public void setUBikeJsonDataFromURL() {
 		
 		try {
-			/*//get input stream from URL
-			uBikeJsonDataInputStream = new URL("http://210.69.61.60:8080/you/gwjs_cityhall.json").openStream();
-			BufferedReader streamReader = new BufferedReader(new InputStreamReader(uBikeJsonDataInputStream));
-			StringBuilder responseStrBuilder = new StringBuilder();
-			
-			String inputStr;
-			while((inputStr = streamReader.readLine()) != null) {
-				
-				responseStrBuilder.append(inputStr);
-			}//end while loop*/
 			
 			String uBikeFeed = readUBikeFeed();
 			uBikeJsonObject = new JSONObject(uBikeFeed);
@@ -117,22 +106,13 @@ public class UBikeDataGetter {
 		catch(JSONException jsonException) {
 			jsonException.printStackTrace();
 		}
-		/*catch(MalformedURLException malFormedURLException) {
-			malFormedURLException.printStackTrace();
-		}
-		catch(IOException ioException) {
-			ioException.printStackTrace();
-		}*/
-		/*catch(Exception exception) {
-			exception.printStackTrace();
-		}//end try-catch blocks*/
 	}
 	
 	public String readUBikeFeed() {
 		
 		StringBuilder builder = new StringBuilder();
 		HttpClient client = new DefaultHttpClient();
-		HttpGet httpGet = new HttpGet("http://210.69.61.60:8080/you/gwjs_cityhall.json");
+		HttpGet httpGet = new HttpGet(UBIKE_STATIONS_DB_URL);
 		
 		try {
 		      HttpResponse response = client.execute(httpGet);
@@ -369,5 +349,82 @@ public class UBikeDataGetter {
     	}//end for loop
     	
     	return names;
+	}
+	
+	/**
+	 * @return
+	 */
+	public HashMap<String, String> getUBikeCurrentOfTotalBikesWithKeyStationName() {
+		
+		HashMap<String, String> mapForCurrentOfTotalBikes = new HashMap<String, String>();
+		
+		for(int index = 0; index < numOfUBikeStations; ++index) {
+			
+			try {
+				JSONObject object = uBikeStationJsonData.getJSONObject(index);
+				
+				String currentBikes = object.getString(UBIKE_STATION_CURRENT_BIKES_KEY);
+				String totalBikes = object.getString(UBIKE_STATION_TOTAL_BIKES_KEY);
+				
+				mapForCurrentOfTotalBikes.put(object.getString(UBIKE_STATION_NAME_KEY), (currentBikes + "/" + totalBikes) );
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}//end for loop
+		
+		return mapForCurrentOfTotalBikes;
+	}
+	
+	/**
+	 * @return
+	 */
+	public HashMap<String, HashMap<String, String> > getUBikeStationLatitudeAndLogitudeWithKeyStationName() {
+		
+		HashMap<String, HashMap<String, String> > map = new HashMap<String, HashMap<String, String> >();
+		
+		for(int index = 0; index < numOfUBikeStations; ++index) {
+			
+			HashMap<String, String> locatMap = new HashMap<String, String>();
+			
+			try {
+				JSONObject object = uBikeStationJsonData.getJSONObject(index);
+				
+				//get latitude and longitude
+				locatMap.put(UBIKE_STATION_LATITUDE_KEY, object.getString(UBIKE_STATION_LATITUDE_KEY));
+				locatMap.put(UBIKE_STATION_LONGITUDE_KEY, object.getString(UBIKE_STATION_LONGITUDE_KEY));
+				
+				map.put(object.getString(UBIKE_STATION_NAME_KEY), locatMap);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}//end for loop
+		
+		return map;
+	}
+	
+	
+	
+	/**
+	 * @param columnName
+	 * @return
+	 */
+	public HashMap<String, String> getUBikeColumnDataWithKeyStationName(String columnName) {
+		
+		HashMap<String, String> map = new HashMap<String, String>();
+		
+		for(int index = 0; index < numOfUBikeStations; ++index) {
+			
+			try {
+				JSONObject object = uBikeStationJsonData.getJSONObject(index);
+				map.put(object.getString(UBIKE_STATION_NAME_KEY), object.getString(columnName));
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}//end for loop
+		
+		return map;
 	}
 }
