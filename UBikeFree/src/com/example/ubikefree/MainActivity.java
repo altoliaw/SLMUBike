@@ -5,6 +5,10 @@ import java.util.HashMap;
 
 import org.taipeitech.csie1623.UBIkeData.UBikeDataGetter;
 
+
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.ActionBarActivity;
@@ -19,6 +23,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+
 /*Timer import Start*/
 import com.Timer.TimerCalculate;
 /*Timer import end*/
@@ -27,7 +32,7 @@ public class MainActivity extends ActionBarActivity {
 	/*Timer Start*/
 	private Button start;
 	TimerCalculate obj_Timer;
-	private int state = 0 ; // 0:還沒計時  1:30分鐘計時狀態  2:15分鐘計時狀態
+	private int state; // 0:還沒計時  1:30分鐘計時狀態  2:15分鐘計時狀態
 	/*Timer end*/	
 	
 	private ListView uBikeStationList;
@@ -53,11 +58,15 @@ public class MainActivity extends ActionBarActivity {
         
         /*Timer Start*/
         start = (Button)findViewById(R.id.start);        
-        obj_Timer=new TimerCalculate(start);
+        obj_Timer = new TimerCalculate(start);
         start.setOnClickListener(new OnClickListener() {        	
         	@Override        	
         	public void onClick(View v) {
-        		obj_Timer.StartProcess();
+        		state = obj_Timer.getState();
+        		if(state == 0)
+        			obj_Timer.StartProcess();
+        		else
+        			timerConfirmDialog(obj_Timer);   
         	}        	
         });  
           
@@ -115,6 +124,28 @@ public class MainActivity extends ActionBarActivity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }*/
+    }
+    
+    protected void timerConfirmDialog(final TimerCalculate timer) {
+    	
+    	Builder stopCountingAlertDialog = new AlertDialog.Builder(this);
+    	stopCountingAlertDialog.setTitle(R.string.timer_stop_alert_dialog_title);
+    	DialogInterface.OnClickListener okClick = new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				//confirm function
+				timer.StartProcess();
+			}
+		};
+		DialogInterface.OnClickListener cancelClick = new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				//Do nothing				
+			}
+		};
+		stopCountingAlertDialog.setPositiveButton(R.string.confirm_button,okClick);
+		stopCountingAlertDialog.setNegativeButton(R.string.cancel_button,cancelClick);
+    	stopCountingAlertDialog.show();
     }
 
     @Override

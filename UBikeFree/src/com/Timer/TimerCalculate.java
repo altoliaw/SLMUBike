@@ -60,6 +60,9 @@ public class TimerCalculate {
     
     }
     
+    public int getState() {
+    	return this.int_stateValue;
+    }
     
 	private class MyCoundDownTask extends CountDownTimer {
 		public MyCoundDownTask(long millisInFuture, long countDownInterval) {

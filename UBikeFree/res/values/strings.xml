@@ -7,5 +7,8 @@
     <string name="ubike_list_view">UBike_List</string>
     <string name="input_search">Input_Search</string>
     <string name="edit_text_hint">搜尋站名...</string>
+    <string name="timer_stop_alert_dialog_title">真的要停止計時嗎?</string>
+    <string name="confirm_button">確定</string>
+    <string name="cancel_button">取消</string>
 
 </resources>
