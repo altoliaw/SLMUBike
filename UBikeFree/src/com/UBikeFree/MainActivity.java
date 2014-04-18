@@ -55,7 +55,7 @@ public class MainActivity extends ActionBarActivity {
         });  
           
         /*Timer end*/
-        
+        /*Gmap Start*/
         obj_GmapStation=(Button) findViewById(R.id.gmapstation);
         obj_GmapStation.setText("站點資訊");
         obj_GmapStation.setOnClickListener(new Button.OnClickListener(){
@@ -66,8 +66,8 @@ public class MainActivity extends ActionBarActivity {
         		startActivity(obj_Intent);         		
         	}
         });                     
+        /*Gmap end*/
        
-        	//
        /* if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new PlaceholderFragment())
