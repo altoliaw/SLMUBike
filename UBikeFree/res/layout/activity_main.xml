@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:orientation="vertical"
-    tools:context="com.example.ubikefree.MainActivity"
+    tools:context="com.UBikeFree.MainActivity"
     tools:ignore="MergeRootFrame" >
 
     <Button
@@ -17,6 +17,12 @@
 
     <Button
         android:id="@+id/gmapstation"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@drawable/button_orange"   
+        android:text="" />
+    <Button
+        android:id="@+id/test"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:background="@drawable/button_orange"   
