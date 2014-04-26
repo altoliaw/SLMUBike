@@ -1,5 +1,11 @@
 package com.UBikeFree;
 
+
+
+
+
+
+
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.ActionBarActivity;
@@ -12,9 +18,8 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 
-
 import com.StationInformation.UBikeDataGetter;
-import com.UBikeFree.R;
+import com.example.ubikefree.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;

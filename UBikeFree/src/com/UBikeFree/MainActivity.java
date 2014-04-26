@@ -6,35 +6,27 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
-//import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
-//import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-//import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
 
+import com.example.ubikefree.R;
 /*Timer import Start*/
 import com.Timer.TimerCalculate;
 /*Timer import end*/
-import com.UBikeFree.R;
 
 
 public class MainActivity extends ActionBarActivity {
 	/*Timer Start*/
 	private Button start;
-	private TimerCalculate obj_Timer;
+	TimerCalculate obj_Timer;
 	private int state; // 0:還沒計時  1:30分鐘計時狀態  2:15分鐘計時狀態
 	/*Timer end*/		
-	/*Gmap Start*/
 	private Button obj_GmapStation;
-	/*Gmap end*/
-	/*Test start*/
-	private Button obj_Test;
-	/*Test end*/
 	
 	
 	//
@@ -76,25 +68,11 @@ public class MainActivity extends ActionBarActivity {
         });                     
         /*Gmap end*/
        
-        /*Test Start*/
-        obj_Test=(Button)findViewById(R.id.test);
-        obj_Test.setText("測試用");
-        obj_Test.setOnClickListener(new Button.OnClickListener(){
-        	@Override
-        	public void onClick(View v){
-        		Intent obj_Intent =new Intent();
-        		obj_Intent.setClass(MainActivity.this, Test.class);
-        		startActivity(obj_Intent);         		
-        	}        	
-        });
-        /*Test end*/
-        
-        
-//        if (savedInstanceState == null) {
-//            getSupportFragmentManager().beginTransaction()
-//                    .add(R.id.container, new PlaceholderFragment())
-//                    .commit();
-//        }
+       /* if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.container, new PlaceholderFragment())
+                    .commit();
+        }*/
     }
     
     protected void timerConfirmDialog(final TimerCalculate timer) {
@@ -143,19 +121,20 @@ public class MainActivity extends ActionBarActivity {
      * 
      */    
 
-    /*
+    /**
      * A placeholder fragment containing a simple view.
-     */
-//    public static class PlaceholderFragment extends Fragment {
-//
-//        public PlaceholderFragment() {
-//        }
-//
-//        @Override
-//        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                Bundle savedInstanceState) {
-//            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-//            return rootView;
-//        }
-//    }
+     *
+    public static class PlaceholderFragment extends Fragment {
+
+        public PlaceholderFragment() {
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            return rootView;
+        }
+    }*/
+
 }
