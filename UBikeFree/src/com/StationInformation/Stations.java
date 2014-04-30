@@ -23,6 +23,7 @@ public class Stations implements Iterable<UBStation>
     {
     	url_ = new URL("http://210.69.61.60:8080/you/gwjs_cityhall.json");
         staMap_ = new TreeMap<String, UBStation>();
+        update();
     }
 
     public Iterator<UBStation> iterator()
