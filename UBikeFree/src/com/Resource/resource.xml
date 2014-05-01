@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>  
+<configuration>
+    <section name="Countdown">
+        <entry key="Min30" value="1800000" />
+        <entry key="Min15" value="900000" />       
+    </section>
+</configuration> 
