@@ -6,11 +6,11 @@ package com.Timer;
 
 
 import android.os.CountDownTimer;
-import android.view.View;
-import android.view.View.OnClickListener;
+//import android.view.View;
+//import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
+//import android.widget.ListView;
+//import android.widget.TextView;
 
 public class TimerCalculate {
 	private String str_messageBuffer;
