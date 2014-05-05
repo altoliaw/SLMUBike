@@ -6,6 +6,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
@@ -30,8 +31,17 @@ public class GmapStation extends ActionBarActivity {
 	private final String UBIKE_LISTDATA_STATION_NAME_KEY = "station_name";
 	private final String UBIKE_LISTDATA_FREE_OF_TOTAL_BIKES_KEY = "current_of_total_bikes";
 	
-	
+	private Handler handler;
 	private Timer refreshStationInfoTimer;
+	
+	private final Runnable refresh = new Runnable() {
+		public void run() {
+			Toast.makeText(GmapStation.this, "Refresh", Toast.LENGTH_SHORT).show();
+			updateUBikeListView();
+			GmapStation.this.handler.postDelayed(null, 300000);
+		}
+	};
+	
 	//
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +53,10 @@ public class GmapStation extends ActionBarActivity {
         StrictMode.setThreadPolicy(policy);
         
         
+        refreshStationInfoTimer = new Timer();
+        
+        this.handler = new Handler();
+        this.handler.postDelayed(refresh, 300000);
         
         
         uBikeStationNames = new ArrayList<String>();
@@ -93,7 +107,7 @@ public class GmapStation extends ActionBarActivity {
        
         
         //start timer for refresh list view
-        setRefreshListViewTimer();
+        /*setRefreshListViewTimer();*/
         
 
        /* if (savedInstanceState == null) {
@@ -102,8 +116,6 @@ public class GmapStation extends ActionBarActivity {
                     .commit();
         }*/
     }
-    
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -169,7 +181,7 @@ public class GmapStation extends ActionBarActivity {
      */
     public void setRefreshListViewTimer() {
     	
-    	refreshStationInfoTimer = new Timer();
+    	/*refreshStationInfoTimer = new Timer();*/
     	refreshStationInfoTimer.schedule(new TimerTask() {
     		
     		@Override
@@ -177,12 +189,26 @@ public class GmapStation extends ActionBarActivity {
     			runOnUiThread(new Runnable() {
     				public void run() {
     					updateUBikeListView();
-    					Toast.makeText(GmapStation.this, "5mins", Toast.LENGTH_SHORT).show();
+    					Toast.makeText(GmapStation.this, "update", Toast.LENGTH_SHORT).show();
     				}
     			});
     		}
     	}, 0, 300000);//updates each 5 minutes
     }
+    
+    /*@Override
+    protected void onResume() {
+    	super.onResume();
+    	
+    	setRefreshListViewTimer();
+    }
+    
+    @Override
+    protected void onPause() {
+    	
+    	super.onPause();
+    	refreshStationInfoTimer.cancel();
+    }*/
 
     
     /**
