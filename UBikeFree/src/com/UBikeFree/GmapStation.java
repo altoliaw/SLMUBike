@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import com.StationInformation.UBikeDataGetter;
 public class GmapStation extends ActionBarActivity {	
@@ -90,7 +91,11 @@ public class GmapStation extends ActionBarActivity {
         });
               	
        
-        	//
+        
+        //start timer for refresh list view
+        setRefreshListViewTimer();
+        
+
        /* if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new PlaceholderFragment())
@@ -159,9 +164,10 @@ public class GmapStation extends ActionBarActivity {
     	uBikeListAdapter.notifyDataSetChanged();
     }
     
-    @Override
-    public void onResume() {
-    	super.onResume();
+    /**
+     * 
+     */
+    public void setRefreshListViewTimer() {
     	
     	refreshStationInfoTimer = new Timer();
     	refreshStationInfoTimer.schedule(new TimerTask() {
@@ -171,17 +177,13 @@ public class GmapStation extends ActionBarActivity {
     			runOnUiThread(new Runnable() {
     				public void run() {
     					updateUBikeListView();
+    					Toast.makeText(GmapStation.this, "5mins", Toast.LENGTH_SHORT).show();
     				}
     			});
     		}
     	}, 0, 300000);//updates each 5 minutes
     }
-    
-    @Override
-    public void onPause() {
-    	refreshStationInfoTimer.cancel();
-    	super.onPause();
-    }
+
     
     /**
      * A placeholder fragment containing a simple view.
