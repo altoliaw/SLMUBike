@@ -20,19 +20,6 @@ public class Test extends FragmentActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.test);
-        
-//        TextView obj_Text= (TextView)findViewById(R.id.textView1);
-//        JFigLocator obj_Locator=new JFigLocator("D:\\adt-bundle-windows-x86_64-20140321\\eclipse\\WorkSpace\\UBikeFree\\src\\com\\Resource\\resource.xml");
-//        obj_Locator.setConfigLocation("file");
-//        try{
-//	    	JFig.initialize(obj_Locator);
-//	    	String str_Text=JFig.getInstance().getValue("Countdown", "Min30");
-//	    	obj_Text.setText(str_Text);
-//        }
-//        catch(Exception obj_Ex){
-//        	
-//        	
-//        }
 
         try {
             // Loading map

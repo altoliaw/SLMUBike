@@ -74,8 +74,10 @@ public class TimerCalculate {
 		}
 		@Override
 		public void onTick(long millisUntilFinished) {
-		    long minus = millisUntilFinished/60000 ;
-		    long seconds = (millisUntilFinished%60000) /1000 ;
+		    //long minus = millisUntilFinished/60000 ;
+			//long seconds = (millisUntilFinished%60000) /1000 ;
+		    long minus = millisUntilFinished/(Long.parseLong(obj_Environment.SearchValue("TimeDefinition/Min")));
+		    long seconds = (millisUntilFinished%(Long.parseLong(obj_Environment.SearchValue("TimeDefinition/Min")))) /(Long.parseLong(obj_Environment.SearchValue("TimeDefinition/Sec"))) ;
 		    String str_layOutMessageBuffer="";
 		    str_layOutMessageBuffer=str_messageBuffer+(minus+ ":" + seconds);
 		    obj_startButton.setText(str_layOutMessageBuffer);		    

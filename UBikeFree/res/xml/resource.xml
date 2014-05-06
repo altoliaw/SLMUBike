@@ -5,4 +5,9 @@
         <!-- wewe -->       
         <entry key="Min15" value="900000" />       
     </section>
+    <section key="TimeDefinition">
+        <entry key="Min" value="60000" /> 
+        <!-- wewe -->       
+        <entry key="Sec" value="1000" />       
+    </section>
 </configuration> 
