@@ -10,9 +10,6 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 
-import org.igfay.jfig.JFig;
-import org.igfay.jfig.JFigLocator;
-import org.igfay.util.*;
 
 public class Test extends FragmentActivity  {
  

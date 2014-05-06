@@ -50,7 +50,7 @@ public class MainActivity extends ActionBarActivity {
         
         /*Timer Start*/
         start = (Button)findViewById(R.id.start);        
-        obj_Timer = new TimerCalculate(start);
+        obj_Timer = new TimerCalculate(start,getResources().getXml(R.xml.resource));
         start.setOnClickListener(new OnClickListener() {        	
         	@Override        	
         	public void onClick(View v) {

@@ -30,7 +30,7 @@
         android:windowSoftInputMode="stateHidden" >
         <!-- Maps Key Start -->
         <meta-data android:name="com.google.android.maps.v2.API_KEY"
-    android:value="AIzaSyDmi3WNnaZey5xq5EHFDsqEiGjXBn0Mff4"/>
+    android:value="AIzaSyAv_I3dICG5UQBc2rSg-3eGroXS7UHWJuE"/>
     <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

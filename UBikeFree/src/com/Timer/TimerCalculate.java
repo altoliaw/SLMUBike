@@ -4,25 +4,26 @@
 //Description:		
 package com.Timer;
 
+import com.Resource.EnvironmentSource;
 
+import android.content.res.XmlResourceParser;
 import android.os.CountDownTimer;
-//import android.view.View;
-//import android.view.View.OnClickListener;
 import android.widget.Button;
-//import android.widget.ListView;
-//import android.widget.TextView;
+import org.xmlpull.v1.XmlPullParser;
 
 public class TimerCalculate {
 	private String str_messageBuffer;
 	private Button obj_startButton;		
 	private MyCoundDownTask obj_mytask;
+	private EnvironmentSource obj_Environment;
 	private int int_stateValue ;// 0:還沒計時  1:30分鐘計時狀態  2:15分鐘計時狀態 
-	public TimerCalculate(Button obj_startButton){
+	public TimerCalculate(Button obj_startButton,XmlResourceParser obj_MyXml ){
 		//constructor
 		this.obj_startButton=obj_startButton;				
 		this.int_stateValue=0;
 		this.str_messageBuffer="按一下開始計時";
 		this.obj_startButton.setText(this.str_messageBuffer);
+		this.obj_Environment=new EnvironmentSource(obj_MyXml);
 	}
 	
 	private void startCountDown( long initialtime ){
@@ -38,7 +39,9 @@ public class TimerCalculate {
     public void StartProcess(){
     	if ( this.int_stateValue == 0 ) {
     		this.str_messageBuffer="30分鐘借車倒數:\n";
-    		startCountDown(1800000);   
+    		//this.str_messageBuffer="30分鐘借車倒數:"+this.obj_Environment.SearchValue("Countdown/Min30")+"\n";
+    		//startCountDown(1800000); 
+    		startCountDown(Long.parseLong(this.obj_Environment.SearchValue("Countdown/Min30")));   
   	   		obj_startButton.setText(this.str_messageBuffer);
             this.int_stateValue = 1 ;                  
   		} 
@@ -48,7 +51,8 @@ public class TimerCalculate {
     		obj_startButton.setText(this.str_messageBuffer);
   	      	cancelCountDown();
   	      	int_stateValue = 2 ;
-  	      	startCountDown(900000);         		  
+  	      	startCountDown(Long.parseLong(this.obj_Environment.SearchValue("Countdown/Min15")));
+  	      	//startCountDown(900000);         		  
   		} 
   		
   		else if ( int_stateValue == 2 ) {    		  
