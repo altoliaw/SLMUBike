@@ -1,231 +1,64 @@
 package com.UBikeFree;
+import com.UBikeFree.R;
+import com.google.android.gms.maps.*;
+import com.google.android.gms.maps.model.*;
+import com.StationInformation.Stations;
+import com.StationInformation.UBStation;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Timer;
-import java.util.TimerTask;
-
+import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.StrictMode;
-import android.support.v7.app.ActionBarActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.Toast;
 
-import com.StationInformation.UBikeDataGetter;
-public class GmapStation extends ActionBarActivity {	
-	
-	private ListView uBikeStationList;
-	private EditText uBikeStationSearch;
-	private UBikeDataGetter uBikeDataGetter;
-	private SimpleAdapter uBikeListAdapter;
-	
-	private ArrayList<String> uBikeStationNames;
-	private ArrayList< HashMap<String, String> > listDataForUBikeListView;
-	private final String UBIKE_LISTDATA_STATION_NAME_KEY = "station_name";
-	private final String UBIKE_LISTDATA_FREE_OF_TOTAL_BIKES_KEY = "current_of_total_bikes";
-	
-	private Handler handler;
-	private Timer refreshStationInfoTimer;
-	
-	private final Runnable refresh = new Runnable() {
-		public void run() {
-			Toast.makeText(GmapStation.this, "Refresh", Toast.LENGTH_SHORT).show();
-			updateUBikeListView();
-			GmapStation.this.handler.postDelayed(null, 300000);
-		}
-	};
-	
-	//
+public class GmapStation extends FragmentActivity  {
+ 
+    // Google Map
+    private GoogleMap obj_GoogleMap;
+ 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gmap_information);
 
-        StrictMode.ThreadPolicy policy = new StrictMode.
-        ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-        
-        
-        refreshStationInfoTimer = new Timer();
-        
-        this.handler = new Handler();
-        this.handler.postDelayed(refresh, 300000);
-        
-        
-        uBikeStationNames = new ArrayList<String>();
-        listDataForUBikeListView = new ArrayList< HashMap<String, String> >();
-
-        
-        //create a UBikeDataGetter
-		//uBikeDataGetter = new UBikeDataGetter();
-        //uBikeStationNames = uBikeDataGetter.getUBikeStationNames();
-        //setListDataForUBikeListView();
-        setUBikeListViewFromDataGetter();
-        
-        uBikeStationSearch = (EditText)findViewById(R.id.input_search);
-        uBikeStationList = (ListView)findViewById(R.id.ubike_list_view);
-        
-        //set list adapter
-        uBikeListAdapter = new SimpleAdapter(
-        							this,
-        							listDataForUBikeListView,
-        							android.R.layout.simple_list_item_2,
-        							new String[] {	UBIKE_LISTDATA_STATION_NAME_KEY,
-        											UBIKE_LISTDATA_FREE_OF_TOTAL_BIKES_KEY},
-        							new int[] {	android.R.id.text1,
-        										android.R.id.text2});
-        uBikeStationList.setAdapter(uBikeListAdapter);
-        
-        uBikeStationSearch.addTextChangedListener(new TextWatcher() {
-        	
-        	@Override
-        	public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
-        		
-        		// When user changed the Text
-        		uBikeListAdapter.getFilter().filter(cs);
+        try {
+            // Loading map
+            this.InitilizeMap();
+ 
+        } catch (Exception obj_ex) {
+        	obj_ex.printStackTrace();
+        }
+ 
+    }
+ 
+ 
+    private void InitilizeMap() {
+        if (obj_GoogleMap == null) {
+        	obj_GoogleMap = ((MapFragment) getFragmentManager().findFragmentById(
+                    R.id.gmap)).getMap();
+        	LatLng obj_TaipeiMap = new LatLng(25.052401, 121.543915);//25.052401, 121.543915
+        	obj_GoogleMap.setMyLocationEnabled(true);
+        	obj_GoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(obj_TaipeiMap, 13));
+        	// ROSE color icon        	
+        	try{
+	        	Stations obj_Station =new Stations();
+	    		for(UBStation obj_UbiKeStation : obj_Station){
+	    			String str_Information=obj_UbiKeStation.getName() +":"+obj_UbiKeStation.getBikes()+"/"+obj_UbiKeStation.getEmptySlots();
+	    			MarkerOptions obj_Marker = new MarkerOptions().position(new LatLng(obj_UbiKeStation.getLat(),obj_UbiKeStation.getLng()))
+	    									.title(str_Information);
+	    			// ROSE color icon
+	    			obj_Marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+	    			// adding marker
+	    			obj_GoogleMap.addMarker(obj_Marker);
+	    		}
         	}
-        	@Override
-            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
-                    int arg3) {
-                // TODO Auto-generated method stub
-                 
-            }
-             
-            @Override
-            public void afterTextChanged(Editable arg0) {
-                // TODO Auto-generated method stub                         
-            }
-        });
-              	
-       
-        
-        //start timer for refresh list view
-        /*setRefreshListViewTimer();*/
-        
-
-       /* if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
-                    .commit();
-        }*/
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        	catch(Exception obj_Ex){}
         }
-        return super.onOptionsItemSelected(item);
     }
     
-    /**
-     * 
-     */
-    private void setListDataForUBikeListView() {
-    	
-    	HashMap<String, String> mapOfCurrentOfTotalBikes = new HashMap<String, String>();
-    	mapOfCurrentOfTotalBikes = uBikeDataGetter.getUBikeCurrentOfTotalBikesWithKeyStationName();
-    	
-    	for(int index = 0; index < uBikeStationNames.size(); ++index) {
-    		HashMap<String, String> map = new HashMap<String, String>();
-    		
-    		map.put(UBIKE_LISTDATA_STATION_NAME_KEY, uBikeStationNames.get(index));
-    		map.put(UBIKE_LISTDATA_FREE_OF_TOTAL_BIKES_KEY, mapOfCurrentOfTotalBikes.get(uBikeStationNames.get(index)));
-    		
-    		listDataForUBikeListView.add(map);
-    	}//end for loop
-    }
-
-    public void setUBikeListViewFromDataGetter() {
-    	uBikeDataGetter = new UBikeDataGetter();
-        uBikeStationNames = uBikeDataGetter.getUBikeStationNames();
-        setListDataForUBikeListView();
-    }
-    
-    public void updateUBikeListView() {
-    	listDataForUBikeListView.clear();
-    	setUBikeListViewFromDataGetter();
-    	
-    	uBikeListAdapter = new SimpleAdapter(
-				this,
-				listDataForUBikeListView,
-				android.R.layout.simple_list_item_2,
-				new String[] {	UBIKE_LISTDATA_STATION_NAME_KEY,
-								UBIKE_LISTDATA_FREE_OF_TOTAL_BIKES_KEY},
-				new int[] {	android.R.id.text1,
-							android.R.id.text2});
-    	uBikeListAdapter.notifyDataSetChanged();
-    }
-    
-    /**
-     * 
-     */
-    public void setRefreshListViewTimer() {
-    	
-    	/*refreshStationInfoTimer = new Timer();*/
-    	refreshStationInfoTimer.schedule(new TimerTask() {
-    		
-    		@Override
-    		public void  run() {
-    			runOnUiThread(new Runnable() {
-    				public void run() {
-    					updateUBikeListView();
-    					Toast.makeText(GmapStation.this, "update", Toast.LENGTH_SHORT).show();
-    				}
-    			});
-    		}
-    	}, 0, 300000);//updates each 5 minutes
-    }
-    
-    /*@Override
+ 
+    @Override
     protected void onResume() {
-    	super.onResume();
-    	
-    	setRefreshListViewTimer();
+        super.onResume();
+        this.InitilizeMap();
     }
-    
-    @Override
-    protected void onPause() {
-    	
-    	super.onPause();
-    	refreshStationInfoTimer.cancel();
-    }*/
-
-    
-    /**
-     * A placeholder fragment containing a simple view.
-     *
-    public static class PlaceholderFragment extends Fragment {
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            return rootView;
-        }
-    }*/
-
+ 
 }
 
