@@ -108,7 +108,19 @@ public class GMap {
     //Mark color 
     private float MarkColorPicker(Double Divisor,Double Dividend){
     	float flt_Color=BitmapDescriptorFactory.HUE_AZURE;
-    	Double db_Result=(Divisor/(Divisor+Dividend));
+    	Double db_Result=0.0;
+    	try{
+    		if((Divisor+Dividend)==0.0){
+    			db_Result=-1.0;    			
+    		}
+    		else{
+    			db_Result=(Divisor/(Divisor+Dividend));
+    		}
+    	}
+    	catch(Exception obj_Ex){
+    		
+    		
+    	}
     	if(db_Result>=0  && db_Result < 0.2){
     		flt_Color=BitmapDescriptorFactory.HUE_RED;
     	}

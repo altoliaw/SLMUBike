@@ -46,7 +46,7 @@ public class GmapStation extends FragmentActivity  {
             public void run() {                
                 runOnUiThread(new Runnable() {
                     public void run() {
-                        Toast.makeText(getApplicationContext(), "Relaod the JSON", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Relaod from WebService", Toast.LENGTH_SHORT).show();
                         obj_GMap.ReloadData(((MapFragment) getFragmentManager().findFragmentById(R.id.gmap)).getMap(),obj_Environment);
                     }
                 });
