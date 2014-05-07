@@ -43,11 +43,11 @@
         android:text=""
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <Button
+    <!-- <Button
         android:id="@+id/test"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         style="@style/btnStyledark_khaki"   
-        android:text="" />
+        android:text="" /> -->
 
 </LinearLayout>
