@@ -16,5 +16,18 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
+    
+    <style name="btnStyledark_khaki" parent="@android:style/Widget.Button">
+       <item name="android:textSize">20sp</item>
+       <item name="android:textStyle">bold</item>
+       <item name="android:textColor">#467500</item>
+       <item name="android:gravity">center</item>
+       <item name="android:shadowColor">#000000</item>
+       <item name="android:shadowDx">2</item>
+       <item name="android:shadowDy">2</item>
+       <item name="android:shadowRadius">0.6</item>
+       <item name="android:background">@drawable/button_green</item>
+       <item name="android:padding">20dip</item>
+   </style>
 
 </resources>

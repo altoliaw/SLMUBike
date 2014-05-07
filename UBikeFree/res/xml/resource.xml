@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="utf-8" ?>  
 <configuration>
     <section key="Countdown">
-        <entry key="Min30" value="1800000" /> 
-        <!-- wewe -->       
+        <entry key="Min30" value="1800000" />             
         <entry key="Min15" value="900000" />       
     </section>
     <section key="TimeDefinition">
-        <entry key="Min" value="60000" /> 
-        <!-- wewe -->       
+        <entry key="Min" value="60000" />               
         <entry key="Sec" value="1000" />       
+    </section>
+    <section key="GMap">
+        <entry key="Lat" value="25.052401" />               
+        <entry key="Lng" value="121.543915" />
+        <entry key="Zoom" value="14" />
+        <entry key="TriggerInitialDelay" value="10" />
+        <entry key="TriggerTimeDelay" value="20"/>       
+    </section>
+    <section key="StationInformation">
+        <entry key="Url" value="http://210.69.61.60:8080/you/gwjs_cityhall.json" />          
     </section>
 </configuration> 

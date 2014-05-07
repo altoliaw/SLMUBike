@@ -8,24 +8,46 @@
     tools:context="com.UBikeFree.MainActivity"
     tools:ignore="MergeRootFrame" >
 
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
     <Button
         android:id="@+id/start"
-        android:layout_width="match_parent"       
-        android:layout_height="150dp"
-        android:background="@drawable/button_orange"        
+        style="@style/btnStyledark_khaki"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
         android:text="" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <Button
         android:id="@+id/gmapstation"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:background="@drawable/button_orange"   
+        android:layout_height="100dp"
+        style="@style/btnStyledark_khaki" 
         android:text="" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
     <Button
         android:id="@+id/test"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:background="@drawable/button_orange"   
+        android:layout_height="100dp"
+        style="@style/btnStyledark_khaki"   
         android:text="" />
 
 </LinearLayout>

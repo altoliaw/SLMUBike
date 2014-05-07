@@ -1,4 +1,6 @@
 package com.StationInformation;
+import android.content.res.XmlResourceParser;
+import com.Resource.EnvironmentSource;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -8,23 +10,40 @@ import java.lang.Iterable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.HttpURLConnection;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.TreeMap;
+
+
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Stations implements Iterable<UBStation>
 {
-    private final URL url_;
-    private TreeMap<String, UBStation> staMap_;
+    private URL url_;
+    private TreeMap<String, UBStation> staMap_;    
+    private Date obj_Now;
 
-    public Stations() throws MalformedURLException
-    {
-        url_ = new URL("http://210.69.61.60:8080/you/gwjs_cityhall.json");
+    public Stations() throws MalformedURLException{    	    	    	
+    	url_ = new URL("http://210.69.61.60:8080/you/gwjs_cityhall.json");        
         staMap_ = new TreeMap<String, UBStation>();
         update();
     }
+    public Stations(EnvironmentSource obj_Environment) throws MalformedURLException{    	    	
+    	this.RetriveJsonData(obj_Environment);
+    }
 
+    public void RetriveJsonData(EnvironmentSource obj_Environment)throws MalformedURLException{
+    	obj_Now = new Date();
+    	String str_Parameter=new SimpleDateFormat("yyyyMMddHHmmss").format(obj_Now);
+    	String str_URL=obj_Environment.SearchValue("StationInformation/Url");
+    	str_URL+=("?ran="+str_Parameter);
+        url_ = new URL(str_URL);
+        staMap_ = new TreeMap<String, UBStation>();
+        update();    	
+    }
     public Iterator<UBStation> iterator()
     {
         return staMap_.values().iterator();

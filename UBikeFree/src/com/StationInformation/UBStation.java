@@ -12,8 +12,7 @@ public class UBStation
     private float latitude_;
     private float lngitude_;
     
-    public UBStation(JSONObject jsta) throws JSONException
-    {
+    public UBStation(JSONObject jsta) throws JSONException {
         id_ = jsta.getString("iid");
         name_ = jsta.getString("sna");
         bikes_ = jsta.getString("sbi");

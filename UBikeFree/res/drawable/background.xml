@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
     <item>
         <shape>
-            <gradient
-                android:startColor="#4EA000"
-                android:centerColor="#9EA000"
-                android:endColor="#A00200"
-                android:angle="180" />   			
-        </shape>
+            <gradient android:startColor="#00000000" android:centerColor="#00000000" android:endColor="#000000" android:angle="45" />   			
+        </shape>        
     </item>
-</selector>
+    <item>
+        <bitmap android:src="@drawable/ubikefree" android:gravity="left" />      
+    </item>
+    <item>        
+        <shape>
+            <gradient android:startColor="#00467500" android:centerColor="#467500" android:endColor="#467500" android:angle="45" />   			
+        </shape>        
+    </item>   
+    
+</layer-list>
