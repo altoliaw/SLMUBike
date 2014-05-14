@@ -77,16 +77,16 @@ public class MainActivity extends ActionBarActivity {
         /*Gmap end*/
        
         /*Test Start*/
-//        obj_Test=(Button)findViewById(R.id.test);
-//        obj_Test.setText("測試用");
-//        obj_Test.setOnClickListener(new Button.OnClickListener(){
-//        	@Override
-//        	public void onClick(View v){
-//        		Intent obj_Intent =new Intent();
-//        		obj_Intent.setClass(MainActivity.this, Test.class);
-//        		startActivity(obj_Intent);         		
-//        	}        	
-//        });
+        obj_Test=(Button)findViewById(R.id.test);
+        obj_Test.setText("測試用");
+        obj_Test.setOnClickListener(new Button.OnClickListener(){
+        	@Override
+        	public void onClick(View v){
+        		Intent obj_Intent =new Intent();
+        		obj_Intent.setClass(MainActivity.this, Test.class);
+        		startActivity(obj_Intent);         		
+        	}        	
+        });
         /*Test end*/
         
         

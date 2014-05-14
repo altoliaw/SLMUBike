@@ -26,23 +26,19 @@ public class Stations implements Iterable<UBStation>
     private TreeMap<String, UBStation> staMap_;    
     private Date obj_Now;
 
-    public Stations() throws MalformedURLException{    	    	    	
-    	url_ = new URL("http://210.69.61.60:8080/you/gwjs_cityhall.json");        
+    public Stations() throws MalformedURLException{
+    	//WebService的內容會因網址相同而有可能傳同樣的東西，所以必須要有改變
+    	url_ = new URL("http://210.69.61.60:8080/you/gwjs_cityhall.json");      
         staMap_ = new TreeMap<String, UBStation>();
         update();
     }
-    public Stations(EnvironmentSource obj_Environment) throws MalformedURLException{    	    	
-    	this.RetriveJsonData(obj_Environment);
+    public Stations(EnvironmentSource obj_Environment)throws MalformedURLException{    	    	    	
+        staMap_ = new TreeMap<String, UBStation>();
+        update(obj_Environment);
     }
 
     public void RetriveJsonData(EnvironmentSource obj_Environment)throws MalformedURLException{
-    	obj_Now = new Date();
-    	String str_Parameter=new SimpleDateFormat("yyyyMMddHHmmss").format(obj_Now);
-    	String str_URL=obj_Environment.SearchValue("StationInformation/Url");
-    	str_URL+=("?ran="+str_Parameter);
-        url_ = new URL(str_URL);
-        staMap_ = new TreeMap<String, UBStation>();
-        update();    	
+    	    	
     }
     public Iterator<UBStation> iterator()
     {
@@ -61,6 +57,24 @@ public class Stations implements Iterable<UBStation>
             try {
                 JSONObject jStation = jsonData.getJSONObject(i);
                 UBStation sta = new UBStation(jStation);
+                staMap_.put(sta.getId(), sta);
+            } catch(Exception ex) {
+
+            }
+        }
+    }
+    
+    public void update(EnvironmentSource obj_Environment)throws MalformedURLException{
+    	obj_Now = new Date();
+    	String str_Parameter	=new SimpleDateFormat("yyyyMMddHHmmss").format(obj_Now);
+    	String str_URL			=obj_Environment.SearchValue("StationInformation/Url");
+    	str_URL					+=("?ran="+str_Parameter);
+        url_ 					=new URL(str_URL);
+        JSONArray jsonData		=getJStations_();
+        for (int i = 0; i < jsonData.length(); ++i) {
+            try {
+                JSONObject jStation		=jsonData.getJSONObject(i);
+                UBStation sta			=new UBStation(jStation);
                 staMap_.put(sta.getId(), sta);
             } catch(Exception ex) {
 
