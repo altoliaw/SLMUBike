@@ -9,7 +9,6 @@ import com.Resource.EnvironmentSource;
 import android.content.res.XmlResourceParser;
 import android.os.CountDownTimer;
 import android.widget.Button;
-import org.xmlpull.v1.XmlPullParser;
 
 public class TimerCalculate {
 	private String str_messageBuffer;

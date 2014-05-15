@@ -1,5 +1,4 @@
 package com.StationInformation;
-import android.content.res.XmlResourceParser;
 import com.Resource.EnvironmentSource;
 
 import java.io.ByteArrayOutputStream;
@@ -58,8 +57,7 @@ public class Stations implements Iterable<UBStation>
                 JSONObject jStation = jsonData.getJSONObject(i);
                 UBStation sta = new UBStation(jStation);
                 staMap_.put(sta.getId(), sta);
-            } catch(Exception ex) {
-
+            } catch(Exception ex) {            	
             }
         }
     }

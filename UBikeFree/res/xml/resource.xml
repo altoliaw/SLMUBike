@@ -12,10 +12,14 @@
         <entry key="Lat" value="25.052401" />               
         <entry key="Lng" value="121.543915" />
         <entry key="Zoom" value="14" />
-        <entry key="AlphaBefore" value="0.4F" />
-        <entry key="AlphaAfter" value="0.1F" />
-        <entry key="TriggerInitialDelay" value="20" />
-        <entry key="TriggerTimeDelay" value="20"/>       
+        <entry key="Alpha" value="0.5F" />        
+        <entry key="TriggerInitialDelay" value="60" />
+        <entry key="TriggerTimeDelay" value="60"/>
+        <!-- 1000 為一秒 -->
+        <entry key="SeneorRetrivalTime" value="120000"/>
+        <!-- 單位為公尺-->
+        <entry key="SeneorRetrivalDistance" value="50"/>
+            
     </section>
     <section key="StationInformation">
         <entry key="Url" value="http://210.69.61.60:8080/you/gwjs_cityhall.json" />          

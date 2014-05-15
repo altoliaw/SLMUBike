@@ -2,8 +2,10 @@ package com.UBikeFree;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;  
+import android.location.LocationManager;
 
 import java.util.concurrent.Executors;  
 import java.util.concurrent.ScheduledExecutorService;  
@@ -13,20 +15,45 @@ import java.util.concurrent.TimeUnit;
 import android.util.Log;
 import android.widget.Toast;
 
-public class Test extends FragmentActivity implements LocationListener {      
+public class Test extends FragmentActivity {      
 	private ScheduledExecutorService scheduler;
-	private ScheduledFuture obj_beeperHandle;
+	private ScheduledFuture<?> obj_beeperHandle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.test);
 
         scheduler =
-                Executors.newSingleThreadScheduledExecutor();               
+                Executors.newSingleThreadScheduledExecutor();
+        
+        
+     // Acquire a reference to the system Location Manager
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+        // Define a listener that responds to location updates
+        LocationListener locationListener = new LocationListener() {
+            public void onLocationChanged(Location location) {
+              // Called when a new location is found by the network location provider.
+              makeUseOfNewLocation(location);
+            }
+
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+            public void onProviderEnabled(String provider) {}
+
+            public void onProviderDisabled(String provider) {}
+          };
+
+        // Register the listener with the Location Manager to receive location updates
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
  
     }
  
- 
+    private void makeUseOfNewLocation(Location location){
+    	Log.i("Lat", String.valueOf(location.getLatitude()));
+    	Log.i("Lng", String.valueOf(location.getLongitude()));    	
+    } 
     
  
     @Override
@@ -55,40 +82,4 @@ public class Test extends FragmentActivity implements LocationListener {
     	obj_beeperHandle.cancel(true);
     	
     }
-
-
-
-
-	@Override
-	public void onLocationChanged(Location location) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-
-	@Override
-	public void onStatusChanged(String provider, int status, Bundle extras) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-
-	@Override
-	public void onProviderEnabled(String provider) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-
-	@Override
-	public void onProviderDisabled(String provider) {
-		// TODO Auto-generated method stub
-		
-	}
 }

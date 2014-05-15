@@ -5,75 +5,71 @@
 package com.Map;
 import android.content.Context;
 import android.location.Location;
-import android.location.LocationListener;
+import android.location.LocationListener;  
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
-import com.google.android.gms.maps.*;
-import com.google.android.gms.maps.model.*;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.StationInformation.Stations;
 import com.StationInformation.UBStation;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.Resource.EnvironmentSource;
-import java.util.HashMap;
 
 public class GMap {
-																						// Google Map
-    private	HashMap<String,Marker>	obj_MarkInformation;								//All stations' marks information
+																						//Google Map
+	private Context					obj_ContextFromActivity;
+	private Double 					db_Lat;
+    private Double 					db_Lng;
     private	EnvironmentSource		obj_Environment;
-    private	Stations				obj_Station;										// Stations' Information Object
-    private Context					obj_ContextFromActivity;
-    private LatLng					obj_TaipeiMap;										//Lat Lng Position
-    private	static	final	String 	ststr_Activity="GMap.java";
-    
+	private GoogleMap				obj_GoogleMap;										//Google Map Variable    
+	private LatLng					obj_TaipeiMap;										//Lat Lng Position
+    private	Stations				obj_Station;										//Stations' Information Object    
+    private	static	final	String 	ststr_Activity="GMap.java";    
     																					//Construct of class
-    public	GMap(EnvironmentSource obj_Environment, Context obj_ContextFromActivity){
-    	this.obj_Environment			=obj_Environment;
-    	this.obj_ContextFromActivity	=obj_ContextFromActivity;    	
+    public	GMap(EnvironmentSource obj_Environment, Context obj_ContextFromActivity, GoogleMap obj_GoogleMap){
+    	this.obj_Environment						=obj_Environment;
+    	this.obj_ContextFromActivity				=obj_ContextFromActivity;
+    	this.obj_GoogleMap							=obj_GoogleMap;    	
     	try{
     		obj_Station					=new Stations(this.obj_Environment);
     	}
     	catch(Exception obj_Ex){
     		Log.e(ststr_Activity,obj_Ex.getMessage());    		
     	}
-    	this.GPSPosition();
+    	this.PositionSetting();
     }
     
-    public void MapDisplay(GoogleMap obj_GoogleMap){
+    public void MapDisplay(){
     	try {																			//Load Map into Fragment
-            this.MapSetting(obj_GoogleMap);
+            this.MapSetting();
         } 
         catch (Exception obj_Ex) {
         	//obj_ex.printStackTrace();
         	Log.e(ststr_Activity,obj_Ex.getMessage());
         }    	
-    }
-	
+    }	
     																					//Map Setting: default Lat Lng are 25.052401, 121.543915
-    private void MapSetting(GoogleMap obj_GoogleMap) {    	
-    	obj_GoogleMap.setMyLocationEnabled(true);    	
-    	obj_GoogleMap.moveCamera(	CameraUpdateFactory.newLatLngZoom(obj_TaipeiMap,
-    								Float.parseFloat(this.obj_Environment.SearchValue("GMap/Zoom"))));    	        
+    private void MapSetting() {
     	try{        	
-        	this.obj_MarkInformation				=new HashMap<String,Marker>();
+    		this.MapCameraSetting();
     		for(UBStation 		obj_UbiKeStation 	: obj_Station){    			
     			LatLng			obj_Position		=new LatLng(obj_UbiKeStation.getLat(),obj_UbiKeStation.getLng());
     			MarkerOptions 	obj_Mark			=new MarkerOptions().position(obj_Position)
     																	.title(obj_UbiKeStation.getName())
     																	.snippet(("可借:"+ obj_UbiKeStation.getBikes()+ "/空車位:" + obj_UbiKeStation.getEmptySlots()))
-    																	.alpha(Float.parseFloat(this.obj_Environment.SearchValue("GMap/AlphaBefore")));	    			
-    			String			str_Key				=obj_UbiKeStation.getId();	    			    	
+    																	.alpha(Float.parseFloat(this.obj_Environment.SearchValue("GMap/Alpha")));    				    			    
     			
     			obj_Mark.icon(BitmapDescriptorFactory.defaultMarker(
     					this.MarkColorPicker(Double.parseDouble(obj_UbiKeStation.getBikes()), Double.parseDouble(obj_UbiKeStation.getEmptySlots()))
     			));
     																					//Adding markers for station
-    			Marker	obj_MarkObject				=obj_GoogleMap.addMarker(obj_Mark);
-    			this.obj_MarkInformation.put(str_Key,obj_MarkObject);	    			    		
-    		}	    			    			    		    	
+    			this.obj_GoogleMap.addMarker(obj_Mark);    			    		
+    		}    		
     	}
     	catch(Exception obj_Ex){
     		Log.e(ststr_Activity,obj_Ex.getMessage());
@@ -81,66 +77,67 @@ public class GMap {
     }
     
     																					//Position from GPS or pre-define
-    private void GPSPosition(){
-    	LocationManager	obj_GPS			=(LocationManager)(this.obj_ContextFromActivity.getSystemService(Context.LOCATION_SERVICE));    	
-    	Double 			db_Lng	;														//紀錄經度
-		Double 			db_Lat	;														//紀錄緯度 		
-    	if (obj_GPS.isProviderEnabled(LocationManager.GPS_PROVIDER) || obj_GPS.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
-    																					//使用GPS定位座標
-    		Location obj_Location 	= obj_GPS.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-    		
-    		if(obj_Location != null) {
-    			db_Lng 				=obj_Location.getLongitude();						//取得經度
-    			db_Lat 				=obj_Location.getLatitude();						//取得緯度        		
-    		}
-    		else {
-    			Toast.makeText(this.obj_ContextFromActivity, "You can open GPS for precise locating.", Toast.LENGTH_SHORT).show();
-       			db_Lng 				=Double.parseDouble(this.obj_Environment.SearchValue("GMap/Lng"));					
-    			db_Lat 				=Double.parseDouble(this.obj_Environment.SearchValue("GMap/Lat"));     		    			
-    		}
+    private void PositionSetting(){
+    	db_Lat						=Double.parseDouble(this.obj_Environment.SearchValue("GMap/Lat"));
+    	db_Lng						=Double.parseDouble(this.obj_Environment.SearchValue("GMap/Lng"));		
+		LocationListener obj_LocationListener = new LocationListener() {				
+            public void onLocationChanged(Location obj_Location) {
+            	db_Lat=obj_Location.getLatitude();
+            	db_Lng=obj_Location.getLongitude();
+            	try{
+            		obj_TaipeiMap	=new LatLng(db_Lat, db_Lng);
+            		MapCameraSetting();
+            		Log.i("Lat",String.valueOf(db_Lat));
+            		Log.i("Lng",String.valueOf(db_Lng));
+            	}
+            	catch(Exception obj_Ex){
+            		Log.e(ststr_Activity,obj_Ex.getMessage());
+            	}
+            }
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
+            public void onProviderEnabled(String provider) {}
+            public void onProviderDisabled(String provider) {}
+		};
+		LocationManager	obj_LocationManger			=(LocationManager)(this.obj_ContextFromActivity.getSystemService(Context.LOCATION_SERVICE));
+    	if (obj_LocationManger.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){    		
+              obj_LocationManger.requestLocationUpdates(	LocationManager.NETWORK_PROVIDER, 
+            		  										Long.parseLong(this.obj_Environment.SearchValue("GMap/SeneorRetrivalTime")), 
+            		  										Float.parseFloat(this.obj_Environment.SearchValue("GMap/SeneorRetrivalDistance")), 
+            		  										obj_LocationListener
+            );              
     	}
     	else{
-    		Toast.makeText(this.obj_ContextFromActivity, "You can open GPS for precise locating.", Toast.LENGTH_SHORT).show();
-   			db_Lng 					=Double.parseDouble(this.obj_Environment.SearchValue("GMap/Lng"));					
-			db_Lat 					=Double.parseDouble(this.obj_Environment.SearchValue("GMap/Lat"));   		    		
+    		Toast.makeText(this.obj_ContextFromActivity, "You can open GPS for precise locating.", Toast.LENGTH_SHORT).show();			
     	}
     	if(this.obj_TaipeiMap==null){
+    		Log.i("LatOut",String.valueOf(db_Lat));
+    		Log.i("LngOut",String.valueOf(db_Lng));
     		this.obj_TaipeiMap			=new LatLng(db_Lat	,db_Lng);
     	}
-	}
-    
+	}    
     																					//Trigger for reloading station information
-    public void StationDataReload(GoogleMap obj_GoogleMap,EnvironmentSource obj_Environment){
+    public void StationDataReload(){
     																					//Re-do the json package again
-    	try{
-    		//this.obj_Station.update(obj_Environment);
+    	try{    		
+    		this.obj_GoogleMap.clear();
+    		this.obj_Station.update(this.obj_Environment);
+    		for(UBStation 		obj_UbiKeStation 	: this.obj_Station){    			
+    			LatLng			obj_Position		=new LatLng(obj_UbiKeStation.getLat(),obj_UbiKeStation.getLng());
+    			MarkerOptions 	obj_Mark			=new MarkerOptions().position(obj_Position)
+    																	.title(obj_UbiKeStation.getName())
+    																	.snippet(("可借:"+ obj_UbiKeStation.getBikes()+ "/空車位:" + obj_UbiKeStation.getEmptySlots()))
+    																	.alpha(Float.parseFloat(this.obj_Environment.SearchValue("GMap/Alpha")));    				    			    
+    			
+    			obj_Mark.icon(BitmapDescriptorFactory.defaultMarker(
+    					this.MarkColorPicker(Double.parseDouble(obj_UbiKeStation.getBikes()), Double.parseDouble(obj_UbiKeStation.getEmptySlots()))
+    			));
+    																					//Adding markers for station
+    			this.obj_GoogleMap.addMarker(obj_Mark);    			    		
+    		}    		
     	}
-    	catch(Exception obj_Ex){}
-    	for(UBStation	obj_UbiKeStation	:	this.obj_Station){
-    		String		str_Key				=obj_UbiKeStation.getId();
-    		if(this.obj_MarkInformation.containsKey(str_Key)==true){
-    			this.obj_MarkInformation.remove(str_Key);
-    		}
-    		
-    	}
-    																					//Search the HashMap for station information
-//    	for(UBStation	obj_UbiKeStation	:	this.obj_Station){
-//    		String		str_Key				=obj_UbiKeStation.getId();
-//    		if(this.obj_MarkInformation.containsKey(str_Key)==true){
-//    			Marker obj_MarkObject		=this.obj_MarkInformation.get(str_Key);
-//    			obj_MarkObject.remove();
-//    			LatLng obj_Position			=new LatLng(obj_UbiKeStation.getLat(),obj_UbiKeStation.getLng());
-//    			MarkerOptions obj_Mark		=new MarkerOptions().position(obj_Position)
-//																.title(obj_UbiKeStation.getName())
-//																.snippet(("可借:"+ obj_UbiKeStation.getBikes()+ "/空車位:" + obj_UbiKeStation.getEmptySlots()))
-//																.alpha(Float.parseFloat(this.obj_Environment.SearchValue("GMap/AlphaAfter")));
-//    			obj_Mark.icon(BitmapDescriptorFactory.defaultMarker(
-//    							this.MarkColorPicker(Double.parseDouble(obj_UbiKeStation.getBikes()), Double.parseDouble(obj_UbiKeStation.getEmptySlots()))
-//    			));    			
-//    			obj_MarkObject				=obj_GoogleMap.addMarker(obj_Mark);
-//    			this.obj_MarkInformation.put(str_Key,obj_MarkObject);
-//    		}    		
-//    	}    	
+    	catch(Exception obj_Ex){
+    		Log.e(ststr_Activity,obj_Ex.getMessage());
+    	}    						
     }
     
     																					//Mark color picker
@@ -175,6 +172,13 @@ public class GMap {
     		flt_Color	=BitmapDescriptorFactory.HUE_AZURE;    		
     	}
     	return flt_Color;    	
-    } 
+    }
+    
+    																					//Define Camera
+    private void MapCameraSetting(){
+    	this.obj_GoogleMap.setMyLocationEnabled(true);    	
+    	this.obj_GoogleMap.moveCamera(	CameraUpdateFactory.newLatLngZoom(obj_TaipeiMap,
+    								Float.parseFloat(this.obj_Environment.SearchValue("GMap/Zoom")))); 
+    }
     
 }
