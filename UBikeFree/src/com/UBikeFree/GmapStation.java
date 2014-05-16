@@ -13,11 +13,9 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-
 
 //import android.widget.Toast;
 import com.Map.GMap;
@@ -64,8 +62,6 @@ public class GmapStation extends FragmentActivity{
         //enable display home as up
         this.getActionBar().setDisplayHomeAsUpEnabled(true);
         
-        //remove auto-focus of input
-        //this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         
         //set list view and list items
         //get list view
@@ -78,6 +74,8 @@ public class GmapStation extends FragmentActivity{
         									R.layout.list_item,
         									R.id.ubstation_name,
         									this.obj_GMap.getStationNames());
+        
+        listView_UBikeStations.setTextFilterEnabled(true);
         listView_UBikeStations.setAdapter(adapter_UBikeStationList);
         
         //enable search functionality
@@ -86,15 +84,14 @@ public class GmapStation extends FragmentActivity{
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count,
 					int after) {
-				// When user changed the Text
-				GmapStation.this.adapter_UBikeStationList.getFilter().filter(s);
+				
 			}
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
-				// TODO Auto-generated method stub
 				
+				GmapStation.this.adapter_UBikeStationList.getFilter().filter(s);
 			}
 
 			@Override
