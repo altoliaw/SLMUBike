@@ -1276,7 +1276,8 @@ containing a value of this type.
         public static final int ic_plusone_small_off_client=0x7f020074;
         public static final int ic_plusone_standard_off_client=0x7f020075;
         public static final int ic_plusone_tall_off_client=0x7f020076;
-        public static final int ubikefree=0x7f020077;
+        public static final int ios7_search=0x7f020077;
+        public static final int ubikefree=0x7f020078;
     }
     public static final class id {
         public static final int action_bar=0x7f07001f;
@@ -1290,7 +1291,8 @@ containing a value of this type.
         public static final int action_menu_divider=0x7f070019;
         public static final int action_menu_presenter=0x7f07001a;
         public static final int action_mode_close_button=0x7f070027;
-        public static final int action_settings=0x7f070047;
+        public static final int action_search=0x7f07004a;
+        public static final int action_settings=0x7f07004b;
         public static final int activity_chooser_view_content=0x7f070028;
         public static final int always=0x7f07000f;
         public static final int beginning=0x7f070014;
@@ -1313,6 +1315,7 @@ containing a value of this type.
         public static final int icon=0x7f07002d;
         public static final int ifRoom=0x7f07000e;
         public static final int image=0x7f07002a;
+        public static final int input_search=0x7f070048;
         public static final int listMode=0x7f070005;
         public static final int list_item=0x7f07002c;
         public static final int middle=0x7f070015;
@@ -1348,6 +1351,8 @@ containing a value of this type.
         public static final int textView3=0x7f070044;
         public static final int title=0x7f07002e;
         public static final int top_action_bar=0x7f070023;
+        public static final int ubike_list_view=0x7f070049;
+        public static final int ubstation_name=0x7f070047;
         public static final int up=0x7f070024;
         public static final int useLogo=0x7f070007;
         public static final int withText=0x7f070010;
@@ -1406,11 +1411,14 @@ containing a value of this type.
         public static final int activity_main=0x7f030018;
         public static final int fragment_main=0x7f030019;
         public static final int gmap_information=0x7f03001a;
-        public static final int support_simple_spinner_dropdown_item=0x7f03001b;
-        public static final int test=0x7f03001c;
+        public static final int list_item=0x7f03001b;
+        public static final int side_menu=0x7f03001c;
+        public static final int support_simple_spinner_dropdown_item=0x7f03001d;
+        public static final int test=0x7f03001e;
     }
     public static final class menu {
-        public static final int main=0x7f0d0000;
+        public static final int gmapstation_actions=0x7f0d0000;
+        public static final int main=0x7f0d0001;
     }
     public static final class string {
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
@@ -1453,6 +1461,7 @@ containing a value of this type.
         /**  Description of a share target (both in the list of such or the default share button) in a ShareActionProvider (share UI). [CHAR LIMIT=NONE] 
          */
         public static final int abc_shareactionprovider_share_with_application=0x7f080026;
+        public static final int action_search=0x7f08002b;
         public static final int action_settings=0x7f08002a;
         public static final int app_name=0x7f080028;
         /**   Title for notification shown when GooglePlayServices needs to be
@@ -1478,7 +1487,7 @@ containing a value of this type.
         [CHAR LIMIT=70] 
          */
         public static final int auth_client_using_bad_version_title=0x7f080014;
-        public static final int cancel_button=0x7f080030;
+        public static final int cancel_button=0x7f080031;
         /**  Button in confirmation dialog to enable Google Play services.  Clicking it
         will direct user to application settings of Google Play services where they
         can enable it [CHAR LIMIT=40] 
@@ -1550,15 +1559,16 @@ containing a value of this type.
         /**  Long form sign-in button text [CHAR LIMIT=30] 
          */
         public static final int common_signin_button_text_long=0x7f080013;
-        public static final int confirm_button=0x7f08002f;
-        public static final int edit_text_hint=0x7f08002d;
+        public static final int confirm_button=0x7f080030;
+        public static final int edit_text_hint=0x7f08002e;
         public static final int hello_world=0x7f080029;
-        public static final int input_search=0x7f08002c;
+        public static final int input_search=0x7f08002d;
         /**  Location client code resources (prefix with location_client) 
          */
         public static final int location_client_powered_by_google=0x7f08001a;
-        public static final int timer_stop_alert_dialog_title=0x7f08002e;
-        public static final int ubike_list_view=0x7f08002b;
+        public static final int timer_stop_alert_dialog_title=0x7f08002f;
+        public static final int ubike_list_view=0x7f08002c;
+        public static final int ubstation_name=0x7f080032;
     }
     public static final class style {
         /** 

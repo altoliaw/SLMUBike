@@ -3,22 +3,26 @@
 //	Date		:	20140514
 //	Description	:	Map Setting
 package com.Map;
+import java.net.MalformedURLException;
+import java.util.Map;
+import java.util.Set;
+
 import android.content.Context;
 import android.location.Location;
-import android.location.LocationListener;  
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.Resource.EnvironmentSource;
 import com.StationInformation.Stations;
 import com.StationInformation.UBStation;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.Resource.EnvironmentSource;
 
 public class GMap {
 																						//Google Map
@@ -37,8 +41,49 @@ public class GMap {
     	this.obj_GoogleMap							=obj_GoogleMap;    	
     	try{
     		obj_Station					=new Stations(this.obj_Environment);
+    		
+    		//測試從TreeMap取得相同區域的站點
+    		int[] stationNum = {	obj_Station.getStationsOfArea("信義區").size(),
+    								obj_Station.getStationsOfArea("中山區").size(),
+    								obj_Station.getStationsOfArea("松山區").size(),
+    								obj_Station.getStationsOfArea("南港區").size(),
+    								obj_Station.getStationsOfArea("內湖區").size(),
+    								obj_Station.getStationsOfArea("大安區").size(),
+    								obj_Station.getStationsOfArea("中正區").size(),
+    								obj_Station.getStationsOfArea("萬華區").size(),
+    								obj_Station.getStationsOfArea("文山區").size(),
+    								obj_Station.getStationsOfArea("士林區").size(),
+    								obj_Station.getStationsOfArea("大同區").size(),
+    								obj_Station.getStationsOfArea("北投區").size(),
+    								obj_Station.getStationsOfArea("汐止區").size(),
+    								obj_Station.getStationsOfArea("新店區").size()
+    								};
+    		
+    		int total = 0;
+    		for(int num : stationNum) {
+    			total += num;
+    		}
+    		Toast.makeText(obj_ContextFromActivity,
+    						"信義區:"+stationNum[0]+"\n" +
+    						"中山區："+stationNum[1]+"\n" +
+    						"松山區："+stationNum[2]+"\n" +
+    						"南港區："+stationNum[3]+"\n" +
+    						"內湖區："+stationNum[4]+"\n" +
+    						"大安區："+stationNum[5]+"\n" +
+    						"中正區："+stationNum[6]+"\n" +
+    						"萬華區："+stationNum[7]+"\n" +
+    						"文山區："+stationNum[8]+"\n" +
+    						"士林區："+stationNum[9]+"\n" +
+    						"大同區："+stationNum[10]+"\n" +
+    						"北投區："+stationNum[11]+"\n" +
+    						"汐止區："+stationNum[12]+"\n" +
+    						"新店區："+stationNum[13]+"\n" +
+    						"Total："+total,
+    						Toast.LENGTH_LONG).show();
+    		//測試結束
+    		//結果：數量正確
     	}
-    	catch(Exception obj_Ex){
+    	catch(MalformedURLException obj_Ex){
     		Log.e(ststr_Activity,obj_Ex.getMessage());    		
     	}
     	this.PositionSetting();
@@ -61,7 +106,7 @@ public class GMap {
     			LatLng			obj_Position		=new LatLng(obj_UbiKeStation.getLat(),obj_UbiKeStation.getLng());
     			MarkerOptions 	obj_Mark			=new MarkerOptions().position(obj_Position)
     																	.title(obj_UbiKeStation.getName())
-    																	.snippet(("可借:"+ obj_UbiKeStation.getBikes()+ "/空車位:" + obj_UbiKeStation.getEmptySlots()))
+    																	.snippet(("可借："+ obj_UbiKeStation.getBikes()+ "空車位：" + obj_UbiKeStation.getEmptySlots()))
     																	.alpha(Float.parseFloat(this.obj_Environment.SearchValue("GMap/Alpha")));    				    			    
     			
     			obj_Mark.icon(BitmapDescriptorFactory.defaultMarker(
@@ -125,7 +170,7 @@ public class GMap {
     			LatLng			obj_Position		=new LatLng(obj_UbiKeStation.getLat(),obj_UbiKeStation.getLng());
     			MarkerOptions 	obj_Mark			=new MarkerOptions().position(obj_Position)
     																	.title(obj_UbiKeStation.getName())
-    																	.snippet(("可借:"+ obj_UbiKeStation.getBikes()+ "/空車位:" + obj_UbiKeStation.getEmptySlots()))
+    																	.snippet(("可借："+ obj_UbiKeStation.getBikes()+ "空車位：" + obj_UbiKeStation.getEmptySlots()))
     																	.alpha(Float.parseFloat(this.obj_Environment.SearchValue("GMap/Alpha")));    				    			    
     			
     			obj_Mark.icon(BitmapDescriptorFactory.defaultMarker(
@@ -181,4 +226,8 @@ public class GMap {
     								Float.parseFloat(this.obj_Environment.SearchValue("GMap/Zoom")))); 
     }
     
+    
+    public String[] getStationNames() {
+    	return obj_Station.getStationNames();
+    }
 }
