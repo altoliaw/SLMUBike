@@ -140,8 +140,14 @@ public class MainActivity extends ActionBarActivity {
     }
     
     /**
-     * 
-     */    
+     * auther by leotsui
+     * §âteskµ¹Backgroung°õ¦æ
+     */
+    @Override
+    public void onBackPressed() {
+    	moveTaskToBack(true) ;
+    }
+    
 
     /*
      * A placeholder fragment containing a simple view.
