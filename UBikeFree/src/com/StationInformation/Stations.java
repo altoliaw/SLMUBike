@@ -142,5 +142,34 @@ public class Stations implements Iterable<UBStation>
     	
     	return nameArray;
     }
+    
+    public Float[] getStationLongitudes() {
+    	ArrayList<Float> lngs = new ArrayList<Float>();
+    	
+    	for(UBStation station : staMap_.values()) {
+    		lngs.add(station.getLng());
+    	}
+    	
+    	Float[] lngArray = new Float[lngs.size()];
+    	for(int index = 0; index < lngs.size(); ++index) {
+    		lngArray[index] = lngs.get(index);
+    	}
+    	
+    	return lngArray;
+    }
+    
+    public Float[] getStationLatitudes() {
+    	ArrayList<Float> lats = new ArrayList<Float>();
+    	
+    	for(UBStation station : staMap_.values()) {
+    		lats.add(station.getLat());
+    	}
+    	
+    	Float[] latArray = new Float[lats.size()];
+    	for(int index = 0; index < lats.size(); ++index) {
+    		latArray[index] = lats.get(index);
+    	}
+    	
+    	return latArray;
+    }
 }
-

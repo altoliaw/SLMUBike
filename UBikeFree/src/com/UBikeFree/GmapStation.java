@@ -13,6 +13,9 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -21,6 +24,7 @@ import android.widget.ListView;
 import com.Map.GMap;
 import com.Resource.EnvironmentSource;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.navdrawer.SimpleSideDrawer;
 
 
@@ -99,6 +103,21 @@ public class GmapStation extends FragmentActivity{
 				// TODO Auto-generated method stub
 			}
         	
+        });
+        
+        //set onItemClickListener
+        listView_UBikeStations.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				
+				Float[] lats = GmapStation.this.obj_GMap.getStationLatitudes();
+				Float[] lngs = GmapStation.this.obj_GMap.getStationLongitudes();
+				
+				GmapStation.this.obj_GMap.MapCameraSetting(new LatLng(lats[position], lngs[position]));
+				sideMenu_UBikeStations.toggleRightDrawer();
+			}
         });
     }
     

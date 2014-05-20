@@ -226,8 +226,22 @@ public class GMap {
     								Float.parseFloat(this.obj_Environment.SearchValue("GMap/Zoom")))); 
     }
     
+    public void MapCameraSetting(LatLng positionOnMap){
+    	this.obj_GoogleMap.setMyLocationEnabled(true);    	
+    	this.obj_GoogleMap.moveCamera(	CameraUpdateFactory.newLatLngZoom(positionOnMap,
+    								Float.parseFloat(this.obj_Environment.SearchValue("GMap/Zoom")))); 
+    }
+    
     
     public String[] getStationNames() {
     	return obj_Station.getStationNames();
+    }
+    
+    public Float[] getStationLongitudes() {
+    	return obj_Station.getStationLongitudes();
+    }
+    
+    public Float[] getStationLatitudes() {
+    	return obj_Station.getStationLatitudes();
     }
 }
