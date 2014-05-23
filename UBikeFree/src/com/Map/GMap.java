@@ -244,4 +244,8 @@ public class GMap {
     	}
     	circles.clear();
     }
+    
+    public ArrayList<UBStation> getSortedStationList() {
+    	return obj_Station.getSortedStationListByKey();
+    }
 }

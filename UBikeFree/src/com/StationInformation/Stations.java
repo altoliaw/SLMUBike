@@ -12,7 +12,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
+import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -179,5 +181,18 @@ public class Stations implements Iterable<UBStation>
      */
     public ArrayList<UBStation> getStationList() {
     	return new ArrayList<UBStation>(staMap_.values());
+    }
+    
+    public ArrayList<UBStation> getSortedStationListByKey() {
+    	
+    	SortedSet<String> keys = new TreeSet<String>(staMap_.keySet());
+    	ArrayList<UBStation> sortedStations = new ArrayList<UBStation>();
+    	
+    	//will iterate across the map in natural order of the keys
+    	for(String key : keys) {
+    		sortedStations.add(staMap_.get(key));
+    	}//end for loop
+    	
+    	return sortedStations;
     }
 }

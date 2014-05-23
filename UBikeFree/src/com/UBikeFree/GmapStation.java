@@ -79,8 +79,7 @@ public class GmapStation extends FragmentActivity{
         //get input field
         editText_searchStation = (EditText)findViewById(R.id.input_search);
         //add items to list view
-        adapter_UBikeStationList = new UBikeStationListAdapter(this, this.obj_GMap.getStationList());
-        
+        adapter_UBikeStationList = new UBikeStationListAdapter(this, this.obj_GMap.getSortedStationList());        
         listView_UBikeStations.setTextFilterEnabled(true);
         listView_UBikeStations.setAdapter(adapter_UBikeStationList);
         
@@ -96,17 +95,9 @@ public class GmapStation extends FragmentActivity{
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
-				/*if(s == null || s.length() == 0) {
-					adapter_UBikeStationList = new UBikeStationListAdapter(
-							GmapStation.this,
-							GmapStation.this.obj_GMap.getStationList()
-						);
-					adapter_UBikeStationList.notifyDataSetChanged();
-				}
-				else {*/
+				
 					GmapStation.this.adapter_UBikeStationList.getFilter().filter(s.toString());
 					adapter_UBikeStationList.notifyDataSetChanged();
-				//}
 			}
 
 			@Override
@@ -184,7 +175,7 @@ public class GmapStation extends FragmentActivity{
                         //Toast.makeText(getApplicationContext(), "Relaod from WebService", Toast.LENGTH_SHORT).show();
                         obj_GMap.StationDataReload();
                         //reset list items
-                        adapter_UBikeStationList.swapStationItems(obj_GMap.getStationList());
+                        adapter_UBikeStationList.swapStationItems(obj_GMap.getSortedStationList());
                         //as soon as update the list, if the editor has any value, filter the list view
                         CharSequence s = editText_searchStation.getText();
                         if(s != null && s.length() > 0) {
