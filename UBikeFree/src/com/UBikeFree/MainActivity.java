@@ -77,7 +77,7 @@ public class MainActivity extends ActionBarActivity {
         /*Gmap end*/
        
         /*Test Start*/
-        obj_Test=(Button)findViewById(R.id.test);
+        /*obj_Test=(Button)findViewById(R.id.test);
         obj_Test.setText("´ú¸Õ¥Î");
         obj_Test.setOnClickListener(new Button.OnClickListener(){
         	@Override
@@ -86,7 +86,7 @@ public class MainActivity extends ActionBarActivity {
         		obj_Intent.setClass(MainActivity.this, Test.class);
         		startActivity(obj_Intent);         		
         	}        	
-        });
+        });*/
         /*Test end*/
         
         

@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -20,6 +21,7 @@ import com.StationInformation.UBStation;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -207,5 +209,12 @@ public class GMap {
     
     public ArrayList<UBStation> getStationList() {
     	return obj_Station.getStationList();
+    }
+    
+    public void drawCircle(LatLng location) {
+    	this.obj_GoogleMap.addCircle(new CircleOptions()
+    									.center(location)
+    									.radius(100)
+    									.strokeColor(Color.RED));
     }
 }

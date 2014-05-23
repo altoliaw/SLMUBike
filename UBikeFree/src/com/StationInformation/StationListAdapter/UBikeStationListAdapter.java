@@ -18,6 +18,7 @@ import com.UBikeFree.R;
 public class UBikeStationListAdapter extends ArrayAdapter<UBStation> implements Filterable{
 
 	private List<UBStation> stationList;
+	private final List<UBStation> allStations;
 	private Context context;
 	
 	private UBikeStationListFilter stationFilter;
@@ -28,6 +29,7 @@ public class UBikeStationListAdapter extends ArrayAdapter<UBStation> implements 
 		
 		this.context = context;
 		this.stationList = objects;
+		this.allStations = new ArrayList<UBStation>(objects);
 	}
 	
 	@Override
@@ -88,6 +90,8 @@ public class UBikeStationListAdapter extends ArrayAdapter<UBStation> implements 
 			//implement filter logic here
 			if(constraint == null || constraint.length() == 0) {
 				//No filter implemented, we return all the list
+				stationList = new ArrayList<UBStation>(allStations);
+				notifyDataSetChanged();
 				results.values = stationList;
 				results.count = stationList.size();
 			}//end if
@@ -117,6 +121,7 @@ public class UBikeStationListAdapter extends ArrayAdapter<UBStation> implements 
 			else {
 				stationList = (List<UBStation>)results.values;
 				notifyDataSetChanged();
+				
 			}
 		}
 	}

@@ -77,7 +77,7 @@ public class GmapStation extends FragmentActivity{
         //add items to list view
         adapter_UBikeStationList = new UBikeStationListAdapter(this, this.obj_GMap.getStationList());
         
-        listView_UBikeStations.setTextFilterEnabled(true);
+        //listView_UBikeStations.setTextFilterEnabled(true);
         listView_UBikeStations.setAdapter(adapter_UBikeStationList);
         
         //enable search functionality
@@ -92,7 +92,7 @@ public class GmapStation extends FragmentActivity{
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
-				if(s == null || s.length() == 0) {
+				/*if(s == null || s.length() == 0) {
 					adapter_UBikeStationList = new UBikeStationListAdapter(
 							GmapStation.this,
 							GmapStation.this.obj_GMap.getStationList()
@@ -100,10 +100,10 @@ public class GmapStation extends FragmentActivity{
 					listView_UBikeStations.setAdapter(adapter_UBikeStationList);
 					adapter_UBikeStationList.notifyDataSetChanged();
 				}
-				else {
+				else {*/
 					GmapStation.this.adapter_UBikeStationList.getFilter().filter(s.toString());
 					adapter_UBikeStationList.notifyDataSetChanged();
-				}
+				//}
 			}
 
 			@Override
@@ -120,16 +120,16 @@ public class GmapStation extends FragmentActivity{
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				
-				
-				GmapStation.this.obj_GMap.MapCameraSetting(
-						new LatLng(
-									GmapStation.this.adapter_UBikeStationList
-										.getItem(position)
-										.getLat(),
-									GmapStation.this.adapter_UBikeStationList
-										.getItem(position)
-										.getLng()
-									));
+				LatLng stationLocation = new LatLng(
+												GmapStation.this.adapter_UBikeStationList
+													.getItem(position)
+													.getLat(),
+												GmapStation.this.adapter_UBikeStationList
+													.getItem(position)
+													.getLng()
+												);
+				GmapStation.this.obj_GMap.MapCameraSetting(stationLocation);
+				GmapStation.this.obj_GMap.drawCircle(stationLocation);
 				sideMenu_UBikeStations.toggleRightDrawer();
 			}
         });
