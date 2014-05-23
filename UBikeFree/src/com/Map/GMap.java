@@ -147,7 +147,18 @@ public class GMap {
     			));
     																					//Adding markers for station
     			this.obj_GoogleMap.addMarker(obj_Mark);    			    		
-    		}    		
+    		}
+    		
+    		//redraw circles
+    		if(circles != null && circles.size() > 0) {
+    			for(Circle circle : circles) {
+    				this.obj_GoogleMap.addCircle(new CircleOptions()
+    													.center(circle.getCenter())
+    													.radius(circle.getRadius())
+    													.strokeColor(circle.getStrokeColor())
+    											);
+    			}//end for loop
+    		}//end if
     	}
     	catch(Exception obj_Ex){
     		Log.e(ststr_Activity,obj_Ex.getMessage());
@@ -231,5 +242,6 @@ public class GMap {
     	for(Circle circle : circles) {
     		circle.remove();
     	}
+    	circles.clear();
     }
 }

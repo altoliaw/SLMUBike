@@ -1,6 +1,7 @@
 package com.UBikeFree;
 
 
+import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -16,13 +17,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+
+
+import android.widget.Toast;
 
 //import android.widget.Toast;
 import com.Map.GMap;
 import com.Resource.EnvironmentSource;
+import com.StationInformation.UBStation;
 import com.StationInformation.StationListAdapter.UBikeStationListAdapter;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -38,7 +42,7 @@ public class GmapStation extends FragmentActivity{
     private SimpleSideDrawer			sideMenu_UBikeStations;
     private ListView					listView_UBikeStations;
     private EditText					editText_searchStation;
-    //private ArrayAdapter<String>		adapter_UBikeStationList;
+
     private UBikeStationListAdapter		adapter_UBikeStationList;
     
     @Override
@@ -77,7 +81,7 @@ public class GmapStation extends FragmentActivity{
         //add items to list view
         adapter_UBikeStationList = new UBikeStationListAdapter(this, this.obj_GMap.getStationList());
         
-        //listView_UBikeStations.setTextFilterEnabled(true);
+        listView_UBikeStations.setTextFilterEnabled(true);
         listView_UBikeStations.setAdapter(adapter_UBikeStationList);
         
         //enable search functionality
@@ -97,7 +101,6 @@ public class GmapStation extends FragmentActivity{
 							GmapStation.this,
 							GmapStation.this.obj_GMap.getStationList()
 						);
-					listView_UBikeStations.setAdapter(adapter_UBikeStationList);
 					adapter_UBikeStationList.notifyDataSetChanged();
 				}
 				else {*/
@@ -141,9 +144,8 @@ public class GmapStation extends FragmentActivity{
     @Override
     protected void onResume() {
         super.onResume();
-        																							//Start initial Google Map        
-        this.ScheduleMap();
-        																							//End initial Google Map
+        						//Start initial Google Map        
+        this.ScheduleMap();		//End initial Google Map, and update adapter's list
     }
     
     @Override
@@ -182,11 +184,16 @@ public class GmapStation extends FragmentActivity{
                         //Toast.makeText(getApplicationContext(), "Relaod from WebService", Toast.LENGTH_SHORT).show();
                         obj_GMap.StationDataReload();
                         //reset list items
-                        adapter_UBikeStationList = new UBikeStationListAdapter(
-                        									GmapStation.this,
-                        									GmapStation.this.obj_GMap.getStationList()
-                        								);
-                        adapter_UBikeStationList.notifyDataSetChanged();
+                        adapter_UBikeStationList.swapStationItems(obj_GMap.getStationList());
+                        //as soon as update the list, if the editor has any value, filter the list view
+                        CharSequence s = editText_searchStation.getText();
+                        if(s != null && s.length() > 0) {
+                        	adapter_UBikeStationList.getFilter().filter(s.toString());
+                        	adapter_UBikeStationList.notifyDataSetChanged();
+                        }//end if
+                        
+                        //show toast
+                        Toast.makeText(GmapStation.this, "更新站點資訊", Toast.LENGTH_SHORT).show();
     				}
     			});
     		}
