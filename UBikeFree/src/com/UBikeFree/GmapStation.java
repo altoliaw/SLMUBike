@@ -92,20 +92,23 @@ public class GmapStation extends FragmentActivity{
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
-				
-				GmapStation.this.adapter_UBikeStationList.getFilter().filter(s.toString());
+				if(s == null || s.length() == 0) {
+					adapter_UBikeStationList = new UBikeStationListAdapter(
+							GmapStation.this,
+							GmapStation.this.obj_GMap.getStationList()
+						);
+					listView_UBikeStations.setAdapter(adapter_UBikeStationList);
+					adapter_UBikeStationList.notifyDataSetChanged();
+				}
+				else {
+					GmapStation.this.adapter_UBikeStationList.getFilter().filter(s.toString());
+					adapter_UBikeStationList.notifyDataSetChanged();
+				}
 			}
 
 			@Override
 			public void afterTextChanged(Editable s) {
 
-				if(s.length() == 0) {
-					adapter_UBikeStationList = new UBikeStationListAdapter(
-							GmapStation.this,
-							GmapStation.this.obj_GMap.getStationList()
-						);
-					adapter_UBikeStationList.notifyDataSetChanged();
-				}
 			}
         	
         });

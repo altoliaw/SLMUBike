@@ -36,6 +36,11 @@ public class UBikeStationListAdapter extends ArrayAdapter<UBStation> implements 
 	}
 	
 	@Override
+	public UBStation getItem(int position) {
+		return stationList.get(position);
+	}
+	
+	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		
 		View v = convertView;
