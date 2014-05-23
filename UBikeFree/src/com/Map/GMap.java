@@ -4,8 +4,7 @@
 //	Description	:	Map Setting
 package com.Map;
 import java.net.MalformedURLException;
-import java.util.Map;
-import java.util.Set;
+import java.util.ArrayList;
 
 import android.content.Context;
 import android.location.Location;
@@ -42,46 +41,7 @@ public class GMap {
     	try{
     		obj_Station					=new Stations(this.obj_Environment);
     		
-    		//測試從TreeMap取得相同區域的站點
-    		int[] stationNum = {	obj_Station.getStationsOfArea("信義區").size(),
-    								obj_Station.getStationsOfArea("中山區").size(),
-    								obj_Station.getStationsOfArea("松山區").size(),
-    								obj_Station.getStationsOfArea("南港區").size(),
-    								obj_Station.getStationsOfArea("內湖區").size(),
-    								obj_Station.getStationsOfArea("大安區").size(),
-    								obj_Station.getStationsOfArea("中正區").size(),
-    								obj_Station.getStationsOfArea("萬華區").size(),
-    								obj_Station.getStationsOfArea("文山區").size(),
-    								obj_Station.getStationsOfArea("士林區").size(),
-    								obj_Station.getStationsOfArea("大同區").size(),
-    								obj_Station.getStationsOfArea("北投區").size(),
-    								obj_Station.getStationsOfArea("汐止區").size(),
-    								obj_Station.getStationsOfArea("新店區").size()
-    								};
     		
-    		int total = 0;
-    		for(int num : stationNum) {
-    			total += num;
-    		}
-    		Toast.makeText(obj_ContextFromActivity,
-    						"信義區:"+stationNum[0]+"\n" +
-    						"中山區："+stationNum[1]+"\n" +
-    						"松山區："+stationNum[2]+"\n" +
-    						"南港區："+stationNum[3]+"\n" +
-    						"內湖區："+stationNum[4]+"\n" +
-    						"大安區："+stationNum[5]+"\n" +
-    						"中正區："+stationNum[6]+"\n" +
-    						"萬華區："+stationNum[7]+"\n" +
-    						"文山區："+stationNum[8]+"\n" +
-    						"士林區："+stationNum[9]+"\n" +
-    						"大同區："+stationNum[10]+"\n" +
-    						"北投區："+stationNum[11]+"\n" +
-    						"汐止區："+stationNum[12]+"\n" +
-    						"新店區："+stationNum[13]+"\n" +
-    						"Total："+total,
-    						Toast.LENGTH_LONG).show();
-    		//測試結束
-    		//結果：數量正確
     	}
     	catch(MalformedURLException obj_Ex){
     		Log.e(ststr_Activity,obj_Ex.getMessage());    		
@@ -243,5 +203,9 @@ public class GMap {
     
     public Float[] getStationLatitudes() {
     	return obj_Station.getStationLatitudes();
+    }
+    
+    public ArrayList<UBStation> getStationList() {
+    	return obj_Station.getStationList();
     }
 }

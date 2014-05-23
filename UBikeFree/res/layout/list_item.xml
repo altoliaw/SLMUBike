@@ -13,5 +13,12 @@
         android:padding="10dp"
         android:textSize="16sp"
         android:textStyle="bold"/>
+    <!-- UBike Station number of bikes can be borrowed/returned -->
+    <TextView android:id="@+id/ubstation_numofbikes"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textSize="12sp"
+        android:textStyle="italic" />
 
 </LinearLayout>

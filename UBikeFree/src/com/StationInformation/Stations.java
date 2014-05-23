@@ -172,4 +172,12 @@ public class Stations implements Iterable<UBStation>
     	
     	return latArray;
     }
+    
+    /**
+     * 
+     * @return list of stations
+     */
+    public ArrayList<UBStation> getStationList() {
+    	return new ArrayList<UBStation>(staMap_.values());
+    }
 }

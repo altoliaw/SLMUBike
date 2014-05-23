@@ -23,6 +23,7 @@ import android.widget.ListView;
 //import android.widget.Toast;
 import com.Map.GMap;
 import com.Resource.EnvironmentSource;
+import com.StationInformation.StationListAdapter.UBikeStationListAdapter;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.navdrawer.SimpleSideDrawer;
@@ -37,7 +38,8 @@ public class GmapStation extends FragmentActivity{
     private SimpleSideDrawer			sideMenu_UBikeStations;
     private ListView					listView_UBikeStations;
     private EditText					editText_searchStation;
-    private ArrayAdapter<String>		adapter_UBikeStationList;
+    //private ArrayAdapter<String>		adapter_UBikeStationList;
+    private UBikeStationListAdapter		adapter_UBikeStationList;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +66,7 @@ public class GmapStation extends FragmentActivity{
         sideMenu_UBikeStations.setRightBehindContentView(R.layout.side_menu);
         
         //enable display home as up
-        this.getActionBar().setDisplayHomeAsUpEnabled(true);
+        this.getActionBar().setDisplayHomeAsUpEnabled(false);
         
         
         //set list view and list items
@@ -73,11 +75,7 @@ public class GmapStation extends FragmentActivity{
         //get input field
         editText_searchStation = (EditText)findViewById(R.id.input_search);
         //add items to list view
-        adapter_UBikeStationList = new ArrayAdapter<String>(
-        									this,
-        									R.layout.list_item,
-        									R.id.ubstation_name,
-        									this.obj_GMap.getStationNames());
+        adapter_UBikeStationList = new UBikeStationListAdapter(this, this.obj_GMap.getStationList());
         
         listView_UBikeStations.setTextFilterEnabled(true);
         listView_UBikeStations.setAdapter(adapter_UBikeStationList);
@@ -95,12 +93,19 @@ public class GmapStation extends FragmentActivity{
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
 				
-				GmapStation.this.adapter_UBikeStationList.getFilter().filter(s);
+				GmapStation.this.adapter_UBikeStationList.getFilter().filter(s.toString());
 			}
 
 			@Override
 			public void afterTextChanged(Editable s) {
-				// TODO Auto-generated method stub
+
+				if(s.length() == 0) {
+					adapter_UBikeStationList = new UBikeStationListAdapter(
+							GmapStation.this,
+							GmapStation.this.obj_GMap.getStationList()
+						);
+					adapter_UBikeStationList.notifyDataSetChanged();
+				}
 			}
         	
         });
@@ -112,10 +117,16 @@ public class GmapStation extends FragmentActivity{
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				
-				Float[] lats = GmapStation.this.obj_GMap.getStationLatitudes();
-				Float[] lngs = GmapStation.this.obj_GMap.getStationLongitudes();
 				
-				GmapStation.this.obj_GMap.MapCameraSetting(new LatLng(lats[position], lngs[position]));
+				GmapStation.this.obj_GMap.MapCameraSetting(
+						new LatLng(
+									GmapStation.this.adapter_UBikeStationList
+										.getItem(position)
+										.getLat(),
+									GmapStation.this.adapter_UBikeStationList
+										.getItem(position)
+										.getLng()
+									));
 				sideMenu_UBikeStations.toggleRightDrawer();
 			}
         });
@@ -165,11 +176,10 @@ public class GmapStation extends FragmentActivity{
                         //Toast.makeText(getApplicationContext(), "Relaod from WebService", Toast.LENGTH_SHORT).show();
                         obj_GMap.StationDataReload();
                         //reset list items
-                        adapter_UBikeStationList = new ArrayAdapter<String>(
-                        		GmapStation.this,
-								R.layout.list_item,
-								R.id.ubstation_name,
-								obj_GMap.getStationNames());
+                        adapter_UBikeStationList = new UBikeStationListAdapter(
+                        									GmapStation.this,
+                        									GmapStation.this.obj_GMap.getStationList()
+                        								);
                         adapter_UBikeStationList.notifyDataSetChanged();
     				}
     			});
