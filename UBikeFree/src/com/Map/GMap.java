@@ -21,6 +21,7 @@ import com.StationInformation.UBStation;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -34,7 +35,10 @@ public class GMap {
 	private GoogleMap				obj_GoogleMap;										//Google Map Variable    
 	private LatLng					obj_TaipeiMap;										//Lat Lng Position
     private	Stations				obj_Station;										//Stations' Information Object    
-    private	static	final	String 	ststr_Activity="GMap.java";    
+    private	static	final	String 	ststr_Activity="GMap.java";
+    
+    private ArrayList<Circle> circles;
+    
     																					//Construct of class
     public	GMap(EnvironmentSource obj_Environment, Context obj_ContextFromActivity, GoogleMap obj_GoogleMap){
     	this.obj_Environment						=obj_Environment;
@@ -49,6 +53,9 @@ public class GMap {
     		Log.e(ststr_Activity,obj_Ex.getMessage());    		
     	}
     	this.PositionSetting();
+    	
+    	//list for Circles
+    	circles = new ArrayList<Circle>();
     }
     
     public void MapDisplay(){
@@ -212,9 +219,17 @@ public class GMap {
     }
     
     public void drawCircle(LatLng location) {
-    	this.obj_GoogleMap.addCircle(new CircleOptions()
+    	Circle obj_circle = this.obj_GoogleMap.addCircle(new CircleOptions()
     									.center(location)
     									.radius(100)
     									.strokeColor(Color.RED));
+    	
+    	this.circles.add(obj_circle);
+    }
+    
+    public void removeCircles() {
+    	for(Circle circle : circles) {
+    		circle.remove();
+    	}
     }
 }

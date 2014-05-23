@@ -120,6 +120,9 @@ public class GmapStation extends FragmentActivity{
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				
+				//clear drawn circles
+				GmapStation.this.obj_GMap.removeCircles();
+				
 				LatLng stationLocation = new LatLng(
 												GmapStation.this.adapter_UBikeStationList
 													.getItem(position)
