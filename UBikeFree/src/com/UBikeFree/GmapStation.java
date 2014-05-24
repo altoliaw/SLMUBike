@@ -114,9 +114,6 @@ public class GmapStation extends FragmentActivity{
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				
-				//clear drawn circles
-				GmapStation.this.obj_GMap.removeCircles();
-				
 				LatLng stationLocation = new LatLng(
 												GmapStation.this.adapter_UBikeStationList
 													.getItem(position)
@@ -126,7 +123,10 @@ public class GmapStation extends FragmentActivity{
 													.getLng()
 												);
 				GmapStation.this.obj_GMap.MapCameraSetting(stationLocation);
-				GmapStation.this.obj_GMap.drawCircle(stationLocation);
+
+				GmapStation.this.obj_GMap.showMarkerOption(GmapStation.this.adapter_UBikeStationList
+															.getItem(position)
+															.getName());
 				sideMenu_UBikeStations.toggleRightDrawer();
 			}
         });

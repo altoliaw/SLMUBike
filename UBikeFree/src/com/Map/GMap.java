@@ -20,10 +20,12 @@ import com.StationInformation.Stations;
 import com.StationInformation.UBStation;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class GMap {
@@ -37,7 +39,8 @@ public class GMap {
     private	Stations				obj_Station;										//Stations' Information Object    
     private	static	final	String 	ststr_Activity="GMap.java";
     
-    private ArrayList<Circle> circles;
+    private ArrayList<Marker> markers;//record markers
+    private String lastClickedStation;//record the last time clicked marker, for re-shown after updated the map
     
     																					//Construct of class
     public	GMap(EnvironmentSource obj_Environment, Context obj_ContextFromActivity, GoogleMap obj_GoogleMap){
@@ -53,9 +56,22 @@ public class GMap {
     		Log.e(ststr_Activity,obj_Ex.getMessage());    		
     	}
     	this.PositionSetting();
+
+    	//list for Markers
+    	markers = new ArrayList<Marker>();
     	
-    	//list for Circles
-    	circles = new ArrayList<Circle>();
+    	//override onMarkerClickListener
+    	//record the last clicked marker
+    	//for showing it since updated the map
+    	obj_GoogleMap.setOnMarkerClickListener(new OnMarkerClickListener() {
+
+			@Override
+			public boolean onMarkerClick(Marker marker) {
+				lastClickedStation = marker.getTitle();
+				marker.showInfoWindow();
+				return true;
+			}
+    	});
     }
     
     public void MapDisplay(){
@@ -82,7 +98,7 @@ public class GMap {
     					this.MarkColorPicker(Double.parseDouble(obj_UbiKeStation.getBikes()), Double.parseDouble(obj_UbiKeStation.getEmptySlots()))
     			));
     																					//Adding markers for station
-    			this.obj_GoogleMap.addMarker(obj_Mark);    			    		
+    			markers.add(this.obj_GoogleMap.addMarker(obj_Mark));    			    		
     		}    		
     	}
     	catch(Exception obj_Ex){
@@ -131,7 +147,10 @@ public class GMap {
 	}    
     																					//Trigger for reloading station information
     public void StationDataReload(){
-    																					//Re-do the json package again
+    	
+    	markers.clear();
+    	
+    	//Re-do the json package again
     	try{    		
     		this.obj_GoogleMap.clear();
     		this.obj_Station.update(this.obj_Environment);
@@ -146,19 +165,11 @@ public class GMap {
     					this.MarkColorPicker(Double.parseDouble(obj_UbiKeStation.getBikes()), Double.parseDouble(obj_UbiKeStation.getEmptySlots()))
     			));
     																					//Adding markers for station
-    			this.obj_GoogleMap.addMarker(obj_Mark);    			    		
+    			markers.add(this.obj_GoogleMap.addMarker(obj_Mark));    			    		
     		}
     		
-    		//redraw circles
-    		if(circles != null && circles.size() > 0) {
-    			for(Circle circle : circles) {
-    				this.obj_GoogleMap.addCircle(new CircleOptions()
-    													.center(circle.getCenter())
-    													.radius(circle.getRadius())
-    													.strokeColor(circle.getStrokeColor())
-    											);
-    			}//end for loop
-    		}//end if
+    		//re-show clicked station marker
+    		showMarkerOption(lastClickedStation);
     	}
     	catch(Exception obj_Ex){
     		Log.e(ststr_Activity,obj_Ex.getMessage());
@@ -229,20 +240,19 @@ public class GMap {
     	return obj_Station.getStationList();
     }
     
-    public void drawCircle(LatLng location) {
-    	Circle obj_circle = this.obj_GoogleMap.addCircle(new CircleOptions()
-    									.center(location)
-    									.radius(100)
-    									.strokeColor(Color.RED));
-    	
-    	this.circles.add(obj_circle);
-    }
     
-    public void removeCircles() {
-    	for(Circle circle : circles) {
-    		circle.remove();
+    public void showMarkerOption(String stationName) {
+    	
+    	if(markers.size() > 0) {
+    	
+	    	for(Marker marker : markers) {
+	    		if(marker.getTitle().compareTo(stationName)==0) {
+	    			marker.showInfoWindow();
+	    			lastClickedStation = stationName;
+	    			break;
+	    		}
+	    	}
     	}
-    	circles.clear();
     }
     
     public ArrayList<UBStation> getSortedStationList() {

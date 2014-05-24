@@ -12,6 +12,7 @@ public class UBStation
     private float latitude_;
     private float lngitude_;
     private String area_;
+    private String address_;
     
     public UBStation(JSONObject jsta) throws JSONException {
         id_ = jsta.getString("iid");
@@ -21,6 +22,7 @@ public class UBStation
         latitude_ = Float.parseFloat(jsta.getString("lat"));
         lngitude_ = Float.parseFloat(jsta.getString("lng"));
         area_ = jsta.getString("sarea");//取得UBike站點所在行政區(ex: 信義區)
+        address_ = jsta.getString("ar");//取得站點地址
     }
 
     public String getId()
@@ -55,6 +57,10 @@ public class UBStation
     
     public String getArea() {
     	return area_;
+    }
+    
+    public String getAddress() {
+    	return address_;
     }
 }
 

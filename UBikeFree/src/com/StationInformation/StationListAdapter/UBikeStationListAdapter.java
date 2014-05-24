@@ -116,7 +116,8 @@ public class UBikeStationListAdapter extends ArrayAdapter<UBStation> implements 
 				List<UBStation> nStationList = new ArrayList<UBStation>();
 				
 				for(UBStation station : stationList) {
-					if(station.getName().contains(constraint.toString()))
+					if(station.getName().contains(constraint.toString())
+							|| station.getAddress().contains(constraint))
 						nStationList.add(station);
 				}
 				
