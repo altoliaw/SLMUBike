@@ -13,4 +13,5 @@
     <string name="cancel_button">取消</string>
     <string name="ubstation_name">UBStation_Name_Text</string>
     <string name="ubstation_numofbikes">UBStation_NumOfBikes_Text</string>
+    <string name="ubstation_separator">UBikeStation_Separator</string>
 </resources>
