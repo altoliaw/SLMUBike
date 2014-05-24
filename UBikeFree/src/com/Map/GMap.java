@@ -98,7 +98,8 @@ public class GMap {
     					this.MarkColorPicker(Double.parseDouble(obj_UbiKeStation.getBikes()), Double.parseDouble(obj_UbiKeStation.getEmptySlots()))
     			));
     																					//Adding markers for station
-    			markers.add(this.obj_GoogleMap.addMarker(obj_Mark));    			    		
+    			Marker tempMarker = this.obj_GoogleMap.addMarker(obj_Mark);
+    			markers.add(tempMarker);    			    		
     		}    		
     	}
     	catch(Exception obj_Ex){
@@ -165,7 +166,8 @@ public class GMap {
     					this.MarkColorPicker(Double.parseDouble(obj_UbiKeStation.getBikes()), Double.parseDouble(obj_UbiKeStation.getEmptySlots()))
     			));
     																					//Adding markers for station
-    			markers.add(this.obj_GoogleMap.addMarker(obj_Mark));    			    		
+    			Marker tempMarker = this.obj_GoogleMap.addMarker(obj_Mark);   
+    			markers.add(tempMarker);
     		}
     		
     		//re-show clicked station marker
