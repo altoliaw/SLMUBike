@@ -22,7 +22,6 @@ public class UBikeStationListAdapter extends ArrayAdapter<UBStation> implements 
 	private Context context;
 	
 	private UBikeStationListFilter stationFilter;
-	private static String currentGroup = "";
 
 	public UBikeStationListAdapter(Context context,	List<UBStation> objects) {
 		super(context, R.layout.list_item, objects);
@@ -80,8 +79,18 @@ public class UBikeStationListAdapter extends ArrayAdapter<UBStation> implements 
 		holder.stationSeparator.setText(station.getArea());
 		
 		//set separator visible or not
-		
-		determineItemSeapratorVisible(holder, position);
+		if(position == 0) {
+			holder.stationSeparator.setVisibility(View.VISIBLE);
+		}
+		else {
+			if(stationList.get(position-1).getArea()
+					.compareTo(stationList.get(position).getArea()) != 0) {
+				holder.stationSeparator.setVisibility(View.VISIBLE);
+			}
+			else {
+				holder.stationSeparator.setVisibility(View.GONE);
+			}
+		}
 		
 		return v;
 	}
@@ -98,8 +107,6 @@ public class UBikeStationListAdapter extends ArrayAdapter<UBStation> implements 
 		@Override
 		protected FilterResults performFiltering(CharSequence constraint) {
 
-			//reset recorded group value
-			currentGroup = "";
 			
 			FilterResults results = new FilterResults();
 			//implement filter logic here
@@ -138,6 +145,10 @@ public class UBikeStationListAdapter extends ArrayAdapter<UBStation> implements 
 			else {
 				
 				stationList = (List<UBStation>)results.values;
+				//reset listItemSeparatorVisible
+				//listItemSeparatorVisible = new boolean[stationList.size()];
+				//setListItemSeparatorVisible();
+				
 				notifyDataSetChanged();
 				clear();
 			}
@@ -160,32 +171,6 @@ public class UBikeStationListAdapter extends ArrayAdapter<UBStation> implements 
 		this.allStations = stations;
 		this.stationList = this.allStations;
 		notifyDataSetChanged();
-	}
-	
-	private void determineItemSeapratorVisible(StationHolder viewHolder, int position) {
-		
-		if(viewHolder != null) {
-			
-			//first item of the list view
-			if(position == 0) {
-				//visible
-				viewHolder.stationSeparator.setVisibility(View.VISIBLE);
-				currentGroup = stationList.get(position).getArea();
-			}
-			else {
-				//if this list item is not the first item of the current group
-				if(currentGroup.compareTo(stationList.get(position).getArea()) == 0) {
-					//invisible
-					viewHolder.stationSeparator.setVisibility(View.GONE);
-				}
-				else {
-					//visible
-					viewHolder.stationSeparator.setVisibility(View.VISIBLE);
-					//record new group
-					currentGroup = stationList.get(position).getArea();
-				}
-			}
-		}//end if
 	}
 	
 }
