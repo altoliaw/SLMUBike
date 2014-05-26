@@ -174,7 +174,8 @@ public class GMap {
     		showMarkerOption(lastClickedStation);
     	}
     	catch(Exception obj_Ex){
-    		Log.e(ststr_Activity,obj_Ex.getMessage());
+    		//Log.e(ststr_Activity,obj_Ex.getMessage());
+    		Log.e("GMap.StationDataReload", "Exception" + obj_Ex);
     	}    						
     }
     

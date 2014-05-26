@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.StationInformation.UBStation;
 import com.UBikeFree.R;
@@ -78,20 +79,8 @@ public class UBikeStationListAdapter extends ArrayAdapter<UBStation> implements 
 											 "/•i¡Ÿ°G" + station.getEmptySlots());
 		holder.stationSeparator.setText(station.getArea());
 		
-		//set separator visible or not
-		if(position == 0) {
-			holder.stationSeparator.setVisibility(View.VISIBLE);
-		}
-		else {
-			if(stationList.get(position-1).getArea()
-					.compareTo(stationList.get(position).getArea()) != 0) {
-				holder.stationSeparator.setVisibility(View.VISIBLE);
-			}
-			else {
-				holder.stationSeparator.setVisibility(View.GONE);
-			}
-		}
-		
+		determineSeparatorVisible(holder, position);
+
 		return v;
 	}
 	
@@ -140,15 +129,12 @@ public class UBikeStationListAdapter extends ArrayAdapter<UBStation> implements 
 		protected void publishResults(CharSequence constraint, FilterResults results) {
 			
 			//inform the adapter about the new list filtered
-			if(results.count == 0)
+			if(results.count == 0) {
 				notifyDataSetInvalidated();
+			}
 			else {
 				
 				stationList = (List<UBStation>)results.values;
-				//reset listItemSeparatorVisible
-				//listItemSeparatorVisible = new boolean[stationList.size()];
-				//setListItemSeparatorVisible();
-				
 				notifyDataSetChanged();
 				clear();
 			}
@@ -173,4 +159,20 @@ public class UBikeStationListAdapter extends ArrayAdapter<UBStation> implements 
 		notifyDataSetChanged();
 	}
 	
+	private void determineSeparatorVisible(StationHolder viewHolder, int position) {
+		
+		//set separator visible or not
+		if(position == 0) {
+			viewHolder.stationSeparator.setVisibility(View.VISIBLE);
+		}
+		else {
+			if(stationList.get(position-1).getArea()
+					.compareTo(stationList.get(position).getArea()) != 0) {
+				viewHolder.stationSeparator.setVisibility(View.VISIBLE);
+			}
+			else {
+				viewHolder.stationSeparator.setVisibility(View.GONE);
+			}
+		}
+	}
 }
