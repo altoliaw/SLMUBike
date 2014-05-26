@@ -15,4 +15,6 @@
     <string name="ubstation_name">UBStation_Name_Text</string>
     <string name="ubstation_numofbikes">UBStation_NumOfBikes_Text</string>
     <string name="ubstation_separator">UBikeStation_Separator</string>
+    <string name="action_search_label">ActionSearchLabel</string>
+    <string name="action_search_label_title">搜尋UBike站點</string>
 </resources>

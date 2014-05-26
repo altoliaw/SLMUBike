@@ -1463,6 +1463,8 @@ containing a value of this type.
          */
         public static final int abc_shareactionprovider_share_with_application=0x7f080026;
         public static final int action_search=0x7f08002b;
+        public static final int action_search_label=0x7f080036;
+        public static final int action_search_label_title=0x7f080037;
         public static final int action_settings=0x7f08002a;
         public static final int app_name=0x7f080028;
         /**   Title for notification shown when GooglePlayServices needs to be
