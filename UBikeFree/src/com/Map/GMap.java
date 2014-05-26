@@ -36,7 +36,7 @@ public class GMap {
     private	EnvironmentSource		obj_Environment;
 	private GoogleMap				obj_GoogleMap;										//Google Map Variable    
 	private LatLng					obj_TaipeiMap;										//Lat Lng Position
-    private	Stations				obj_Station;										//Stations' Information Object    
+    private	Stations				obj_Station;										//Stations' Information Object
     private	static	final	String 	ststr_Activity="GMap.java";
     
     private ArrayList<Marker> markers;//record markers
@@ -151,7 +151,7 @@ public class GMap {
     	
     	markers.clear();
     	
-    	//Re-do the json package again
+    																					//Re-do the json package again
     	try{    		
     		this.obj_GoogleMap.clear();
     		this.obj_Station.update(this.obj_Environment);
@@ -260,5 +260,12 @@ public class GMap {
     
     public ArrayList<UBStation> getSortedStationList() {
     	return obj_Station.getSortedStationListByKey();
+    }
+    
+    public void CircleNearStation(){
+    	CircleOptions obj_CircleOfStation=new CircleOptions();
+    	this.obj_GoogleMap.getMyLocation();
+    	this.obj_GoogleMap.addCircle(obj_CircleOfStation);  			    
+    
     }
 }

@@ -1291,8 +1291,7 @@ containing a value of this type.
         public static final int action_menu_divider=0x7f070019;
         public static final int action_menu_presenter=0x7f07001a;
         public static final int action_mode_close_button=0x7f070027;
-        public static final int action_search=0x7f07004b;
-        public static final int action_settings=0x7f07004c;
+        public static final int action_search=0x7f07004c;
         public static final int activity_chooser_view_content=0x7f070028;
         public static final int always=0x7f07000f;
         public static final int beginning=0x7f070014;
@@ -1342,6 +1341,7 @@ containing a value of this type.
         public static final int showTitle=0x7f07000a;
         public static final int split_action_bar=0x7f070021;
         public static final int start=0x7f070041;
+        public static final int station_search=0x7f07004b;
         public static final int submit_area=0x7f07003c;
         public static final int tabMode=0x7f070006;
         public static final int terrain=0x7f070003;
@@ -1567,11 +1567,12 @@ containing a value of this type.
         /**  Location client code resources (prefix with location_client) 
          */
         public static final int location_client_powered_by_google=0x7f08001a;
+        public static final int station_circle=0x7f080032;
         public static final int timer_stop_alert_dialog_title=0x7f08002f;
         public static final int ubike_list_view=0x7f08002c;
-        public static final int ubstation_name=0x7f080032;
-        public static final int ubstation_numofbikes=0x7f080033;
-        public static final int ubstation_separator=0x7f080034;
+        public static final int ubstation_name=0x7f080033;
+        public static final int ubstation_numofbikes=0x7f080034;
+        public static final int ubstation_separator=0x7f080035;
     }
     public static final class style {
         /** 

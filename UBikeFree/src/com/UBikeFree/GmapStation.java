@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,6 +23,7 @@ import android.widget.ListView;
 
 
 import android.widget.Toast;
+
 
 //import android.widget.Toast;
 import com.Map.GMap;
@@ -154,6 +156,9 @@ public class GmapStation extends FragmentActivity{
     	switch(item.getItemId()) {
     	case R.id.action_search:
     		sideMenu_UBikeStations.toggleRightDrawer();
+    		return true;
+    	case R.id.station_search:
+    		Log.e("GMap.Station", "Got");
     		return true;
     	default:
     		return super.onOptionsItemSelected(item);
