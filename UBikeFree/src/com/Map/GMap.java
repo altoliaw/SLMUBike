@@ -267,20 +267,20 @@ public class GMap {
     	return obj_Station.getSortedStationListByKey();
     }
     
-    public void CircleNearStation(){
-    	if(this.obj_NearCircle!=null){
-    		this.obj_NearCircle.remove();
-    	}
+    public void CircleNearStation(){    	
     	LocationListener obj_LocationListener = new LocationListener() {				
-            public void onLocationChanged(Location obj_Location) {            	
+            public void onLocationChanged(Location obj_Location) {
+            	if(obj_NearCircle!=null){
+            		obj_NearCircle.remove();
+            	}
             	double db_CircleLat=obj_Location.getLatitude();
             	double db_CircleLng=obj_Location.getLongitude();
             	try{
             		LatLng	obj_Position	=new LatLng(db_CircleLat, db_CircleLng);
                 	obj_CircleOfStation								.center(obj_Position)
-																	.radius(2000)																	
+																	.radius(Double.parseDouble(obj_Environment.SearchValue("GMap/NearStationCircleRadius")))																	
 																	.strokeColor(0xFFFFA420)
-																	.strokeWidth(1f);																	
+																	.strokeWidth(Float.parseFloat(obj_Environment.SearchValue("GMap/NearStationCircleStroke")));																	
             		obj_NearCircle=obj_GoogleMap.addCircle(obj_CircleOfStation);            		
             		Log.i("Lat",String.valueOf(db_CircleLat));
             		Log.i("Lng",String.valueOf(db_CircleLng));

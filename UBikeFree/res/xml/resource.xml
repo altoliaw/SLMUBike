@@ -18,8 +18,11 @@
         <!-- 1000 為一秒 -->
         <entry key="SeneorRetrivalTime" value="0"/>
         <!-- 單位為公尺-->
-        <entry key="SeneorRetrivalDistance" value="0"/>
-        <entry key="NearStationRadius" value="30"/>    
+        <entry key="SeneorRetrivalDistance" value="50"/>
+        <entry key="NearStationCircleRadius" value="800"/>
+        <entry key="NearStationCircleColor" value="0xFFFFA420"/>
+        <entry key="NearStationCircleFilledColor" value="0xFFFFA420"/>
+        <entry key="NearStationCircleStroke" value="5f"/>      
     </section>
     <section key="StationInformation">
         <entry key="Url" value="http://210.69.61.60:8080/you/gwjs_cityhall.json" />          
