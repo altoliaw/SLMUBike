@@ -30,13 +30,15 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class GMap {
 																						//Google Map
+	private Circle					obj_NearCircle;
+	private CircleOptions 			obj_CircleOfStation;
 	private Context					obj_ContextFromActivity;
 	private Double 					db_Lat;
     private Double 					db_Lng;
     private	EnvironmentSource		obj_Environment;
 	private GoogleMap				obj_GoogleMap;										//Google Map Variable    
 	private LatLng					obj_TaipeiMap;										//Lat Lng Position
-    private	Stations				obj_Station;										//Stations' Information Object
+    private	Stations				obj_Station;										//Stations' Information Object    
     private	static	final	String 	ststr_Activity="GMap.java";
     
     private ArrayList<Marker> markers;//record markers
@@ -46,7 +48,8 @@ public class GMap {
     public	GMap(EnvironmentSource obj_Environment, Context obj_ContextFromActivity, GoogleMap obj_GoogleMap){
     	this.obj_Environment						=obj_Environment;
     	this.obj_ContextFromActivity				=obj_ContextFromActivity;
-    	this.obj_GoogleMap							=obj_GoogleMap;    	
+    	this.obj_GoogleMap							=obj_GoogleMap;
+    	this.obj_CircleOfStation					=new CircleOptions();
     	try{
     		obj_Station					=new Stations(this.obj_Environment);
     		
@@ -77,6 +80,7 @@ public class GMap {
     public void MapDisplay(){
     	try {																			//Load Map into Fragment
             this.MapSetting();
+            
         } 
         catch (Exception obj_Ex) {
         	//obj_ex.printStackTrace();
@@ -217,7 +221,8 @@ public class GMap {
     private void MapCameraSetting(){
     	this.obj_GoogleMap.setMyLocationEnabled(true);    	
     	this.obj_GoogleMap.moveCamera(	CameraUpdateFactory.newLatLngZoom(obj_TaipeiMap,
-    								Float.parseFloat(this.obj_Environment.SearchValue("GMap/Zoom")))); 
+    								Float.parseFloat(this.obj_Environment.SearchValue("GMap/Zoom"))));
+    	this.CircleNearStation();
     }
     
     public void MapCameraSetting(LatLng positionOnMap){
@@ -263,9 +268,42 @@ public class GMap {
     }
     
     public void CircleNearStation(){
-    	CircleOptions obj_CircleOfStation=new CircleOptions();
-    	this.obj_GoogleMap.getMyLocation();
-    	this.obj_GoogleMap.addCircle(obj_CircleOfStation);  			    
-    
+    	if(this.obj_NearCircle!=null){
+    		this.obj_NearCircle.remove();
+    	}
+    	LocationListener obj_LocationListener = new LocationListener() {				
+            public void onLocationChanged(Location obj_Location) {            	
+            	double db_CircleLat=obj_Location.getLatitude();
+            	double db_CircleLng=obj_Location.getLongitude();
+            	try{
+            		LatLng	obj_Position	=new LatLng(db_CircleLat, db_CircleLng);
+                	obj_CircleOfStation								.center(obj_Position)
+																	.radius(2000)																	
+																	.strokeColor(0xFFFFA420)
+																	.strokeWidth(1f);																	
+            		obj_NearCircle=obj_GoogleMap.addCircle(obj_CircleOfStation);            		
+            		Log.i("Lat",String.valueOf(db_CircleLat));
+            		Log.i("Lng",String.valueOf(db_CircleLng));
+            	}
+            	catch(Exception obj_Ex){
+            		Log.e(ststr_Activity,obj_Ex.getMessage());
+            	}
+            }
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
+            public void onProviderEnabled(String provider) {}
+            public void onProviderDisabled(String provider) {}
+		};
+		
+		LocationManager	obj_LocationManger			=(LocationManager)(this.obj_ContextFromActivity.getSystemService(Context.LOCATION_SERVICE));
+    	if (obj_LocationManger.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){    		
+              obj_LocationManger.requestLocationUpdates(	LocationManager.NETWORK_PROVIDER, 
+            		  										Long.parseLong(this.obj_Environment.SearchValue("GMap/SeneorRetrivalTime")), 
+            		  										Float.parseFloat(this.obj_Environment.SearchValue("GMap/SeneorRetrivalDistance")), 
+            		  										obj_LocationListener
+            );              
+    	}
+    	else{
+    		Toast.makeText(this.obj_ContextFromActivity, "You can open GPS for precise locating.", Toast.LENGTH_SHORT).show();			
+    	}
     }
 }
