@@ -26,7 +26,7 @@ import com.UBikeFree.R;
 public class MainActivity extends ActionBarActivity {
 	/*Timer Start*/
 	private Button start;
-	private TimerCalculate obj_Timer;
+	public static TimerCalculate obj_Timer;
 	private int state; // 0:還沒計時  1:30分鐘計時狀態  2:15分鐘計時狀態
 	/*Timer end*/		
 	/*Gmap Start*/

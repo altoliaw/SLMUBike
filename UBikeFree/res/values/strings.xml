@@ -17,4 +17,5 @@
     <string name="ubstation_separator">UBikeStation_Separator</string>
     <string name="action_search_label">ActionSearchLabel</string>
     <string name="action_search_label_title">搜尋UBike站點</string>
+    <string name="action_search_title">搜尋UBike站點</string>
 </resources>

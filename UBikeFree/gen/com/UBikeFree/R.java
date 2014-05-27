@@ -1291,7 +1291,8 @@ containing a value of this type.
         public static final int action_menu_divider=0x7f070019;
         public static final int action_menu_presenter=0x7f07001a;
         public static final int action_mode_close_button=0x7f070027;
-        public static final int action_search=0x7f07004c;
+        public static final int action_search=0x7f07004d;
+        public static final int action_search_label=0x7f07004c;
         public static final int activity_chooser_view_content=0x7f070028;
         public static final int always=0x7f07000f;
         public static final int beginning=0x7f070014;
@@ -1465,6 +1466,7 @@ containing a value of this type.
         public static final int action_search=0x7f08002b;
         public static final int action_search_label=0x7f080036;
         public static final int action_search_label_title=0x7f080037;
+        public static final int action_search_title=0x7f080038;
         public static final int action_settings=0x7f08002a;
         public static final int app_name=0x7f080028;
         /**   Title for notification shown when GooglePlayServices needs to be
@@ -1603,6 +1605,7 @@ containing a value of this type.
  All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f0c008c;
+        public static final int MenuTextStyle=0x7f0c008e;
         /**  Mimic text appearance in select_dialog_item.xml 
          */
         public static final int TextAppearance_AppCompat_Base_CompactMenu_Dialog=0x7f0c0063;

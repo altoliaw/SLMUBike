@@ -12,6 +12,7 @@ import android.widget.Button;
 
 public class TimerCalculate {
 	private String str_messageBuffer;
+	public String str_layOutTimeBuffer;
 	private Button obj_startButton;		
 	private MyCoundDownTask obj_mytask;
 	private EnvironmentSource obj_Environment;
@@ -57,6 +58,8 @@ public class TimerCalculate {
   		else if ( int_stateValue == 2 ) {    		  
   			cancelCountDown();
   			this.str_messageBuffer="按一下開始計時\n";
+  			//clear str_layOutTimeBuffer
+  			str_layOutTimeBuffer = "";
   			obj_startButton.setText(this.str_messageBuffer);
   			int_stateValue = 0 ;
   		}
@@ -78,7 +81,8 @@ public class TimerCalculate {
 		    long minus = millisUntilFinished/(Long.parseLong(obj_Environment.SearchValue("TimeDefinition/Min")));
 		    long seconds = (millisUntilFinished%(Long.parseLong(obj_Environment.SearchValue("TimeDefinition/Min")))) /(Long.parseLong(obj_Environment.SearchValue("TimeDefinition/Sec"))) ;
 		    String str_layOutMessageBuffer="";
-		    str_layOutMessageBuffer=str_messageBuffer+(minus+ ":" + seconds);
+		    str_layOutTimeBuffer = minus+ ":" + seconds;
+		    str_layOutMessageBuffer=str_messageBuffer+str_layOutTimeBuffer;
 		    obj_startButton.setText(str_layOutMessageBuffer);		    
 		}
 		@Override

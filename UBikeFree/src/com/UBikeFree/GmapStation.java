@@ -1,7 +1,8 @@
 package com.UBikeFree;
 
 
-import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -20,16 +21,13 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
-
-
 import android.widget.Toast;
-
 
 //import android.widget.Toast;
 import com.Map.GMap;
 import com.Resource.EnvironmentSource;
-import com.StationInformation.UBStation;
 import com.StationInformation.StationListAdapter.UBikeStationListAdapter;
+import com.Timer.TimerCalculate;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.navdrawer.SimpleSideDrawer;
@@ -46,10 +44,18 @@ public class GmapStation extends FragmentActivity{
     private EditText					editText_searchStation;
 
     private UBikeStationListAdapter		adapter_UBikeStationList;
+    private String text = "";
+    
+    private Timer watchTimer;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        watchTimer = new Timer();
+        
+        
+        
         setContentView(R.layout.gmap_information);
         																							//Start initial the Environment
         this.obj_Environment		=new EnvironmentSource(getResources().getXml(R.xml.resource));
@@ -132,6 +138,18 @@ public class GmapStation extends FragmentActivity{
 				sideMenu_UBikeStations.toggleRightDrawer();
 			}
         });
+        
+        //watch the TimerCalculate
+        watchTimer.scheduleAtFixedRate(new TimerTask() {
+
+			@Override
+			public void run() {
+				text=MainActivity.obj_Timer.str_layOutTimeBuffer;
+				invalidateOptionsMenu();
+			}
+        
+        }, 250, 1000);
+        
     }
     
     @Override
@@ -146,7 +164,19 @@ public class GmapStation extends FragmentActivity{
     	// Inflate the menu items for use in the action bar
     	MenuInflater inflater = getMenuInflater();
     	inflater.inflate(R.menu.gmapstation_actions, menu);
+    	MenuItem actionLabel = menu.findItem(R.id.action_search_label);
+    	actionLabel.setTitle(text);
+
     	return super.onCreateOptionsMenu(menu);
+    }
+    
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+    	
+    	MenuItem actionLabel = menu.findItem(R.id.action_search_label);
+    	actionLabel.setTitle(text);
+    	
+    	return super.onPrepareOptionsMenu(menu);
     }
     
     //on click actions on the action bar
