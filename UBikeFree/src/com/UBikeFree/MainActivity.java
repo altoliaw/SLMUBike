@@ -39,6 +39,7 @@ import android.widget.Button;
 
 
 
+
 /*Timer import Start*/
 import com.Timer.TimerCalculate;
 /*Timer import end*/
@@ -57,7 +58,6 @@ public class MainActivity extends ActionBarActivity {
 	/*Test start*/
 	private Button obj_Test;
 	/*Test end*/
-    private AlertCallback alertCallback;
 
 	//
     @Override
@@ -79,7 +79,7 @@ public class MainActivity extends ActionBarActivity {
         		if(state == 0) {
         			obj_Timer.StartProcess();
         		    obj_Timer.setAlertTime(300);
-                    obj_Timer.setAlert(alertCallback);
+                    obj_Timer.setAlert(new AlertCallback());
         		} else {
         			timerConfirmDialog(obj_Timer);
         		}
@@ -197,7 +197,11 @@ public class MainActivity extends ActionBarActivity {
             final MediaPlayer mp = new MediaPlayer();
             mp.reset();
             mp.setAudioStreamType(AudioManager.STREAM_NOTIFICATION);
-            mp.prepare();
+            try {
+                mp.prepare();
+            } catch(Exception ex) {
+                
+            }
             mp.start();
             Builder alertDialog = new AlertDialog.Builder(getApplicationContext());
             alertDialog.setTitle("UBikeFree");
@@ -210,7 +214,7 @@ public class MainActivity extends ActionBarActivity {
                 }
             });
             alertDialog.show();
-            
+            return null;
         }
     }
 }
