@@ -189,4 +189,5 @@ public class MainActivity extends ActionBarActivity {
             notiMgr.notify(1, noti);
             return true;
         }
+    }
 }
