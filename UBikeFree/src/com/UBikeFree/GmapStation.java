@@ -187,9 +187,9 @@ public class GmapStation extends FragmentActivity{
     	case R.id.action_search:
     		sideMenu_UBikeStations.toggleRightDrawer();
     		return true;
-    	case R.id.station_search:
-    		Log.e("GMap.Station", "Got");
-    		return true;
+//    	case R.id.station_search:
+//    		Log.e("GMap.Station", "Got");
+//    		return true;
     	default:
     		return super.onOptionsItemSelected(item);
     	}
