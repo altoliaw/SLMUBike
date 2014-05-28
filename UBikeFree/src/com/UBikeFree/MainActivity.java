@@ -10,9 +10,12 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.StrictMode;
+import android.os.Vibrator;
 //import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 //import android.view.LayoutInflater;
@@ -22,6 +25,7 @@ import android.view.View;
 //import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+
 
 
 
@@ -185,16 +189,28 @@ public class MainActivity extends ActionBarActivity {
 //        }
 //    }
     private class AlertCallback implements Callable<Void> {
-        @SuppressWarnings("deprecation")
-		@Override
+        @Override
         public Void call() {
-            NotificationManager notiMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            Notification noti = new Notification(R.drawable.ubikefree, "請準備還車", System.currentTimeMillis());
-            noti.defaults |= Notification.DEFAULT_VIBRATE;
-            noti.defaults |= Notification.DEFAULT_SOUND;
-            noti.flags = Notification.FLAG_INSISTENT;
-            notiMgr.notify(1, noti);
-            return null;
+            final Vibrator vibrator;
+            vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            vibrator.vibrate(new long[]{5000, 1000}, 30);
+            final MediaPlayer mp = new MediaPlayer();
+            mp.reset();
+            mp.setAudioStreamType(AudioManager.STREAM_NOTIFICATION);
+            mp.prepare();
+            mp.start();
+            Builder alertDialog = new AlertDialog.Builder(getApplicationContext());
+            alertDialog.setTitle("UBikeFree");
+            alertDialog.setMessage("請準備環車");
+            alertDialog.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    vibrator.cancel();
+                    mp.stop();
+                }
+            });
+            alertDialog.show();
+            
         }
     }
 }
