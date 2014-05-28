@@ -180,13 +180,25 @@ public class MainActivity extends ActionBarActivity {
     private class AlertCallback implements Callback {
         @Override
         public boolean handleMessage(Message msg) {
-            NotificationManager notiMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            Notification noti = new Notification(R.drawable.icon, "請準備還車", System.currentTimeMillis());
+            createNotification(getBaseContext());
+        }
+        private void createNotification(Context context){
+            NotificationManager notiMgr = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+             
+            Notification.Builder builder = new Notification.Builder(context);
+            Intent intent = new Intent(context, MainActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+            builder
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setContentTitle("UBikeFree")
+                .setContentText("請準備還車")
+                .setContentInfo("請準備還車")
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(false);
+            Notification noti = builder.build();
             noti.defaults |= Notification.DEFAULT_VIBRATE;
             noti.defaults |= Notification.DEFAULT_SOUND;
             noti.flags = Notification.FLAG_INSISTENT;
             notiMgr.notify(1, noti);
-        }
-       
     }
 }
