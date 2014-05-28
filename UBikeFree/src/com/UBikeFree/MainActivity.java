@@ -2,9 +2,15 @@ package com.UBikeFree;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler.Callback;
+import android.os.Message;
 import android.os.StrictMode;
 //import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -15,6 +21,12 @@ import android.view.View;
 //import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+
+
+
+
+
+
 
 
 /*Timer import Start*/
@@ -35,8 +47,8 @@ public class MainActivity extends ActionBarActivity {
 	/*Test start*/
 	private Button obj_Test;
 	/*Test end*/
-	
-	
+    private AlertCallback alertCallback;
+
 	//
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +59,6 @@ public class MainActivity extends ActionBarActivity {
         ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         
-        
         /*Timer Start*/
         start = (Button)findViewById(R.id.start);        
         obj_Timer = new TimerCalculate(start,getResources().getXml(R.xml.resource));
@@ -57,6 +68,8 @@ public class MainActivity extends ActionBarActivity {
         		state = obj_Timer.getState();
         		if(state == 0)
         			obj_Timer.StartProcess();
+        		    obj_Timer.setAlertTime(300);
+                    obj_Timer.setAlert(alertCallback);
         		else
         			timerConfirmDialog(obj_Timer);   
         	}        	
@@ -164,4 +177,16 @@ public class MainActivity extends ActionBarActivity {
 //            return rootView;
 //        }
 //    }
+    private class AlertCallback implements Callback {
+        @Override
+        public boolean handleMessage(Message msg) {
+            NotificationManager notiMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            Notification noti = new Notification(R.drawable.icon, "請準備還車", System.currentTimeMillis());
+            noti.defaults |= Notification.DEFAULT_VIBRATE;
+            noti.defaults |= Notification.DEFAULT_SOUND;
+            noti.flags = Notification.FLAG_INSISTENT;
+            notiMgr.notify(1, noti);
+        }
+       
+    }
 }
