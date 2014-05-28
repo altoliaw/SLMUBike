@@ -8,11 +8,11 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,7 +27,6 @@ import android.widget.Toast;
 import com.Map.GMap;
 import com.Resource.EnvironmentSource;
 import com.StationInformation.StationListAdapter.UBikeStationListAdapter;
-import com.Timer.TimerCalculate;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.navdrawer.SimpleSideDrawer;
@@ -45,12 +44,16 @@ public class GmapStation extends FragmentActivity{
 
     private UBikeStationListAdapter		adapter_UBikeStationList;
     private String text = "";
-    
+    private ActionBar actionBar;
     private Timer watchTimer;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        
+        actionBar = this.getActionBar();
+        actionBar.setDisplayShowTitleEnabled(false);
         
         watchTimer = new Timer();
         
@@ -78,7 +81,7 @@ public class GmapStation extends FragmentActivity{
         sideMenu_UBikeStations.setRightBehindContentView(R.layout.side_menu);
         
         //enable display home as up
-        this.getActionBar().setDisplayHomeAsUpEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(false);
         
         
         //set list view and list items

@@ -24,7 +24,9 @@ import android.view.MenuItem;
 import android.view.View;
 //import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.Button;
+
 
 
 
@@ -75,10 +77,11 @@ public class MainActivity extends ActionBarActivity {
         start.setOnClickListener(new OnClickListener() {        	
         	@Override        	
         	public void onClick(View v) {
+
         		state = obj_Timer.getState();
         		if(state == 0) {
         			obj_Timer.StartProcess();
-        		    obj_Timer.setAlertTime(300);
+        		    obj_Timer.setAlertTime(1740);
                     obj_Timer.setAlert(new AlertCallback());
         		} else {
         			timerConfirmDialog(obj_Timer);
