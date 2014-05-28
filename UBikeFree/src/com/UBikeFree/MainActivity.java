@@ -1,5 +1,7 @@
 package com.UBikeFree;
 
+import java.util.concurrent.Callable;
+
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Notification;
@@ -9,7 +11,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler.Callback;
 import android.os.Message;
 import android.os.StrictMode;
 //import android.support.v4.app.Fragment;
@@ -21,6 +22,8 @@ import android.view.View;
 //import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+
+
 
 
 
@@ -178,16 +181,15 @@ public class MainActivity extends ActionBarActivity {
 //            return rootView;
 //        }
 //    }
-    private class AlertCallback implements Callback {
+    private class AlertCallback implements Callable<Void> {
         @Override
-        public boolean handleMessage(Message msg) {
+        public Void call() {
             NotificationManager notiMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             Notification noti = new Notification(R.drawable.icon, "請準備還車", System.currentTimeMillis());
             noti.defaults |= Notification.DEFAULT_VIBRATE;
             noti.defaults |= Notification.DEFAULT_SOUND;
             noti.flags = Notification.FLAG_INSISTENT;
             notiMgr.notify(1, noti);
-            return true;
         }
     }
 }

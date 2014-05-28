@@ -4,12 +4,12 @@
 //Description:		
 package com.Timer;
 
+import java.util.concurrent.Callable;
+
 import com.Resource.EnvironmentSource;
 
 import android.content.res.XmlResourceParser;
 import android.os.CountDownTimer;
-import android.os.Handler.Callback;
-import android.os.Message;
 import android.widget.Button;
 
 public class TimerCalculate {
@@ -80,7 +80,7 @@ public class TimerCalculate {
         this.obj_mytask.setAlertTime(timeSec);
     }
     
-    public void setAlert(Callback alert) {
+    public void setAlert(Callable<Void> alert) {
         this.obj_mytask.setAlert(alert);
     }
 
@@ -107,7 +107,12 @@ public class TimerCalculate {
             str_layOutMessageBuffer = str_messageBuffer + str_layOutTimeBuffer;
             obj_startButton.setText(str_layOutMessageBuffer);
             if (millisUntilFinished % 30000 == 0 && (millisUntilFinished / 1000) < alertTime) {
-                alert.handleMessage(Message.obtain());
+                try {
+                    alert.call();
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -121,11 +126,11 @@ public class TimerCalculate {
             alertTime = timeSec;
         }
         
-        public void setAlert(Callback alert) {
+        public void setAlert(Callable<Void> alert) {
             this.alert = alert;
         }
         
         private long alertTime;
-        private Callback alert;
+        private Callable<Void> alert;
     }
 }
