@@ -16,7 +16,7 @@
         <entry key="TriggerInitialDelay" value="180" />
         <entry key="TriggerTimeDelay" value="180"/>
         <!-- 1000 為一秒 -->
-        <entry key="SeneorRetrivalTime" value="0"/>
+        <entry key="SeneorRetrivalTime" value="190"/>
         <!-- 單位為公尺-->
         <entry key="SeneorRetrivalDistance" value="50"/>
         <entry key="NearStationCircleRadius" value="800"/>
