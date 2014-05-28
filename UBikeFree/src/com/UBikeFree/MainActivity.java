@@ -32,6 +32,9 @@ import android.widget.Button;
 
 
 
+
+
+
 /*Timer import Start*/
 import com.Timer.TimerCalculate;
 /*Timer import end*/
@@ -182,14 +185,16 @@ public class MainActivity extends ActionBarActivity {
 //        }
 //    }
     private class AlertCallback implements Callable<Void> {
-        @Override
+        @SuppressWarnings("deprecation")
+		@Override
         public Void call() {
             NotificationManager notiMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            Notification noti = new Notification(R.drawable.icon, "請準備還車", System.currentTimeMillis());
+            Notification noti = new Notification(R.drawable.ubikefree, "請準備還車", System.currentTimeMillis());
             noti.defaults |= Notification.DEFAULT_VIBRATE;
             noti.defaults |= Notification.DEFAULT_SOUND;
             noti.flags = Notification.FLAG_INSISTENT;
             notiMgr.notify(1, noti);
+            return null;
         }
     }
 }
