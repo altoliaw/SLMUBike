@@ -25,6 +25,6 @@
         <entry key="NearStationCircleStroke" value="5f"/>      
     </section>
     <section key="StationInformation">
-        <entry key="Url" value="http://210.69.61.60:8080/you/gwjs_cityhall.json" />          
+        <entry key="Url" value="http://opendata.dot.taipei.gov.tw/opendata/gwjs_cityhall.json" />          
     </section>
 </configuration> 

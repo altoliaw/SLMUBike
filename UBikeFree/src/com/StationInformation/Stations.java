@@ -29,7 +29,7 @@ public class Stations implements Iterable<UBStation>
 
     public Stations() throws MalformedURLException{
     	//WebService的內容會因網址相同而有可能傳同樣的東西，所以必須要有改變
-    	url_ = new URL("http://210.69.61.60:8080/you/gwjs_cityhall.json");      
+    	url_ = new URL("http://opendata.dot.taipei.gov.tw/opendata/gwjs_cityhall.json");      
         staMap_ = new TreeMap<String, UBStation>();
         update();
     }
