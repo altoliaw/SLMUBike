@@ -15,7 +15,10 @@
     <string name="ubstation_name">UBStation_Name_Text</string>
     <string name="ubstation_numofbikes">UBStation_NumOfBikes_Text</string>
     <string name="ubstation_separator">UBikeStation_Separator</string>
-    <string name="action_search_label">ActionSearchLabel</string>
-    <string name="action_search_label_title">搜尋UBike站點</string>
     <string name="action_search_title">搜尋UBike站點</string>
+    <string name="countdown_timer_button">CountdownTimerButton</string>
+    <string name="countdown_timer_description_1">還車倒數計時</string>
+    <string name="action_countdown_label">ActionSearchLabel</string>
+    <string name="action_countdown_label_title">還車倒數計時</string>
+    <string name="countdown_label">CountdownLabel</string>
 </resources>

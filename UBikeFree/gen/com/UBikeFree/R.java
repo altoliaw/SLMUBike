@@ -1277,8 +1277,10 @@ containing a value of this type.
         public static final int ic_plusone_standard_off_client=0x7f020075;
         public static final int ic_plusone_tall_off_client=0x7f020076;
         public static final int ios7_alarm=0x7f020077;
-        public static final int ios7_search=0x7f020078;
-        public static final int ubikefree=0x7f020079;
+        public static final int ios7_alarm_fill=0x7f020078;
+        public static final int ios7_alarm_outline=0x7f020079;
+        public static final int ios7_search=0x7f02007a;
+        public static final int ubikefree=0x7f02007b;
     }
     public static final class id {
         public static final int action_bar=0x7f07001f;
@@ -1289,17 +1291,18 @@ containing a value of this type.
         public static final int action_bar_subtitle=0x7f070026;
         public static final int action_bar_title=0x7f070025;
         public static final int action_context_bar=0x7f070020;
+        public static final int action_countdown_label=0x7f07004c;
         public static final int action_menu_divider=0x7f070019;
         public static final int action_menu_presenter=0x7f07001a;
         public static final int action_mode_close_button=0x7f070027;
-        public static final int action_search=0x7f07004c;
-        public static final int action_search_label=0x7f07004b;
+        public static final int action_search=0x7f07004d;
         public static final int activity_chooser_view_content=0x7f070028;
         public static final int always=0x7f07000f;
         public static final int beginning=0x7f070014;
         public static final int checkbox=0x7f070030;
         public static final int collapseActionView=0x7f070011;
         public static final int container=0x7f07003f;
+        public static final int countdown_label=0x7f070046;
         public static final int default_activity_button=0x7f07002b;
         public static final int dialog=0x7f070012;
         public static final int disableHome=0x7f07000c;
@@ -1316,7 +1319,7 @@ containing a value of this type.
         public static final int icon=0x7f07002d;
         public static final int ifRoom=0x7f07000e;
         public static final int image=0x7f07002a;
-        public static final int input_search=0x7f070049;
+        public static final int input_search=0x7f07004a;
         public static final int listMode=0x7f070005;
         public static final int list_item=0x7f07002c;
         public static final int middle=0x7f070015;
@@ -1351,10 +1354,10 @@ containing a value of this type.
         public static final int textView3=0x7f070044;
         public static final int title=0x7f07002e;
         public static final int top_action_bar=0x7f070023;
-        public static final int ubike_list_view=0x7f07004a;
-        public static final int ubstation_name=0x7f070047;
-        public static final int ubstation_numofbikes=0x7f070048;
-        public static final int ubstation_separator=0x7f070046;
+        public static final int ubike_list_view=0x7f07004b;
+        public static final int ubstation_name=0x7f070048;
+        public static final int ubstation_numofbikes=0x7f070049;
+        public static final int ubstation_separator=0x7f070047;
         public static final int up=0x7f070024;
         public static final int useLogo=0x7f070007;
         public static final int withText=0x7f070010;
@@ -1463,10 +1466,10 @@ containing a value of this type.
         /**  Description of a share target (both in the list of such or the default share button) in a ShareActionProvider (share UI). [CHAR LIMIT=NONE] 
          */
         public static final int abc_shareactionprovider_share_with_application=0x7f080026;
+        public static final int action_countdown_label=0x7f080039;
+        public static final int action_countdown_label_title=0x7f08003a;
         public static final int action_search=0x7f08002b;
-        public static final int action_search_label=0x7f080036;
-        public static final int action_search_label_title=0x7f080037;
-        public static final int action_search_title=0x7f080038;
+        public static final int action_search_title=0x7f080036;
         public static final int action_settings=0x7f08002a;
         public static final int app_name=0x7f080028;
         /**   Title for notification shown when GooglePlayServices needs to be
@@ -1565,6 +1568,9 @@ containing a value of this type.
          */
         public static final int common_signin_button_text_long=0x7f080013;
         public static final int confirm_button=0x7f080030;
+        public static final int countdown_label=0x7f08003b;
+        public static final int countdown_timer_button=0x7f080037;
+        public static final int countdown_timer_description_1=0x7f080038;
         public static final int edit_text_hint=0x7f08002e;
         public static final int hello_world=0x7f080029;
         public static final int input_search=0x7f08002d;

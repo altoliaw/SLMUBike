@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 import android.app.ActionBar;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,10 +18,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 //import android.widget.Toast;
@@ -47,6 +51,16 @@ public class GmapStation extends FragmentActivity{
     private ActionBar actionBar;
     private Timer watchTimer;
     
+
+    private TextView					countdownLabelTextView;
+    
+    private final Handler 				countdownLabelHandler = new Handler();
+    private final Runnable				countdownLabelUpdate = new Runnable() {
+    										public void run() {
+    											countdownLabelTextView.setText(text);
+    										}
+    									};
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,8 +71,7 @@ public class GmapStation extends FragmentActivity{
         
         watchTimer = new Timer();
         
-        
-        
+
         setContentView(R.layout.gmap_information);
         																							//Start initial the Environment
         this.obj_Environment		=new EnvironmentSource(getResources().getXml(R.xml.resource));
@@ -145,11 +158,14 @@ public class GmapStation extends FragmentActivity{
         });
         
         //watch the TimerCalculate
+        countdownLabelTextView = (TextView)findViewById(R.id.countdown_label);
+        
         watchTimer.scheduleAtFixedRate(new TimerTask() {
 
 			@Override
 			public void run() {
 				text=MainActivity.obj_Timer.str_layOutTimeBuffer;
+				countdownLabelHandler.post(countdownLabelUpdate);
 				invalidateOptionsMenu();
 			}
         
@@ -169,7 +185,7 @@ public class GmapStation extends FragmentActivity{
     	// Inflate the menu items for use in the action bar
     	MenuInflater inflater = getMenuInflater();
     	inflater.inflate(R.menu.gmapstation_actions, menu);
-    	MenuItem actionLabel = menu.findItem(R.id.action_search_label);
+    	MenuItem actionLabel = menu.findItem(R.id.action_countdown_label);
     	actionLabel.setTitle(text);
 
     	return super.onCreateOptionsMenu(menu);
@@ -178,7 +194,7 @@ public class GmapStation extends FragmentActivity{
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
     	
-    	MenuItem actionLabel = menu.findItem(R.id.action_search_label);
+    	MenuItem actionLabel = menu.findItem(R.id.action_countdown_label);
     	actionLabel.setTitle(text);
     	
     	return super.onPrepareOptionsMenu(menu);
@@ -191,6 +207,9 @@ public class GmapStation extends FragmentActivity{
     	switch(item.getItemId()) {
     	case R.id.action_search:
     		sideMenu_UBikeStations.toggleRightDrawer();
+    		return true;
+    	case R.id.action_countdown_label:
+    		MainActivity.obj_Timer.StartProcess();
     		return true;
 //    	case R.id.station_search:
 //    		Log.e("GMap.Station", "Got");

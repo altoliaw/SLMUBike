@@ -4,10 +4,32 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:orientation="vertical" >
-
 <fragment
         android:id="@+id/gmap"
         android:name="com.google.android.gms.maps.MapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+    
+	<TextView
+	    android:id="@+id/countdown_label"
+	    android:layout_gravity="bottom|left"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:background="#808080"
+	    android:alpha="0.6"
+	    android:textColor="#ff1000"
+	    android:textSize="60sp" />
+
+	        <!-- 
+<ImageButton
+    android:id="@+id/countdown_timer_button"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    android:scaleType="fitCenter"
+    android:adjustViewBounds="true"
+    android:src="@drawable/ios7_alarm_outline"
+    android:contentDescription="@string/countdown_timer_description_1"
+    android:layout_gravity="bottom|center" />-->
+
+</fragment>
 </LinearLayout>

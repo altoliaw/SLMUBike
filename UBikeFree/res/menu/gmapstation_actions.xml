@@ -5,9 +5,9 @@
           android:icon="@drawable/ios7_search"
           android:title="@string/station_circle"
           android:showAsAction="ifRoom" /> -->
-	<item android:id="@+id/action_search_label"
+	<item android:id="@+id/action_countdown_label"
 	      android:icon="@drawable/ios7_alarm"
-          android:title="@string/action_search_label_title"
+          android:title="@string/action_countdown_label_title"
           android:showAsAction="ifRoom|withText" />
 	<item android:id="@+id/action_search"
           android:icon="@drawable/ios7_search"
