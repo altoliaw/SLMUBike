@@ -1,9 +1,11 @@
 package com.StationInformation.StationListAdapter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,25 +102,26 @@ public class UBikeStationListAdapter extends ArrayAdapter<UBStation> implements 
 			FilterResults results = new FilterResults();
 			//implement filter logic here
 			if(constraint == null || constraint.length() == 0) {
+				
 				//No filter implemented, we return all the list
-				clear();
-				stationList = new ArrayList<UBStation>(allStations);
-				notifyDataSetChanged();
-				results.values = stationList;
-				results.count = stationList.size();
+				results.values = allStations;
+				results.count = allStations.size();
 			}//end if
 			else {
 				//we perform filtering operation
 				List<UBStation> nStationList = new ArrayList<UBStation>();
 				
-				for(UBStation station : stationList) {
-					if(station.getName().contains(constraint.toString())
+				for(UBStation station : allStations) {
+					//filter by area, name and address
+					if(station.getArea().contains(constraint.toString())
+							|| station.getName().contains(constraint.toString())
 							|| station.getAddress().contains(constraint))
 						nStationList.add(station);
 				}
 				
 				results.values = nStationList;
 				results.count = nStationList.size();
+				Log.e("filtered values", nStationList.toString());
 			}//end else
 			
 			return results;
@@ -129,15 +132,10 @@ public class UBikeStationListAdapter extends ArrayAdapter<UBStation> implements 
 		protected void publishResults(CharSequence constraint, FilterResults results) {
 			
 			//inform the adapter about the new list filtered
-			if(results.count == 0) {
-				notifyDataSetInvalidated();
-			}
-			else {
-				
-				stationList = (List<UBStation>)results.values;
-				notifyDataSetChanged();
-				clear();
-			}
+			clear();
+			stationList = (List<UBStation>) results.values;
+			Log.e("publish results", results.values.toString());
+			notifyDataSetChanged();
 		}
 	}
 	

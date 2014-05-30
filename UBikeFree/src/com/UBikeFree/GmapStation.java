@@ -89,6 +89,7 @@ public class GmapStation extends FragmentActivity{
         listView_UBikeStations = (ListView)findViewById(R.id.ubike_list_view);
         //get input field
         editText_searchStation = (EditText)findViewById(R.id.input_search);
+        
         //add items to list view
         adapter_UBikeStationList = new UBikeStationListAdapter(this, this.obj_GMap.getSortedStationList());        
         listView_UBikeStations.setTextFilterEnabled(true);
@@ -117,6 +118,7 @@ public class GmapStation extends FragmentActivity{
 			}
         	
         });
+        
         
         //set onItemClickListener
         listView_UBikeStations.setOnItemClickListener(new OnItemClickListener() {
