@@ -52,7 +52,8 @@
             </intent-filter>
         </activity>
         <activity android:name="com.UBikeFree.GmapStation" 
-            	  android:windowSoftInputMode="stateHidden"/>
+            	  android:windowSoftInputMode="stateHidden"
+            	  android:screenOrientation="portrait"/>
         <activity android:name="com.UBikeFree.Test" />
     </application>   
 </manifest>
