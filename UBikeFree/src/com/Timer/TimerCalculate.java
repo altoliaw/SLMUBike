@@ -103,7 +103,7 @@ public class TimerCalculate {
                     / (Long.parseLong(obj_Environment
                             .SearchValue("TimeDefinition/Sec")));
             String str_layOutMessageBuffer = "";
-            str_layOutTimeBuffer = minus + ":" + seconds;
+            str_layOutTimeBuffer = minus + ":" + ((seconds < 10)? "0":"") + seconds;
             str_layOutMessageBuffer = str_messageBuffer + str_layOutTimeBuffer;
             obj_startButton.setText(str_layOutMessageBuffer);
             if (millisUntilFinished % 30000 == 0 && (millisUntilFinished / 1000) < alertTime) {
@@ -119,6 +119,7 @@ public class TimerCalculate {
         @Override
         public void onFinish() {
             String str_layOutMessageBuffer = "¹O´Á!";
+            str_layOutTimeBuffer = "00:00";
             obj_startButton.setText(str_layOutMessageBuffer);
         }
         
