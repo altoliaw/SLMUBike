@@ -9,6 +9,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import android.app.ActionBar;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
@@ -26,6 +27,8 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+
 
 //import android.widget.Toast;
 import com.Map.GMap;
@@ -49,8 +52,7 @@ public class GmapStation extends FragmentActivity{
     private UBikeStationListAdapter		adapter_UBikeStationList;
     private String text = "";
     private ActionBar actionBar;
-    private Timer watchTimer;
-    
+    private Timer watchTimer;    
 
     private TextView					countdownLabelTextView;
     
@@ -64,7 +66,8 @@ public class GmapStation extends FragmentActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+     
+		
         
         actionBar = this.getActionBar();
         actionBar.setDisplayShowTitleEnabled(false);
@@ -170,7 +173,7 @@ public class GmapStation extends FragmentActivity{
 			}
         
         }, 250, 1000);
-        
+        MainActivity.progress_Dialog.dismiss();
     }
     
     @Override

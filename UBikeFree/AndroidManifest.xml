@@ -31,11 +31,12 @@
         android:windowSoftInputMode="stateHidden" android:logo="@drawable/ubikefree">
         <!-- Maps Key Start -->
         <meta-data android:name="com.google.android.maps.v2.API_KEY"
-    android:value="AIzaSyDmi3WNnaZey5xq5EHFDsqEiGjXBn0Mff4"/>
+    android:value="AIzaSyD9ScIKQzdNgiTAPUBualIBA9KyHOwlHDY"/>
         <!-- AIzaSyAv_I3dICG5UQBc2rSg-3eGroXS7UHWJuE (冠登)-->        
         <!-- AIzaSyBidII4sFt4_3hdkWqV5ccbhYsW9HX5OKU (宏康)-->
         <!-- AIzaSyCxv9D1-73xWN3V3Abkc8fc-zYEmAuyVQ4 (威志) -->
         <!-- AIzaSyDmi3WNnaZey5xq5EHFDsqEiGjXBn0Mff4 (承甫) -->
+        <!-- AIzaSyD9ScIKQzdNgiTAPUBualIBA9KyHOwlHDY (睿哲) -->
     <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

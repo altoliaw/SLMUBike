@@ -7,6 +7,7 @@ import android.app.AlertDialog.Builder;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -42,6 +43,8 @@ import android.widget.Button;
 
 
 
+
+
 /*Timer import Start*/
 import com.Timer.TimerCalculate;
 /*Timer import end*/
@@ -52,6 +55,7 @@ public class MainActivity extends ActionBarActivity {
 	/*Timer Start*/
 	private Button start;
 	public static TimerCalculate obj_Timer;
+	public static ProgressDialog progress_Dialog = null;
 	private int state; // 0:還沒計時  1:30分鐘計時狀態  2:15分鐘計時狀態
 	/*Timer end*/		
 	/*Gmap Start*/
@@ -98,6 +102,10 @@ public class MainActivity extends ActionBarActivity {
         	public void onClick(View v){
         		Intent obj_Intent=new Intent();
         		obj_Intent.setClass(MainActivity.this,GmapStation.class);
+        		 //Progress Dialog 載入畫面
+        		CharSequence progress_Dialog_Title = "Working...", progress_Dialog_Message = "Map Loading...";
+        		
+        		progress_Dialog = ProgressDialog.show(MainActivity.this, progress_Dialog_Title, progress_Dialog_Message);
         		startActivity(obj_Intent);         		
         	}
         });                     

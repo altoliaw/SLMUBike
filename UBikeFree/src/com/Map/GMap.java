@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.Resource.EnvironmentSource;
 import com.StationInformation.Stations;
 import com.StationInformation.UBStation;
+import com.UBikeFree.MainActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
@@ -112,7 +113,7 @@ public class GMap {
     			Marker tempMarker = this.obj_GoogleMap.addMarker(obj_Mark);
     			markers.add(tempMarker);    			    		
     		}
-    		this.MarkListener();
+    		this.MarkListener();    		
     	}
     	catch(Exception obj_Ex){
     		Log.e(ststr_Activity,obj_Ex.getMessage());
