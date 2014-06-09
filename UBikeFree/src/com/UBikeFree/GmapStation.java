@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 import android.app.ActionBar;
 import android.app.ProgressDialog;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
@@ -30,16 +31,23 @@ import android.widget.Toast;
 
 
 
+
 //import android.widget.Toast;
 import com.Map.GMap;
 import com.Resource.EnvironmentSource;
 import com.StationInformation.StationListAdapter.UBikeStationListAdapter;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
+import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.navdrawer.SimpleSideDrawer;
 
 
-public class GmapStation extends FragmentActivity{
+public class GmapStation extends FragmentActivity implements ConnectionCallbacks, OnConnectionFailedListener, LocationListener{
 	private EnvironmentSource			obj_Environment;
 	private GMap						obj_GMap;
     private ScheduledExecutorService	obj_Scheduler;
@@ -48,11 +56,10 @@ public class GmapStation extends FragmentActivity{
     private SimpleSideDrawer			sideMenu_UBikeStations;
     private ListView					listView_UBikeStations;
     private EditText					editText_searchStation;
-
     private UBikeStationListAdapter		adapter_UBikeStationList;
-    private String text = "";
-    private ActionBar actionBar;
-    private Timer watchTimer;    
+    private String 						text = "";
+    private ActionBar 					actionBar;
+    private Timer 						watchTimer;    
 
     private TextView					countdownLabelTextView;
     
@@ -164,7 +171,6 @@ public class GmapStation extends FragmentActivity{
         countdownLabelTextView = (TextView)findViewById(R.id.countdown_label);
         
         watchTimer.scheduleAtFixedRate(new TimerTask() {
-
 			@Override
 			public void run() {
 				text=MainActivity.obj_Timer.str_layOutTimeBuffer;
@@ -257,6 +263,35 @@ public class GmapStation extends FragmentActivity{
         																		TimeUnit.SECONDS
         );        
     }
+
+	@Override
+	public void onLocationChanged(Location arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onConnectionFailed(ConnectionResult arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onConnected(Bundle arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onDisconnected() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	private void LocationClientMaintain(){
+		
+	
+	}
     
 }
 

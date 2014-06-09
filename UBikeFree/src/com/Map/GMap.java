@@ -17,6 +17,9 @@ import com.Resource.EnvironmentSource;
 import com.StationInformation.Stations;
 import com.StationInformation.UBStation;
 import com.UBikeFree.MainActivity;
+
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
@@ -276,45 +279,48 @@ public class GMap {
     	return obj_Station.getSortedStationListByKey();
     }
     
-    public void CircleNearStation(){    	
-    	LocationListener obj_LocationListener = new LocationListener() {				
-            public void onLocationChanged(Location obj_Location) {
-            	if(obj_NearCircle!=null){
-            		obj_NearCircle.remove();
-            	}
-            	double db_CircleLat=obj_Location.getLatitude();
-            	double db_CircleLng=obj_Location.getLongitude();
-            	try{
-            		LatLng	obj_Position	=new LatLng(db_CircleLat, db_CircleLng);
-                	obj_CircleOfStation								.center(obj_Position)
-																	.radius(Double.parseDouble(obj_Environment.SearchValue("GMap/NearStationCircleRadius")))																	
-																	.strokeColor(0xFFFFA420)
-																	.strokeWidth(Float.parseFloat(obj_Environment.SearchValue("GMap/NearStationCircleStroke")));																	
-            		obj_NearCircle=obj_GoogleMap.addCircle(obj_CircleOfStation);            		
-            		Log.i("Lat",String.valueOf(db_CircleLat));
-            		Log.i("Lng",String.valueOf(db_CircleLng));
-            	}
-            	catch(Exception obj_Ex){
-            		Log.e(ststr_Activity,obj_Ex.getMessage());
-            	}
-            }
-            public void onStatusChanged(String provider, int status, Bundle extras) {}
-            public void onProviderEnabled(String provider) {}
-            public void onProviderDisabled(String provider) {}
-		};
-		
-		LocationManager	obj_LocationManger			=(LocationManager)(this.obj_ContextFromActivity.getSystemService(Context.LOCATION_SERVICE));
-    	if (obj_LocationManger.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){    		
-              obj_LocationManger.requestLocationUpdates(	LocationManager.NETWORK_PROVIDER, 
-            		  										Long.parseLong(this.obj_Environment.SearchValue("GMap/SeneorRetrivalTime")), 
-            		  										Float.parseFloat(this.obj_Environment.SearchValue("GMap/SeneorRetrivalDistance")), 
-            		  										obj_LocationListener
-            );              
-    	}
-    	else{
-    		Toast.makeText(this.obj_ContextFromActivity, "You can open GPS for precise locating.", Toast.LENGTH_SHORT).show();			
-    	}
+    public void CircleNearStation(){    
+    	LocationClient obj_Client=null;
+    	
+//    	LocationListener obj_LocationListener = new LocationListener() {				
+//            public void onLocationChanged(Location obj_Location) {
+//            	if(obj_NearCircle!=null){
+//            		obj_NearCircle.remove();
+//            	}
+//            	double db_CircleLat=obj_Location.getLatitude();
+//            	double db_CircleLng=obj_Location.getLongitude();
+//            	try{
+//            		LatLng	obj_Position	=new LatLng(db_CircleLat, db_CircleLng);
+//                	obj_CircleOfStation								.center(obj_Position)
+//																	.radius(Double.parseDouble(obj_Environment.SearchValue("GMap/NearStationCircleRadius")))																	
+//																	.strokeColor(0xFFFFA420)
+//																	.strokeWidth(Float.parseFloat(obj_Environment.SearchValue("GMap/NearStationCircleStroke")));																	
+//            		obj_NearCircle=obj_GoogleMap.addCircle(obj_CircleOfStation);            		
+//            		Log.i("Lat",String.valueOf(db_CircleLat));
+//            		Log.i("Lng",String.valueOf(db_CircleLng));
+//            	}
+//            	catch(Exception obj_Ex){
+//            		Log.e(ststr_Activity,obj_Ex.getMessage());
+//            	}
+//            }
+//            public void onStatusChanged(String provider, int status, Bundle extras) {}
+//            public void onProviderEnabled(String provider) {}
+//            public void onProviderDisabled(String provider) {}
+//		};
+//		
+//		LocationManager	obj_LocationManger			=(LocationManager)(this.obj_ContextFromActivity.getSystemService(Context.LOCATION_SERVICE));
+//    	if (obj_LocationManger.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){    		
+//              obj_LocationManger.requestLocationUpdates(	LocationManager.NETWORK_PROVIDER, 
+//            		  										Long.parseLong(this.obj_Environment.SearchValue("GMap/SeneorRetrivalTime")), 
+//            		  										Float.parseFloat(this.obj_Environment.SearchValue("GMap/SeneorRetrivalDistance")), 
+//            		  										obj_LocationListener
+//            );              
+//    	}
+//    	else{
+//    		Toast.makeText(this.obj_ContextFromActivity, "You can open GPS for precise locating.", Toast.LENGTH_SHORT).show();			
+//    	}
     }
+    
     private void MarkListener(){
     	this.obj_GoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
     	    @Override 
