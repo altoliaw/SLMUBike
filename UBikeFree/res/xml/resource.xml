@@ -27,4 +27,7 @@
     <section key="StationInformation">
         <entry key="Url" value="http://opendata.dot.taipei.gov.tw/opendata/gwjs_cityhall.json" />          
     </section>
+    <section key="TopKNearStation">
+        <entry key="KValue" value="5" />          
+    </section>
 </configuration> 

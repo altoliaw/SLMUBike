@@ -1291,11 +1291,11 @@ containing a value of this type.
         public static final int action_bar_subtitle=0x7f070026;
         public static final int action_bar_title=0x7f070025;
         public static final int action_context_bar=0x7f070020;
-        public static final int action_countdown_label=0x7f07004c;
+        public static final int action_countdown_label=0x7f07004d;
         public static final int action_menu_divider=0x7f070019;
         public static final int action_menu_presenter=0x7f07001a;
         public static final int action_mode_close_button=0x7f070027;
-        public static final int action_search=0x7f07004d;
+        public static final int action_search=0x7f07004e;
         public static final int activity_chooser_view_content=0x7f070028;
         public static final int always=0x7f07000f;
         public static final int beginning=0x7f070014;
@@ -1346,6 +1346,7 @@ containing a value of this type.
         public static final int showTitle=0x7f07000a;
         public static final int split_action_bar=0x7f070021;
         public static final int start=0x7f070041;
+        public static final int station_search=0x7f07004c;
         public static final int submit_area=0x7f07003c;
         public static final int tabMode=0x7f070006;
         public static final int terrain=0x7f070003;

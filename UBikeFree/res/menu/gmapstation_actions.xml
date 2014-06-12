@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     <!-- Search, should appear as action button -->
-	<!-- <item android:id="@+id/station_search"
+	<item android:id="@+id/station_search"
           android:icon="@drawable/ios7_search"
           android:title="@string/station_circle"
-          android:showAsAction="ifRoom" /> -->
+          android:showAsAction="ifRoom" />
 	<item android:id="@+id/action_countdown_label"
 	      android:icon="@drawable/ios7_alarm"
           android:title="@string/action_countdown_label_title"

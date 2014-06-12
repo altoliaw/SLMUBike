@@ -1,6 +1,5 @@
 package com.UBikeFree;
 
-
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
@@ -9,25 +8,27 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import android.app.ActionBar;
-import android.app.ProgressDialog;
-import android.location.Location;
+//import android.app.ProgressDialog;
+//import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
+//import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
-import android.widget.ImageButton;
+//import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 
 
@@ -36,22 +37,17 @@ import android.widget.Toast;
 import com.Map.GMap;
 import com.Resource.EnvironmentSource;
 import com.StationInformation.StationListAdapter.UBikeStationListAdapter;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
-import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.navdrawer.SimpleSideDrawer;
 
 
-public class GmapStation extends FragmentActivity implements ConnectionCallbacks, OnConnectionFailedListener, LocationListener{
+public class GmapStation extends FragmentActivity{
 	private EnvironmentSource			obj_Environment;
 	private GMap						obj_GMap;
     private ScheduledExecutorService	obj_Scheduler;
     private ScheduledFuture<?>			obj_SchedulerHandler; 
+    
     
     private SimpleSideDrawer			sideMenu_UBikeStations;
     private ListView					listView_UBikeStations;
@@ -63,25 +59,19 @@ public class GmapStation extends FragmentActivity implements ConnectionCallbacks
 
     private TextView					countdownLabelTextView;
     
-    private final Handler 				countdownLabelHandler = new Handler();
-    private final Runnable				countdownLabelUpdate = new Runnable() {
+    private final Handler 				countdownLabelHandler 	= new Handler();
+    private final Runnable				countdownLabelUpdate 	= new Runnable() {
     										public void run() {
     											countdownLabelTextView.setText(text);
     										}
     									};
-    
+    									
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-     
-		
-        
+        super.onCreate(savedInstanceState);		        
         actionBar = this.getActionBar();
-        actionBar.setDisplayShowTitleEnabled(false);
-        
-        watchTimer = new Timer();
-        
-
+        actionBar.setDisplayShowTitleEnabled(false);        
+        watchTimer = new Timer();        
         setContentView(R.layout.gmap_information);
         																							//Start initial the Environment
         this.obj_Environment		=new EnvironmentSource(getResources().getXml(R.xml.resource));
@@ -120,7 +110,6 @@ public class GmapStation extends FragmentActivity implements ConnectionCallbacks
         
         //enable search functionality
         editText_searchStation.addTextChangedListener(new TextWatcher() {
-
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count,
 					int after) {
@@ -180,13 +169,15 @@ public class GmapStation extends FragmentActivity implements ConnectionCallbacks
         
         }, 250, 1000);
         MainActivity.progress_Dialog.dismiss();
+        
     }
     
     @Override
     protected void onResume() {
         super.onResume();
-        						//Start initial Google Map        
-        this.ScheduleMap();		//End initial Google Map, and update adapter's list
+        								//Start initial Google Map 
+        this.obj_GMap.WakeUpCamera();	//Wake Up Camera for Map
+        this.ScheduleMap();				//End initial Google Map, and update adapter's list        
     }
     
     @Override
@@ -195,8 +186,9 @@ public class GmapStation extends FragmentActivity implements ConnectionCallbacks
     	MenuInflater inflater = getMenuInflater();
     	inflater.inflate(R.menu.gmapstation_actions, menu);
     	MenuItem actionLabel = menu.findItem(R.id.action_countdown_label);
+    	MenuItem stationLabel = menu.findItem(R.id.station_search);
+    	stationLabel.setTitle("run");
     	actionLabel.setTitle(text);
-
     	return super.onCreateOptionsMenu(menu);
     }
     
@@ -220,9 +212,9 @@ public class GmapStation extends FragmentActivity implements ConnectionCallbacks
     	case R.id.action_countdown_label:
     		MainActivity.obj_Timer.StartProcess();
     		return true;
-//    	case R.id.station_search:
-//    		Log.e("GMap.Station", "Got");
-//    		return true;
+    	case R.id.station_search:
+    		Log.e("GMap.Station", "Got");
+    		return true;
     	default:
     		return super.onOptionsItemSelected(item);
     	}
@@ -249,8 +241,7 @@ public class GmapStation extends FragmentActivity implements ConnectionCallbacks
                         if(s != null && s.length() > 0) {
                         	adapter_UBikeStationList.getFilter().filter(s.toString());
                         	adapter_UBikeStationList.notifyDataSetChanged();
-                        }//end if
-                        
+                        }//end if                       
                         //show toast
                         Toast.makeText(GmapStation.this, "更新站點資訊", Toast.LENGTH_SHORT).show();
     				}
@@ -263,35 +254,5 @@ public class GmapStation extends FragmentActivity implements ConnectionCallbacks
         																		TimeUnit.SECONDS
         );        
     }
-
-	@Override
-	public void onLocationChanged(Location arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onConnectionFailed(ConnectionResult arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onConnected(Bundle arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onDisconnected() {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	private void LocationClientMaintain(){
-		
-	
-	}
-    
 }
 

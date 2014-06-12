@@ -4,9 +4,9 @@ import java.util.concurrent.Callable;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
+//import android.app.Notification;
+//import android.app.NotificationManager;
+//import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,7 +14,7 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Message;
+//import android.os.Message;
 import android.os.StrictMode;
 import android.os.Vibrator;
 //import android.support.v4.app.Fragment;
@@ -25,7 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 //import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.view.Window;
+//import android.view.Window;
 import android.widget.Button;
 
 
