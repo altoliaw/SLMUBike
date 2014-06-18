@@ -16,28 +16,21 @@ import android.widget.Toast;
 import com.Resource.EnvironmentSource;
 import com.StationInformation.Stations;
 import com.StationInformation.UBStation;
-//import com.UBikeFree.MainActivity;
+import com.StationInformation.NearStationObject;
 
-//import com.google.android.gms.location.LocationRequest;
-//import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-//import com.google.android.gms.maps.model.Circle;
-//import com.google.android.gms.maps.model.CircleOptions;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.net.MalformedURLException;
-//import java.io.BufferedReader;
-//import java.io.IOException;
-//import java.io.InputStream;
-//import java.io.InputStreamReader;
-//import java.net.HttpURLConnection;
-//import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class GMap {
 																						//Google Map
@@ -48,17 +41,20 @@ public class GMap {
 	private GoogleMap				obj_GoogleMap;										//Google Map Variable    
 	private LatLng					obj_TaipeiMap;										//Lat Lng Position
     private	Stations				obj_Station;										//Stations' Information Object
-    private boolean 				bool_IsMoveCamera;    
+    private boolean 				bool_IsMoveCamera;
+    public  boolean					bool_IsShownNearStation;
     private	static	final	String 	ststr_Activity="GMap.java";
     
     
-    
+    private ArrayList<NearStationObject>		obj_NearStationList;
     private ArrayList<Marker> markers;//record markers
+    private ArrayList<Marker> 					obj_LessInformationMarkers;//record markers
     private String lastClickedStation;//record the last time clicked marker, for re-shown after updated the map
     
     																					//Construct of class
     public	GMap(EnvironmentSource obj_Environment, Context obj_ContextFromActivity, GoogleMap obj_GoogleMap){
     	this.bool_IsMoveCamera						=true;
+    	this.bool_IsShownNearStation				=false;
     	this.obj_Environment						=obj_Environment;
     	this.obj_ContextFromActivity				=obj_ContextFromActivity;
     	this.obj_GoogleMap							=obj_GoogleMap;
@@ -72,6 +68,7 @@ public class GMap {
 
     	//list for Markers
     	markers = new ArrayList<Marker>();
+    	obj_LessInformationMarkers	=new ArrayList<Marker>();
     	
     	//override onMarkerClickListener
     	//record the last clicked marker
@@ -113,7 +110,8 @@ public class GMap {
     			));
     																					//Adding markers for station
     			Marker tempMarker = this.obj_GoogleMap.addMarker(obj_Mark);
-    			markers.add(tempMarker);    			    		
+    			markers.add(tempMarker); 
+    			obj_LessInformationMarkers.add(tempMarker);
     		}
     		this.MarkListener();    		
     	}
@@ -132,7 +130,7 @@ public class GMap {
     	
 																						//If no GPS or network, It will not work in Listener.    	
 		LocationListener obj_LocationListener 		= new LocationListener() {				
-            public void onLocationChanged(Location obj_Location) {            	
+			public void onLocationChanged(Location obj_Location) {            	
             	db_Lat=obj_Location.getLatitude();
             	db_Lng=obj_Location.getLongitude();
             	try{
@@ -141,6 +139,11 @@ public class GMap {
             			MapCameraSetting();
             			bool_IsMoveCamera			=false;
             		}
+            		//Calculate the Nearest Markers
+            		if(bool_IsShownNearStation ==true){
+            			NearestStation(obj_TaipeiMap);
+            		}
+            		
 //            		Log.i("FetchNowLatInFirstTime",String.valueOf(db_Lat));
 //            		Log.i("FetchNowLngInFirstTime",String.valueOf(db_Lng));
             	}
@@ -165,12 +168,16 @@ public class GMap {
     	}
 	}    
     																					//Trigger for reloading station information
-    public void StationDataReload(){    	
-    	markers.clear();    	
+    public void StationDataReload(boolean bool_Update){ 
+    	if(bool_Update==true){
+    		markers.clear();    	
+    	}
     																					//Re-do the json package again
     	try{    		
     		this.obj_GoogleMap.clear();
-    		this.obj_Station.update(this.obj_Environment);
+    		if(bool_Update==true){
+    			this.obj_Station.update(this.obj_Environment);
+    		}
     		for(UBStation 		obj_UbiKeStation 	: this.obj_Station){    			
     			LatLng			obj_Position		=new LatLng(obj_UbiKeStation.getLat(),obj_UbiKeStation.getLng());
     			MarkerOptions 	obj_Mark			=new MarkerOptions().position(obj_Position)
@@ -182,12 +189,20 @@ public class GMap {
     					this.MarkColorPicker(Double.parseDouble(obj_UbiKeStation.getBikes()), Double.parseDouble(obj_UbiKeStation.getEmptySlots()))
     			));
     																					//Adding markers for station
-    			Marker tempMarker = this.obj_GoogleMap.addMarker(obj_Mark);   
-    			markers.add(tempMarker);
+    			Marker tempMarker = this.obj_GoogleMap.addMarker(obj_Mark);
+    			if(bool_Update==true){
+    				markers.add(tempMarker);
+    			}
     		}
     		
     		//re-show clicked station marker
-    		showMarkerOption(lastClickedStation);
+    		if(bool_Update==true){
+    			showMarkerOption(lastClickedStation);
+    		}
+    		//re-show the nearest markers
+    		if(this.bool_IsShownNearStation==true){
+    			NearestStation(this.obj_TaipeiMap);    			
+    		}
     	}
     	catch(Exception obj_Ex){
     		//Log.e(ststr_Activity,obj_Ex.getMessage());
@@ -236,8 +251,7 @@ public class GMap {
     private void MapCameraSetting(){
     	this.obj_GoogleMap.setMyLocationEnabled(true);    	
     	this.obj_GoogleMap.moveCamera(	CameraUpdateFactory.newLatLngZoom(obj_TaipeiMap,
-    								Float.parseFloat(this.obj_Environment.SearchValue("GMap/Zoom"))));
-    	this.MarkNearStation();
+    								Float.parseFloat(this.obj_Environment.SearchValue("GMap/Zoom"))));    	
     }
     
     public void MapCameraSetting(LatLng positionOnMap){
@@ -282,9 +296,6 @@ public class GMap {
     	return obj_Station.getSortedStationListByKey();
     }
     
-    public void MarkNearStation(){        	    	
-
-    }
     
     private void MarkListener(){
     	this.obj_GoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -301,72 +312,49 @@ public class GMap {
     	});
     }
     
-//    private String getDirectionsUrl(LatLng origin, LatLng dest) {
-//    	  // Origin of route
-//    	  String str_origin = "origin=" + origin.latitude + ","
-//    	    + origin.longitude;
-//    	  // Destination of route
-//    	  String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
-//    	  // Sensor enabled
-//    	  String sensor = "sensor=false";
-//    	  // Building the parameters to the web service
-//    	  String parameters = str_origin + "&" + str_dest + "&" + sensor;
-//    	  // Output format
-//    	  String output = "json";
-//    	  // Building the url to the web service
-//    	  String url = "https://maps.googleapis.com/maps/api/directions/"
-//    	    + output + "?" + parameters;
-//    	  return url;
-//    }
-//    
-//    /**從URL下載JSON資料的方法**/
-//    private String downloadUrl(String strUrl) throws IOException {
-//    	String data = "";
-//    	InputStream iStream = null;
-//    	HttpURLConnection urlConnection = null;
-//    	try {
-//    		URL url = new URL(strUrl);
-//    		// Creating an http connection to communicate with url
-//    		urlConnection = (HttpURLConnection) url.openConnection();
-//
-//    		//Connecting to url
-//    		urlConnection.connect();
-//
-//    		//Reading data from url
-//    		iStream = urlConnection.getInputStream();
-//    		BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
-//    		StringBuffer sb = new StringBuffer();
-//    		String line = "";
-//    		while ((line = br.readLine()) != null) {
-//    			sb.append(line);
-//    		}
-//    		data = sb.toString();
-//    		br.close();    		
-//    	} 
-//    	catch (Exception e) {
-//    		Log.d("Exception while downloading url", e.toString());
-//    	} 
-//    	finally {
-//    		iStream.close();
-//    		urlConnection.disconnect();
-//    	}
-//    	return data;
-//    } 
-    
-    public void NearestStation(LatLng obj_Position){    	
-    	if(markers.size()>0){
+   
+
+    public void NearestStation(LatLng obj_Position){ 
+    	this.obj_NearStationList=null;
+    	this.obj_NearStationList=new ArrayList<NearStationObject>();
+    	if(this.obj_LessInformationMarkers.size()>0){
     		LatLng obj_MarkPosition;
-    		for(Marker marker : markers) {
+    		for(Marker marker : this.obj_LessInformationMarkers) {
     			obj_MarkPosition	=marker.getPosition();
     			double db_Distance	=Math.abs(obj_Position.latitude-obj_MarkPosition.latitude)+Math.abs(obj_Position.longitude-obj_MarkPosition.longitude);
-    			if(db_Distance<0.1){
-    				Log.i("information",String.valueOf(db_Distance));    				
+    			if(db_Distance<0.05){
+    				this.obj_NearStationList.add(new NearStationObject(marker,db_Distance));
+    				//Log.i("information",String.valueOf(db_Distance));    				
     			}
     			else{
-    				Log.i("information",String.valueOf(db_Distance));      				
+    				//Log.i("information",String.valueOf(db_Distance));      				
     			}
 	    	}
-    		
-    	}    	
-    }
+    		//sort the Nearest TopK Station
+    		Collections.sort(this.obj_NearStationList,new Comparator<NearStationObject>(){	
+    				@Override
+	    			public int compare(NearStationObject obj_Object1, NearStationObject obj_Object2) {
+	    		        return Double.compare(obj_Object1.db_Distance,obj_Object2.db_Distance);
+	    		    }
+    		});
+    		this.obj_GoogleMap.clear();
+    		for(UBStation 		obj_UbiKeStation 	: this.obj_Station){
+	    		for(int i=0;(i<this.obj_NearStationList.size()&& i<5);i++){
+	    			NearStationObject obj_NearStation		=this.obj_NearStationList.get(i);
+	    			if(obj_UbiKeStation.getName().equals(obj_NearStation.obj_StationMarkers.getTitle())){
+		    			LatLng			obj_Pos				=new LatLng(obj_UbiKeStation.getLat(),obj_UbiKeStation.getLng());
+		    			MarkerOptions 	obj_Mark			=new MarkerOptions().position(obj_Pos)
+		    																	.title(obj_UbiKeStation.getName())
+		    																	.snippet(("可借："+ obj_UbiKeStation.getBikes()+ "空車位：" + obj_UbiKeStation.getEmptySlots()))
+		    																	.alpha(Float.parseFloat(this.obj_Environment.SearchValue("GMap/Alpha")));    				    			    
+		    			
+		    			obj_Mark.icon(BitmapDescriptorFactory.defaultMarker(
+		    					this.MarkColorPicker(Double.parseDouble(obj_UbiKeStation.getBikes()), Double.parseDouble(obj_UbiKeStation.getEmptySlots()))
+		    			));
+		    			this.obj_GoogleMap.addMarker(obj_Mark);
+	    			}
+    			}    																				       		
+    		}    		
+    	}   	
+    } 
 }
