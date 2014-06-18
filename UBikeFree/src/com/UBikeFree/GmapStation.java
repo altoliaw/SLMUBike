@@ -216,7 +216,8 @@ public class GmapStation extends FragmentActivity{
     		}
     		return true;
     	case R.id.station_search:
-    		Log.e("GMap.Station", "Got");
+    		this.obj_GMap.bool_IsShownNearStation=!(this.obj_GMap.bool_IsShownNearStation);
+    		this.obj_GMap.StationDataReload(false);
     		return true;
     	default:
     		return super.onOptionsItemSelected(item);
@@ -236,7 +237,7 @@ public class GmapStation extends FragmentActivity{
     			runOnUiThread(new Runnable() {
     				public void run() {
                         //Toast.makeText(getApplicationContext(), "Relaod from WebService", Toast.LENGTH_SHORT).show();
-                        obj_GMap.StationDataReload();
+                        obj_GMap.StationDataReload(true);
                         //reset list items
                         adapter_UBikeStationList.swapStationItems(obj_GMap.getSortedStationList());
                         //as soon as update the list, if the editor has any value, filter the list view
