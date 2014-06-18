@@ -33,8 +33,10 @@ import android.widget.Button;
 
 
 
+
 /*Timer import Start*/
 import com.Timer.TimerCalculate;
+import com.UBikeFree.Dialog.TimerConfirmDialog;
 import com.UBikeFree.ShowcaseView.ShowcaseViewManager;
 import com.espian.showcaseview.OnShowcaseEventListener;
 import com.espian.showcaseview.ShowcaseView;
@@ -79,7 +81,7 @@ public class MainActivity extends ActionBarActivity {
         		    obj_Timer.setAlertTime(1740);
                     obj_Timer.setAlert(new AlertCallback());
         		} else {
-        			timerConfirmDialog(obj_Timer);
+        			TimerConfirmDialog.popupTimerConfirmDialog(MainActivity.this, obj_Timer);;
         		}
         	}        	
         });  
@@ -187,27 +189,7 @@ public class MainActivity extends ActionBarActivity {
     	}//end if
     }
     
-    protected void timerConfirmDialog(final TimerCalculate timer) {
-    	
-    	Builder stopCountingAlertDialog = new AlertDialog.Builder(this);
-    	stopCountingAlertDialog.setTitle(R.string.timer_stop_alert_dialog_title);
-    	DialogInterface.OnClickListener okClick = new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				//confirm function
-				timer.StartProcess();
-			}
-		};
-		DialogInterface.OnClickListener cancelClick = new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				//Do nothing				
-			}
-		};
-		stopCountingAlertDialog.setPositiveButton(R.string.confirm_button,okClick);
-		stopCountingAlertDialog.setNegativeButton(R.string.cancel_button,cancelClick);
-    	stopCountingAlertDialog.show();
-    }
+    
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

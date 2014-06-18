@@ -29,14 +29,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-
-
-
 //import android.widget.Toast;
 import com.Map.GMap;
 import com.Resource.EnvironmentSource;
 import com.StationInformation.StationListAdapter.UBikeStationListAdapter;
+import com.UBikeFree.Dialog.TimerConfirmDialog;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.navdrawer.SimpleSideDrawer;
@@ -210,7 +207,13 @@ public class GmapStation extends FragmentActivity{
     		sideMenu_UBikeStations.toggleRightDrawer();
     		return true;
     	case R.id.action_countdown_label:
-    		MainActivity.obj_Timer.StartProcess();
+    		
+    		int state = MainActivity.obj_Timer.getState();
+    		if(state == 0) {
+    			MainActivity.obj_Timer.StartProcess();
+    		} else {
+    			TimerConfirmDialog.popupTimerConfirmDialog(GmapStation.this, MainActivity.obj_Timer);
+    		}
     		return true;
     	case R.id.station_search:
     		Log.e("GMap.Station", "Got");
