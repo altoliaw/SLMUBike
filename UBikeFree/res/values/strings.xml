@@ -21,4 +21,9 @@
     <string name="action_countdown_label">ActionSearchLabel</string>
     <string name="action_countdown_label_title">還車倒數計時</string>
     <string name="countdown_label">CountdownLabel</string>
+    <string name="showtitle_startcountdownbutton">開始UBike借車倒數</string>
+    <string name="showdetails_startcountdownbutton">按下按鈕後，開始進行30分鐘的倒數計時，時限內還車，使用UBike免費。</string>
+    <string name="showtitle_mapbutton">查看UBike站點</string>
+    <string name="showdetails_mapbutton">按下按鈕後，會出現地圖，地圖上的標記為UBike站點。站點目前可以借出的UBike數量比例越高，標記的顏色就會偏綠色，比例越少就會偏紅色。</string>
+    <string name="filename_isfirsttimeopen">firsttimeopen</string>
 </resources>

@@ -1,5 +1,7 @@
 package com.UBikeFree;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.concurrent.Callable;
 
 import android.app.AlertDialog;
@@ -31,24 +33,12 @@ import android.widget.Button;
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*Timer import Start*/
 import com.Timer.TimerCalculate;
+import com.UBikeFree.ShowcaseView.ShowcaseViewManager;
+import com.espian.showcaseview.OnShowcaseEventListener;
+import com.espian.showcaseview.ShowcaseView;
 /*Timer import end*/
-import com.UBikeFree.R;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -76,7 +66,8 @@ public class MainActivity extends ActionBarActivity {
         StrictMode.setThreadPolicy(policy);
         
         /*Timer Start*/
-        start = (Button)findViewById(R.id.start);        
+        start = (Button)findViewById(R.id.start);
+        
         obj_Timer = new TimerCalculate(start,getResources().getXml(R.xml.resource));
         start.setOnClickListener(new OnClickListener() {        	
         	@Override        	
@@ -108,7 +99,11 @@ public class MainActivity extends ActionBarActivity {
         		progress_Dialog = ProgressDialog.show(MainActivity.this, progress_Dialog_Title, progress_Dialog_Message);
         		startActivity(obj_Intent);         		
         	}
-        });                     
+        });         
+        
+        setupshowcaseViews();
+        
+        
         /*Gmap end*/
        
         /*Test Start*/
@@ -130,6 +125,66 @@ public class MainActivity extends ActionBarActivity {
 //                    .add(R.id.container, new PlaceholderFragment())
 //                    .commit();
 //        }
+    }
+    
+    
+    private void setupshowcaseViews() {
+    	
+    	File checkFirstTimeOpenedFile = this.getFileStreamPath(getString(R.string.filename_isfirsttimeopen));
+    	
+    	if(!checkFirstTimeOpenedFile.exists()) {
+    	//setup ShowcaseView
+        //set ShowcaseView for start button
+        ShowcaseViewManager.setUpShowcaseViewTargetOnView(
+	        					this,
+								start,
+								getString(R.string.showtitle_startcountdownbutton),
+								getString(R.string.showdetails_startcountdownbutton)
+							)
+						    .setOnShowcaseEventListener(new OnShowcaseEventListener() {
+
+								@Override
+								public void onShowcaseViewHide(
+										ShowcaseView showcaseView) {
+									// TODO Auto-generated method stub
+									ShowcaseViewManager.setUpShowcaseViewTargetOnView(
+											  MainActivity.this,
+											  MainActivity.this.obj_GmapStation,
+											  getString(R.string.showtitle_mapbutton),
+											  getString(R.string.showdetails_mapbutton));
+								}
+	
+								@Override
+								public void onShowcaseViewDidHide(
+										ShowcaseView showcaseView) {
+									// TODO Auto-generated method stub
+									
+								}
+	
+								@Override
+								public void onShowcaseViewShow(
+										ShowcaseView showcaseView) {
+									// TODO Auto-generated method stub
+									
+								}	  
+						    });
+        
+        	//create file
+			checkFirstTimeOpenedFile = new File(this.getFilesDir(),
+											    getString(R.string.filename_isfirsttimeopen));
+			FileOutputStream outputStream;
+			try{
+				
+				outputStream = openFileOutput(getString(R.string.filename_isfirsttimeopen),
+											  Context.MODE_PRIVATE);
+				String text = "true";
+				outputStream.write(text.getBytes());
+				outputStream.close();
+			} catch(Exception e) {
+				
+				e.printStackTrace();
+			}
+    	}//end if
     }
     
     protected void timerConfirmDialog(final TimerCalculate timer) {
@@ -228,4 +283,5 @@ public class MainActivity extends ActionBarActivity {
             return null;
         }
     }
+    
 }
