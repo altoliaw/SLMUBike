@@ -1335,11 +1335,12 @@ containing a value of this type.
         public static final int ic_plusone_small_off_client=0x7f02007a;
         public static final int ic_plusone_standard_off_client=0x7f02007b;
         public static final int ic_plusone_tall_off_client=0x7f02007c;
-        public static final int ios7_alarm=0x7f02007d;
-        public static final int ios7_alarm_fill=0x7f02007e;
-        public static final int ios7_alarm_outline=0x7f02007f;
-        public static final int ios7_search=0x7f020080;
-        public static final int ubikefree=0x7f020081;
+        public static final int icon_bound_circle_5=0x7f02007d;
+        public static final int ios7_alarm=0x7f02007e;
+        public static final int ios7_alarm_fill=0x7f02007f;
+        public static final int ios7_alarm_outline=0x7f020080;
+        public static final int ios7_search=0x7f020081;
+        public static final int ubikefree=0x7f020082;
     }
     public static final class id {
         public static final int action_bar=0x7f060022;
@@ -1637,15 +1638,20 @@ containing a value of this type.
         public static final int countdown_timer_button=0x7f070038;
         public static final int countdown_timer_description_1=0x7f070039;
         public static final int edit_text_hint=0x7f07002f;
-        public static final int filename_isfirsttimeopen=0x7f070041;
+        public static final int filename_hasopened_gmapactivity=0x7f070046;
+        public static final int filename_hasopened_mainactivity=0x7f070045;
         public static final int hello_world=0x7f07002a;
         public static final int input_search=0x7f07002e;
         /**  Location client code resources (prefix with location_client) 
          */
         public static final int location_client_powered_by_google=0x7f07001b;
         public static final int ok=0x7f070000;
+        public static final int showdetails_actionitem_nearstations=0x7f070044;
+        public static final int showdetails_actionitem_search=0x7f070042;
         public static final int showdetails_mapbutton=0x7f070040;
         public static final int showdetails_startcountdownbutton=0x7f07003e;
+        public static final int showtitle_actionitem_nearstations=0x7f070043;
+        public static final int showtitle_actionitem_search=0x7f070041;
         public static final int showtitle_mapbutton=0x7f07003f;
         public static final int showtitle_startcountdownbutton=0x7f07003d;
         public static final int station_circle=0x7f070033;

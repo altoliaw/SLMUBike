@@ -1,5 +1,7 @@
 package com.UBikeFree;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
@@ -8,6 +10,8 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import android.app.ActionBar;
+import android.content.Context;
+import android.graphics.Point;
 //import android.app.ProgressDialog;
 //import android.location.Location;
 import android.os.Bundle;
@@ -15,7 +19,7 @@ import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -34,6 +38,9 @@ import com.Map.GMap;
 import com.Resource.EnvironmentSource;
 import com.StationInformation.StationListAdapter.UBikeStationListAdapter;
 import com.UBikeFree.Dialog.TimerConfirmDialog;
+import com.UBikeFree.ShowcaseView.ShowcaseViewManager;
+import com.espian.showcaseview.OnShowcaseEventListener;
+import com.espian.showcaseview.ShowcaseView;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.navdrawer.SimpleSideDrawer;
@@ -167,6 +174,9 @@ public class GmapStation extends FragmentActivity{
         }, 250, 1000);
         MainActivity.progress_Dialog.dismiss();
         
+        
+        //setup ShowcaseViews
+        setupShowcaseViews();
     }
     
     @Override
@@ -211,6 +221,7 @@ public class GmapStation extends FragmentActivity{
     		int state = MainActivity.obj_Timer.getState();
     		if(state == 0) {
     			MainActivity.obj_Timer.StartProcess();
+    			MainActivity.obj_Timer.setAlertTime(28);
     		} else {
     			TimerConfirmDialog.popupTimerConfirmDialog(GmapStation.this, MainActivity.obj_Timer);
     		}
@@ -257,6 +268,111 @@ public class GmapStation extends FragmentActivity{
         																		Long.parseLong(this.obj_Environment.SearchValue("GMap/TriggerTimeDelay")), 
         																		TimeUnit.SECONDS
         );        
+    }
+    
+    
+    /**
+     * 
+     */
+    private void setupShowcaseViews() {
+    	
+    	File checkFirstTimeOpenedFile = this.getFileStreamPath(getString(R.string.filename_hasopened_gmapactivity));
+    	
+    	if(!checkFirstTimeOpenedFile.exists()) {
+    		//setup ShowcaseView
+    		
+    		//get screen dimensions
+			Display display = this.getWindowManager().getDefaultDisplay();
+			final Point size = new Point();
+			display.getSize(size);
+			final int xOffset = size.x/12;
+			final int yOffset = size.y/22;
+	        //set ShowcaseView for action item search
+	        ShowcaseViewManager.setUpShowcaseViewTargetOnLocation(
+		        					this,
+		        					(size.x-xOffset),
+		        					yOffset,
+									getString(R.string.showtitle_actionitem_search),
+									getString(R.string.showdetails_actionitem_search)
+								)
+							    .setOnShowcaseEventListener(new OnShowcaseEventListener() {
+	
+									@Override
+									public void onShowcaseViewHide(
+											ShowcaseView showcaseView) {
+										// TODO Auto-generated method stub
+										//set ShowcaseView for action item count down 
+										ShowcaseViewManager.setUpShowcaseViewTargetOnLocation(
+												  GmapStation.this,
+												  (size.x-xOffset-xOffset),
+												  yOffset,
+												  getString(R.string.showtitle_startcountdownbutton),
+												  getString(R.string.showdetails_startcountdownbutton))
+												  .setOnShowcaseEventListener(new OnShowcaseEventListener() {
+
+													@Override
+													public void onShowcaseViewHide(
+															ShowcaseView showcaseView) {
+														// TODO Auto-generated method stub
+														
+														//set ShowcaseView for action item count down 
+														ShowcaseViewManager.setUpShowcaseViewTargetOnLocation(
+																  GmapStation.this,
+																  (size.x-xOffset-xOffset-xOffset),
+																  yOffset,
+																  getString(R.string.showtitle_actionitem_nearstations),
+																  getString(R.string.showdetails_actionitem_nearstations));
+													}
+
+													@Override
+													public void onShowcaseViewDidHide(
+															ShowcaseView showcaseView) {
+														// TODO Auto-generated method stub
+														
+													}
+
+													@Override
+													public void onShowcaseViewShow(
+															ShowcaseView showcaseView) {
+														// TODO Auto-generated method stub
+														
+													}
+													  
+													  
+												  });;
+									}
+		
+									@Override
+									public void onShowcaseViewDidHide(
+											ShowcaseView showcaseView) {
+										// TODO Auto-generated method stub
+										
+									}
+		
+									@Override
+									public void onShowcaseViewShow(
+											ShowcaseView showcaseView) {
+										// TODO Auto-generated method stub
+										
+									}	  
+							    });
+	        
+	        	//create file
+				checkFirstTimeOpenedFile = new File(this.getFilesDir(),
+												    getString(R.string.filename_hasopened_gmapactivity));
+				FileOutputStream outputStream;
+				try{
+					
+					outputStream = openFileOutput(getString(R.string.filename_hasopened_gmapactivity),
+												  Context.MODE_PRIVATE);
+					String text = "true";
+					outputStream.write(text.getBytes());
+					outputStream.close();
+				} catch(Exception e) {
+					
+					e.printStackTrace();
+				}
+    	}//end if
     }
 }
 

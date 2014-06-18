@@ -2,15 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     <!-- Search, should appear as action button -->
 	<item android:id="@+id/station_search"
-          android:icon="@drawable/ios7_search"
+          android:icon="@drawable/icon_bound_circle_5"
           android:title="@string/station_circle"
           android:showAsAction="ifRoom" />
 	<item android:id="@+id/action_countdown_label"
 	      android:icon="@drawable/ios7_alarm"
           android:title="@string/action_countdown_label_title"
-          android:showAsAction="ifRoom|withText" />
+          android:showAsAction="ifRoom" />
 	<item android:id="@+id/action_search"
           android:icon="@drawable/ios7_search"
           android:title="@string/action_search"
-          android:showAsAction="ifRoom|withText" />
+          android:showAsAction="ifRoom" />
 </menu>

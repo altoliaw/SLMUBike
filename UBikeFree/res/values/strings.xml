@@ -25,5 +25,10 @@
     <string name="showdetails_startcountdownbutton">30分鐘免費試乘計時: 按第一次為30分鐘借用UBike之倒數計時，再按一次可進入停止計時之畫面(確定或取消)，<br/>若按確定則進入同站借車倒數，若按取消則繼續計時。</string>
     <string name="showtitle_mapbutton">查看UBike站點</string>
     <string name="showdetails_mapbutton">按下按鈕後，會出現地圖，地圖上的標記為UBike站點。站點目前可以借出的UBike數量比例越高，標記的顏色就會偏綠色，比例越少就會偏紅色。</string>
-    <string name="filename_isfirsttimeopen">firsttimeopen</string>
+    <string name="showtitle_actionitem_search">搜尋UBike站點</string>
+    <string name="showdetails_actionitem_search">按下按鈕後，會出現站點搜尋列表，可以根據站名、路名以及行政區搜尋。</string>
+    <string name="showtitle_actionitem_nearstations">顯示最近的5個站點</string>
+    <string name="showdetails_actionitem_nearstations">按下按鈕後，在地圖上只顯示離你最近的，走路10分鐘可抵達的，5個站點。</string>
+    <string name="filename_hasopened_mainactivity">opened_mainactivity</string>
+    <string name="filename_hasopened_gmapactivity">opened_gmapactivity</string>
 </resources>

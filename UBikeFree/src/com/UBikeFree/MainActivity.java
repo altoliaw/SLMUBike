@@ -130,7 +130,7 @@ public class MainActivity extends ActionBarActivity {
     
     private void setupshowcaseViews() {
     	
-    	File checkFirstTimeOpenedFile = this.getFileStreamPath(getString(R.string.filename_isfirsttimeopen));
+    	File checkFirstTimeOpenedFile = this.getFileStreamPath(getString(R.string.filename_hasopened_mainactivity));
     	
     	if(!checkFirstTimeOpenedFile.exists()) {
     	//setup ShowcaseView
@@ -171,11 +171,11 @@ public class MainActivity extends ActionBarActivity {
         
         	//create file
 			checkFirstTimeOpenedFile = new File(this.getFilesDir(),
-											    getString(R.string.filename_isfirsttimeopen));
+											    getString(R.string.filename_hasopened_mainactivity));
 			FileOutputStream outputStream;
 			try{
 				
-				outputStream = openFileOutput(getString(R.string.filename_isfirsttimeopen),
+				outputStream = openFileOutput(getString(R.string.filename_hasopened_mainactivity),
 											  Context.MODE_PRIVATE);
 				String text = "true";
 				outputStream.write(text.getBytes());
