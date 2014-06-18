@@ -1336,11 +1336,14 @@ containing a value of this type.
         public static final int ic_plusone_standard_off_client=0x7f02007b;
         public static final int ic_plusone_tall_off_client=0x7f02007c;
         public static final int icon_bound_circle_5=0x7f02007d;
-        public static final int ios7_alarm=0x7f02007e;
-        public static final int ios7_alarm_fill=0x7f02007f;
-        public static final int ios7_alarm_outline=0x7f020080;
-        public static final int ios7_search=0x7f020081;
-        public static final int ubikefree=0x7f020082;
+        public static final int icon_bound_circle_5_background=0x7f02007e;
+        public static final int ios7_alarm=0x7f02007f;
+        public static final int ios7_alarm_background=0x7f020080;
+        public static final int ios7_alarm_fill=0x7f020081;
+        public static final int ios7_alarm_outline=0x7f020082;
+        public static final int ios7_search=0x7f020083;
+        public static final int ios7_search_background=0x7f020084;
+        public static final int ubikefree=0x7f020085;
     }
     public static final class id {
         public static final int action_bar=0x7f060022;
