@@ -351,5 +351,22 @@ public class GMap {
 //    		urlConnection.disconnect();
 //    	}
 //    	return data;
-//    }    
+//    } 
+    
+    public void NearestStation(LatLng obj_Position){    	
+    	if(markers.size()>0){
+    		LatLng obj_MarkPosition;
+    		for(Marker marker : markers) {
+    			obj_MarkPosition	=marker.getPosition();
+    			double db_Distance	=Math.abs(obj_Position.latitude-obj_MarkPosition.latitude)+Math.abs(obj_Position.longitude-obj_MarkPosition.longitude);
+    			if(db_Distance<0.1){
+    				Log.i("information",String.valueOf(db_Distance));    				
+    			}
+    			else{
+    				Log.i("information",String.valueOf(db_Distance));      				
+    			}
+	    	}
+    		
+    	}    	
+    }
 }
