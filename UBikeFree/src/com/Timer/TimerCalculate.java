@@ -76,8 +76,8 @@ public class TimerCalculate {
         return this.int_stateValue;
     }
     
-    public void setAlertTime(long timeSec) {
-        this.obj_mytask.setAlertTime(timeSec);
+    public void setAlertTime(long timeMin) {
+        this.obj_mytask.setAlertTime(timeMin);
     }
     
     public void setAlert(Callable<Void> alert) {
@@ -87,7 +87,7 @@ public class TimerCalculate {
     private class MyCoundDownTask extends CountDownTimer {
         public MyCoundDownTask(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);
-            alertTime = 300; // default alert time 5 mins
+            alertTime = 5; // default alert time 5 mins
         }
 
         @Override
@@ -106,14 +106,14 @@ public class TimerCalculate {
             str_layOutTimeBuffer = minus + ":" + ((seconds < 10)? "0":"") + seconds;
             str_layOutMessageBuffer = str_messageBuffer + str_layOutTimeBuffer;
             obj_startButton.setText(str_layOutMessageBuffer);
-            if (millisUntilFinished % 30000 == 0 && (millisUntilFinished / 1000) < alertTime) {
+            if ((seconds % 10 == 0) && minus < alertTime) {
                 try {
                     alert.call();
                 } catch (Exception e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-            }
+           }
         }
 
         @Override

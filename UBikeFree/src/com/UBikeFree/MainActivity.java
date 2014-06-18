@@ -11,8 +11,11 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
 import android.os.Bundle;
 //import android.os.Message;
 import android.os.StrictMode;
@@ -27,24 +30,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 //import android.view.Window;
 import android.widget.Button;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*Timer import Start*/
 import com.Timer.TimerCalculate;
 /*Timer import end*/
@@ -85,7 +70,7 @@ public class MainActivity extends ActionBarActivity {
         		state = obj_Timer.getState();
         		if(state == 0) {
         			obj_Timer.StartProcess();
-        		    obj_Timer.setAlertTime(1740);
+        		    obj_Timer.setAlertTime(28);
                     obj_Timer.setAlert(new AlertCallback());
         		} else {
         			timerConfirmDialog(obj_Timer);
@@ -202,30 +187,28 @@ public class MainActivity extends ActionBarActivity {
     private class AlertCallback implements Callable<Void> {
         @Override
         public Void call() {
-            final Vibrator vibrator;
-            vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-            vibrator.vibrate(new long[]{5000, 1000}, 30);
-            final MediaPlayer mp = new MediaPlayer();
-            mp.reset();
-            mp.setAudioStreamType(AudioManager.STREAM_NOTIFICATION);
-            try {
-                mp.prepare();
-            } catch(Exception ex) {
-                
-            }
-            mp.start();
-            Builder alertDialog = new AlertDialog.Builder(getApplicationContext());
+
+            vibrator.vibrate(3000);
+            rm.setType(AudioManager.STREAM_NOTIFICATION);
+            Cursor c = rm.getCursor();
+            final Ringtone ringtone = rm.getRingtone(0);
+            ringtone.setStreamType(AudioManager.STREAM_NOTIFICATION);
+            ringtone.play();
+            
+            Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
             alertDialog.setTitle("UBikeFree");
-            alertDialog.setMessage("請準備環車");
+            alertDialog.setMessage("請準備還車!!");
             alertDialog.setNeutralButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    vibrator.cancel();
-                    mp.stop();
+                    obj_Timer.setAlertTime(0);
+                    ringtone.stop();
                 }
             });
             alertDialog.show();
             return null;
         }
+        private final Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        private RingtoneManager rm = new RingtoneManager(MainActivity.this);
     }
 }
