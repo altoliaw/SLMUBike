@@ -32,14 +32,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 //import android.view.Window;
 import android.widget.Button;
-<<<<<<< HEAD
-=======
-
-
-
-
-
->>>>>>> 87195df8dfd00c4ff5bca2bd63bca34adec2f6a0
 /*Timer import Start*/
 import com.Timer.TimerCalculate;
 import com.UBikeFree.Dialog.TimerConfirmDialog;
